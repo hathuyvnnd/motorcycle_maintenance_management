@@ -1,61 +1,60 @@
 body {
-    font-family: Arial, sans-serif;
-  }
-  .sidebar {
-    border: 3px solid #ddd; /* Thêm viền */ 
-    padding: 20px;
-    height: 100vh;
-    background-color: white;
-  }
-  .sidebar a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-    margin-bottom: 20px;
-  }
-  .sidebar a:hover {
-    background-color: #e9ecef;
-    border-radius: 5px;
-    padding-left: 10px;
-  }
-  .icon {
-    width: 50px;
-    height: 50px;
-  }
-  .main-buttons .btn {
-    width: 150px;
-    height: 150px;
-    border: 1px solid #333;
-    border-radius: 15px;
-    margin: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .main-buttons .btn:hover {
-    transform: scale(1.05);
-    transition: transform 0.2s;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #fff;
-  }
-  .search-bar {
-    display: flex;
-    align-items: center;
-  }
-  .search-bar input {
-    width: 300px;
-    margin-right: 10px;
-  }
-  .footer {
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  font-family: Arial, sans-serif;
+}
+.sidebar {
+  border: 3px solid #ddd; /* Thêm viền */
+  padding: 20px;
+  background-color: white;
+}
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  margin-bottom: 20px;
+}
+.sidebar a:hover {
+  background-color: #e9ecef;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+.icon {
+  width: 50px;
+  height: 50px;
+}
+.main-buttons .btn {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #333;
+  border-radius: 15px;
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-buttons .btn:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+.search-bar input {
+  width: 300px;
+  margin-right: 10px;
+}
+.footer {
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
