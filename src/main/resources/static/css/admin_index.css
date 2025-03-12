@@ -1,26 +1,42 @@
 body {
   font-family: Arial, sans-serif;
 }
+
+.container-fluid {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  flex-grow: 1;
+}
+
 .sidebar {
   border: 3px solid #ddd; /* Thêm viền */
   padding: 20px;
   background-color: white;
+  min-height: 100vh;
 }
+
 .sidebar a {
   text-decoration: none;
   color: #333;
   display: block;
   margin-bottom: 20px;
 }
+
 .sidebar a:hover {
   background-color: #e9ecef;
   border-radius: 5px;
   padding-left: 10px;
 }
+
 .icon {
   width: 50px;
   height: 50px;
 }
+
 .main-buttons .btn {
   width: 150px;
   height: 150px;
@@ -32,10 +48,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .main-buttons .btn:hover {
   transform: scale(1.05);
   transition: transform 0.2s;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -43,14 +61,17 @@ body {
   padding: 20px;
   background-color: #fff;
 }
+
 .search-bar {
   display: flex;
   align-items: center;
 }
+
 .search-bar input {
   width: 300px;
   margin-right: 10px;
 }
+
 .footer {
   text-align: center;
   padding: 10px;
