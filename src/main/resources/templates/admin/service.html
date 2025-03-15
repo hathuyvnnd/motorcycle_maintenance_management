@@ -1,0 +1,65 @@
+<div>
+  <h3>{{pageTitle}}</h3>
+  <form class="mt-4">
+    <div class="row mb-3">
+      <label for="serviceId" class="col-sm-2 col-form-label">ID Dịch Vụ</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="serviceId" placeholder="ID Dịch Vụ" />
+      </div>
+      <label for="serviceName" class="col-sm-2 col-form-label">Tên Dịch vụ</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="serviceName" placeholder="Tên Dịch vụ" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="servicePrice" class="col-sm-2 col-form-label">Giá Dịch Vụ</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="servicePrice" placeholder="Giá Dịch Vụ" />
+      </div>
+      <label for="serviceStatus" class="col-sm-2 col-form-label">Trạng Thái</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="serviceStatus" placeholder="Trạng Thái" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="serviceDescription" class="col-sm-2 col-form-label">Mô Tả</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" id="serviceDescription" placeholder="Mô Tả"></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Dịch Vụ</button>
+    <button type="button" class="btn btn-secondary">Cập Nhật Dịch Vụ</button>
+  </form>
+</div>
+<div class="mt-5">
+  <h3>Danh sách dịch vụ</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">ID Dịch Vụ</th>
+        <th scope="col">Tên Dịch Vụ</th>
+        <th scope="col">Giá Dịch Vụ</th>
+        <th scope="col">Trạng Thái</th>
+        <th scope="col">Mô Tả</th>
+        <th scope="col">Chức Năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Example row -->
+      <tr>
+        <th scope="row">1</th>
+        <td>001</td>
+        <td>Bảo Trì Xe</td>
+        <td>1.000.000VND</td>
+        <td>Đang Hoạt Động</td>
+        <td>Vệ sinh kim xăng, vệ sinh máy</td>
+        <td>
+          <button class="btn btn-warning btn-sm">Sửa</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+</div>

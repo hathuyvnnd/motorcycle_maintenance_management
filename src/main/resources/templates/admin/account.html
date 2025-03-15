@@ -1,0 +1,57 @@
+<div>
+  <h3>{{pageTitle}}</h3>
+  <form class="mt-4">
+    <div class="row mb-3">
+      <label for="idTaiKhoan" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idTaiKhoan" placeholder="ID Tài Khoản" />
+      </div>
+      <label for="matKhau" class="col-sm-2 col-form-label">Mật Khẩu</label>
+      <div class="col-sm-4">
+        <input type="password" class="form-control" id="matKhau" placeholder="Mật Khẩu" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="trangThai" class="col-sm-2 col-form-label">Trạng Thái</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="trangThai" placeholder="Trạng Thái" />
+      </div>
+      <label for="vaiTro" class="col-sm-2 col-form-label">Vai Trò</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="vaiTro" placeholder="Vai Trò" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
+    <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+  </form>
+</div>
+<div class="mt-5">
+  <h3>Danh sách tài khoản</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">ID Tài Khoản</th>
+        <th scope="col">Mật Khẩu</th>
+        <th scope="col">Vai Trò</th>
+        <th scope="col">Trạng Thái</th>
+        <th scope="col">Chức Năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Example row -->
+      <tr>
+        <th scope="row">1</th>
+        <td>001</td>
+        <td>abc</td>
+        <td>Quản trị viên</td>
+        <td>Hoạt động</td>
+        <td>
+          <button class="btn btn-warning btn-sm">Sửa</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+</div>
