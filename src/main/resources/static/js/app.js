@@ -2,10 +2,10 @@ var app = angular.module("megaviaApp", ["ngRoute"]);
 // Cấu hình các route
 app.config(function ($routeProvider) {
   $routeProvider
-    .when("/home", {
-      templateUrl: "home.html", // Trang home
-      controller: "HomeController",
-    })
+    // .when("/home", {
+    //   templateUrl: "home.html", // Trang home
+    //   controller: "HomeController",
+    // })
     .when("/employee", {
       templateUrl: "employee.html", // Trang schedule
       controller: "EmployeeController",
@@ -43,9 +43,9 @@ app.config(function ($routeProvider) {
     });
 });
 
-app.controller("HomeController", function ($scope) {
-  $scope.pageTitle = "Dùng các chức năng";
-});
+// app.controller("HomeController", function ($scope) {
+//   $scope.pageTitle = "Dùng các chức năng";
+// });
 app.controller("EmployeeController", function ($scope) {
   $scope.pageTitle = "Quản lý nhân viên";
 });

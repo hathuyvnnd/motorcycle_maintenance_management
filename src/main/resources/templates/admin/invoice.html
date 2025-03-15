@@ -1,3 +1,57 @@
 <div>
   <h3>{{pageTitle}}</h3>
+  <form class="mt-4">
+    <div class="row mb-3">
+      <label for="idHoaDon" class="col-sm-2 col-form-label">ID Hoá Đơn</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idHoaDon" placeholder="ID Hoá Đơn" />
+      </div>
+      <label for="ngayLap" class="col-sm-2 col-form-label">Ngày Lập</label>
+      <div class="col-sm-4">
+        <input type="date" class="form-control" id="ngayLap" placeholder="Ngày Lập" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="idKhachHang" class="col-sm-2 col-form-label">ID Khách Hàng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idKhachHang" placeholder="ID Khách Hàng" />
+      </div>
+      <label for="tongTien" class="col-sm-2 col-form-label">Tổng Tiền</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="tongTien" placeholder="Tổng Tiền" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Hoá Đơn</button>
+    <button type="button" class="btn btn-secondary">Cập Nhật Hoá Đơn</button>
+  </form>
+</div>
+<div class="mt-5">
+  <h3>Danh sách hoá đơn</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">ID Hoá Đơn</th>
+        <th scope="col">Ngày Lập</th>
+        <th scope="col">ID Khách Hàng</th>
+        <th scope="col">Tổng Tiền</th>
+        <th scope="col">Chức Năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Example row -->
+      <tr>
+        <th scope="row">1</th>
+        <td>001</td>
+        <td>01/01/2023</td>
+        <td>KH001</td>
+        <td>1.000.000VND</td>
+        <td>
+          <button class="btn btn-warning btn-sm">Sửa</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
 </div>
