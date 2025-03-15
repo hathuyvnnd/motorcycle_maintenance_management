@@ -96,8 +96,51 @@
                             return "#!/aa";
                     }
                 };
-                
             });
+            app.controller("ServiceController", function($scope) {
+                $scope.services = [];
+                $scope.parts = [];
+                $scope.showPartsSelection = false;
+                
+                $scope.addService = function() {
+                    if ($scope.selectedService) {
+                        $scope.services.push($scope.selectedService);
+                        if ($scope.selectedService === "Thay thế phụ tùng") {
+                            $scope.showPartsSelection = true;
+                        }
+                        $scope.selectedService = "";
+                    }
+                };
+                
+                $scope.removeService = function(index) {
+                    if ($scope.services[index] === "Thay thế phụ tùng") {
+                        $scope.showPartsSelection = false;
+                        $scope.parts = [];
+                    }
+                    $scope.services.splice(index, 1);
+                };
+                
+                $scope.addPart = function() {
+                    if ($scope.selectedPart && $scope.selectedQuantity) {
+                        $scope.parts.push({ name: $scope.selectedPart, quantity: $scope.selectedQuantity });
+                        $scope.selectedPart = "";
+                        $scope.selectedQuantity = "";
+                    }
+                };
+                
+                $scope.removePart = function(index) {
+                    $scope.parts.splice(index, 1);
+                };
+                
+                $scope.saveServiceTicket = function() {
+                    alert("Phiếu dịch vụ đã được lưu!");
+                };
+                    
+                });
+
+
+
+            
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
