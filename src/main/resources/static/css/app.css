@@ -1,78 +1,76 @@
 .sidebar {
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    overflow: hidden;
-    height: 100vh;
-    background-color: #fff;
-    box-shadow: 2px 4px 10px -3px #bfc9d4;
-    transition: transform 0.3s ease-in-out;
-    z-index: 40;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  overflow: hidden;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: 2px 4px 10px -3px #bfc9d4;
+  transition: transform 0.3s ease-in-out;
+  z-index: 40;
 }
 .sidebar.hide {
-    transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 
 .sidebar .nav-link {
-
-    font-size: 12px;
-    font-weight: 500;
-    color: #333;
-    border: 2px solid transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  border: 2px solid transparent;
 }
 
 .sidebar .nav-link:hover {
-    color: #333;
-    border: 2px solid rgb(227, 227, 227);
-    border-radius: 4px;
+  color: #333;
+  border: 2px solid rgb(227, 227, 227);
+  border-radius: 4px;
 }
 .submenu {
-    padding-left: 20px;
+  padding-left: 20px;
+}
+@media (max-width: 991px) {
+  .main-container {
+    margin-left: 0;
+  }
 }
 /* header */
-header{
-    position: sticky;
-    unicode-bidi: isolate;
-    top: 0;
-    z-index: 39;
+header {
+  position: sticky;
+  unicode-bidi: isolate;
+  top: 0;
+  z-index: 39;
 }
-footer{
-    position: sticky;
-    unicode-bidi: isolate;
-    z-index: 39;
-    bottom: 0;   
+footer {
+  position: sticky;
+  unicode-bidi: isolate;
+  z-index: 39;
+  bottom: 0;
 }
 .main-container {
-    margin-left: 280px; 
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  margin-left: 280px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
 
 .content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background-color: #f8f9fa;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #f8f9fa;
 }
 .main-container.expanded {
-    margin-left: 0;
+  margin-left: 0;
 }
 
-@media (max-width: 991px) {
-    .main-container {
-        margin-left: 0;
-    }
-}
 .image-preview {
-    width: 150px;
-    height: 150px;
-    background: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-} 
+  width: 150px;
+  height: 150px;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
