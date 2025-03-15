@@ -1,0 +1,38 @@
+<h2 class="mb-4">Phiếu Dịch Vụ</h2>
+        
+        <div class="mb-3">
+            <label class="form-label">Biển số xe</label>
+            <input type="text" id="plateNumber" class="form-control" placeholder="Nhập biển số xe">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Người sửa chữa</label>
+            <input type="text" id="" class="form-control" placeholder="Nhập họ và tên nhân viên sửa chữa">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Chọn dịch vụ</label>
+            <div class="input-group">
+                <select id="serviceSelect" class="form-select">
+                    <option value="Thay nhớt">Thay nhớt</option>
+                    <option value="Bảo dưỡng tổng quát">Bảo dưỡng tổng quát</option>
+                    <option value="Sửa phanh">Sửa phanh</option>
+                    <option value="Kiểm tra lốp">Kiểm tra lốp</option>
+                </select>
+                <button class="btn btn-primary" onclick="addService()">Thêm</button>
+            </div>
+        </div>
+        
+        <h5>Dịch vụ đã chọn</h5>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên dịch vụ</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="serviceList">
+                <tr><td colspan="3" class="text-center">Chưa có dịch vụ nào được thêm</td></tr>
+            </tbody>
+        </table>
+        
+        <button class="btn btn-success mt-3" onclick="saveServiceTicket()">Lưu Phiếu Dịch Vụ</button>
