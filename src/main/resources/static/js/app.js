@@ -39,7 +39,7 @@ app.config(function ($routeProvider) {
       controller: "StatisticsController",
     })
     .otherwise({
-      redirectTo: "/home", // Điều hướng mặc định nếu không tìm thấy route
+      redirectTo: "/employee", // Điều hướng mặc định nếu không tìm thấy route
     });
 });
 

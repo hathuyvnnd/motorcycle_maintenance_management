@@ -1,57 +1,258 @@
 <div>
   <h3>{{pageTitle}}</h3>
-  <form class="mt-4">
-    <div class="row mb-3">
-      <label for="idTaiKhoan" class="col-sm-2 col-form-label">ID Tài Khoản</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="idTaiKhoan" placeholder="ID Tài Khoản" />
-      </div>
-      <label for="matKhau" class="col-sm-2 col-form-label">Mật Khẩu</label>
-      <div class="col-sm-4">
-        <input type="password" class="form-control" id="matKhau" placeholder="Mật Khẩu" />
+  <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="admin-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#admin"
+        type="button"
+        role="tab"
+        aria-controls="admin"
+        aria-selected="true">
+        Tài khoản quản trị viên
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="employee-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#employee"
+        type="button"
+        role="tab"
+        aria-controls="employee"
+        aria-selected="false">
+        Tài khoản nhân viên
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="customer-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#customer"
+        type="button"
+        role="tab"
+        aria-controls="customer"
+        aria-selected="false">
+        Tài khoản khách hàng
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="accountTabsContent">
+    <!-- Admin Accounts Tab -->
+    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+      <form class="mt-4">
+        <div class="row mb-3">
+          <label for="idTaiKhoanAdmin" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="idTaiKhoanAdmin" placeholder="ID Tài Khoản" />
+          </div>
+          <label for="matKhauAdmin" class="col-sm-2 col-form-label">Mật Khẩu</label>
+          <div class="col-sm-4">
+            <input type="password" class="form-control" id="matKhauAdmin" placeholder="Mật Khẩu" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiAdmin" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="trangThaiAdmin" placeholder="Trạng Thái" />
+          </div>
+          <label for="vaiTroAdmin" class="col-sm-2 col-form-label">Vai Trò</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="vaiTroAdmin" placeholder="Vai Trò" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
+        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+      </form>
+      <div class="mt-5">
+        <h3>Danh sách tài khoản quản trị viên</h3>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID Tài Khoản</th>
+              <th scope="col">Mật Khẩu</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Trạng Thái</th>
+              <th scope="col">Chức Năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example row -->
+            <tr>
+              <th scope="row">1</th>
+              <td>001</td>
+              <td>abc</td>
+              <td>Quản trị viên</td>
+              <td>Hoạt động</td>
+              <td>
+                <button class="btn btn-warning btn-sm">Sửa</button>
+                <button class="btn btn-danger btn-sm">Xóa</button>
+              </td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center mt-3">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
-    <div class="row mb-3">
-      <label for="trangThai" class="col-sm-2 col-form-label">Trạng Thái</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="trangThai" placeholder="Trạng Thái" />
-      </div>
-      <label for="vaiTro" class="col-sm-2 col-form-label">Vai Trò</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="vaiTro" placeholder="Vai Trò" />
+
+    <!-- Employee Accounts Tab -->
+    <div class="tab-pane fade" id="employee" role="tabpanel" aria-labelledby="employee-tab">
+      <form class="mt-4">
+        <div class="row mb-3">
+          <label for="idTaiKhoanNhanVien" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="idTaiKhoanNhanVien" placeholder="ID Tài Khoản" />
+          </div>
+          <label for="matKhauNhanVien" class="col-sm-2 col-form-label">Mật Khẩu</label>
+          <div class="col-sm-4">
+            <input type="password" class="form-control" id="matKhauNhanVien" placeholder="Mật Khẩu" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="trangThaiNhanVien" placeholder="Trạng Thái" />
+          </div>
+          <label for="vaiTroNhanVien" class="col-sm-2 col-form-label">Vai Trò</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="vaiTroNhanVien" placeholder="Vai Trò" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
+        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+      </form>
+      <div class="mt-5">
+        <h3>Danh sách tài khoản nhân viên</h3>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID Tài Khoản</th>
+              <th scope="col">Mật Khẩu</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Trạng Thái</th>
+              <th scope="col">Chức Năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example row -->
+            <tr>
+              <th scope="row">1</th>
+              <td>002</td>
+              <td>xyz</td>
+              <td>Nhân viên</td>
+              <td>Hoạt động</td>
+              <td>
+                <button class="btn btn-warning btn-sm">Sửa</button>
+                <button class="btn btn-danger btn-sm">Xóa</button>
+              </td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center mt-3">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
-    <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
-  </form>
-</div>
-<div class="mt-5">
-  <h3>Danh sách tài khoản</h3>
-  <table class="table table-bordered mt-3">
-    <thead>
-      <tr>
-        <th scope="col">STT</th>
-        <th scope="col">ID Tài Khoản</th>
-        <th scope="col">Mật Khẩu</th>
-        <th scope="col">Vai Trò</th>
-        <th scope="col">Trạng Thái</th>
-        <th scope="col">Chức Năng</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Example row -->
-      <tr>
-        <th scope="row">1</th>
-        <td>001</td>
-        <td>abc</td>
-        <td>Quản trị viên</td>
-        <td>Hoạt động</td>
-        <td>
-          <button class="btn btn-warning btn-sm">Sửa</button>
-          <button class="btn btn-danger btn-sm">Xóa</button>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
+
+    <!-- Customer Accounts Tab -->
+    <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+      <form class="mt-4">
+        <div class="row mb-3">
+          <label for="idTaiKhoanKhachHang" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="idTaiKhoanKhachHang" placeholder="ID Tài Khoản" />
+          </div>
+          <label for="matKhauKhachHang" class="col-sm-2 col-form-label">Mật Khẩu</label>
+          <div class="col-sm-4">
+            <input type="password" class="form-control" id="matKhauKhachHang" placeholder="Mật Khẩu" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiKhachHang" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="trangThaiKhachHang" placeholder="Trạng Thái" />
+          </div>
+          <label for="vaiTroKhachHang" class="col-sm-2 col-form-label">Vai Trò</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="vaiTroKhachHang" placeholder="Vai Trò" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
+        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+      </form>
+      <div class="mt-5">
+        <h3>Danh sách tài khoản khách hàng</h3>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID Tài Khoản</th>
+              <th scope="col">Mật Khẩu</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Trạng Thái</th>
+              <th scope="col">Chức Năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example row -->
+            <tr>
+              <th scope="row">1</th>
+              <td>003</td>
+              <td>def</td>
+              <td>Khách hàng</td>
+              <td>Hoạt động</td>
+              <td>
+                <button class="btn btn-warning btn-sm">Sửa</button>
+                <button class="btn btn-danger btn-sm">Xóa</button>
+              </td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center mt-3">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
 </div>
