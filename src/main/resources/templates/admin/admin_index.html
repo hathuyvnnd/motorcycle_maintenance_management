@@ -8,103 +8,24 @@
     <link rel="stylesheet" href="../../static/css/admin_index.css" />
   </head>
   <body ng-app="megaviaApp">
-    <div ng-controller="EmployeeController" class="container-fluid d-flex flex-column min-vh-100">
+    <div ng-controller="MainController" class="container-fluid d-flex flex-column min-vh-100 p-0">
       <div class="row flex-grow-1">
         <!-- Sidebar -->
-        <div class="sidebar col-2 p-3">
-          <img src="../../static/images/logo.jpg" alt="Logo" class="img-fluid mb-4" />
-          <!-- <a href="#!home">
-            <i class="fa-solid fa-house fa-sm"></i>
-            Trang chủ
-          </a> -->
-          <a href="#!employee">
-            <i class="fa-solid fa-clipboard-user fa-sm"></i>
-            Quản lý nhân viên
-          </a>
-          <a href="#!customer">
-            <i class="fa-solid fa-clipboard-user fa-sm"></i>
-            Quản lý khách hàng
-          </a>
-          <a href="#!account">
-            <i class="fa-solid fa-user fa-sm"></i>
-            Quản lý tài khoản
-          </a>
-          <a href="#!service">
-            <i class="fa-solid fa-screwdriver-wrench fa-sm"></i>
-            Quản lý dịch vụ
-          </a>
-          <a href="#!accessory">
-            <i class="fa-solid fa-screwdriver fa-sm"></i>
-            Quản lý phụ tùng
-          </a>
-          <a href="#!booking">
-            <i class="fa-solid fa-calendar-days fa-sm"></i>
-            Quản lý lịch hẹn
-          </a>
-          <a href="#!invoice">
-            <i class="fa-solid fa-file-invoice-dollar fa-sm"></i>
-            Quản lý hóa đơn
-          </a>
-          <a href="#!statistics">
-            <i class="fa-solid fa-chart-simple fa-sm"></i>
-            Thống kê
-          </a>
+        <div class="col-2 p-2" ng-class="{'d-none': isSidebarHidden}">
+          <div ng-include="'sidebar.html'"></div>
         </div>
 
         <!-- Right content -->
-        <div class="col-10 d-flex flex-column p-0">
+        <div class="col" ng-class="{'col-10': !isSidebarHidden, 'col-12': isSidebarHidden} d-flex flex-column p-0">
           <!-- Header -->
-          <div class="header d-flex justify-content-between align-items-center p-3" style="height: 10vh">
-            <!-- Search Bar Centered -->
-            <div class="search-bar d-flex justify-content-center align-items-center mx-auto">
-              <input type="text" class="form-control me-2" placeholder="Tìm kiếm theo ID" />
-              <button class="btn btn-primary">Tìm kiếm</button>
-            </div>
-
-            <!-- Notification and User Profile -->
-            <div class="d-flex align-items-center">
-              <button class="btn me-2">
-                <i class="fa-solid fa-bell"></i>
-                <span class="badge bg-danger">0</span>
-              </button>
-              <div class="dropdown">
-                <button class="btn dropdown-toggle" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-user-secret"></i>
-                  Tân Nguyễn
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="userMenuButton">
-                  <li>
-                    <a class="dropdown-item" href="#!logout">
-                      <i class="fa-solid fa-right-from-bracket fa-sm"></i>
-                      Đăng Xuất
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#!forgot-password">
-                      <i class="fa-solid fa-lock fa-sm"></i>
-                      Quên Mật Khẩu
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#!change-password">
-                      <i class="fa-solid fa-key fa-sm"></i>
-                      Đổi Mật Khẩu
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <div ng-include="'header.html'"></div>
 
           <!-- Main Content -->
           <div class="text-center mt-5 flex-grow-1" ng-view></div>
-
-          <!-- Footer -->
-          <footer class="text-center py-3 border-top" style="height: 10vh; background-color: #e9ecef">
-            <p>&copy; 2025. MEGAVIA All rights reserved.</p>
-          </footer>
         </div>
       </div>
+      <!-- Footer -->
+      <div ng-include="'footer.html'"></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>

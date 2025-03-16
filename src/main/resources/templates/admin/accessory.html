@@ -1,5 +1,5 @@
 <div>
-  <h3>{{pageTitle}}</h3>
+  <h3><b>{{pageTitle}}</b></h3>
   <form class="mt-4">
     <div class="row mb-3">
       <label for="idPhuTung" class="col-sm-2 col-form-label">ID Phụ Tùng</label>
@@ -48,17 +48,17 @@
       </div>
       <label for="hinhAnh" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="hinhAnh" placeholder="Hình Ảnh" />
+        <input type="file" class="form-control" id="hinhAnh" />
       </div>
     </div>
     <div class="row mb-3">
       <label for="ngayNhapKho" class="col-sm-2 col-form-label">Ngày Nhập Kho</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="ngayNhapKho" placeholder="Ngày Nhập Kho" />
+        <input type="date" class="form-control" id="ngayNhapKho" placeholder="Ngày Nhập Kho" />
       </div>
       <label for="hanSuDung" class="col-sm-2 col-form-label">Hạn Sử Dụng</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="hanSuDung" placeholder="Hạn Sử Dụng" />
+        <input type="date" class="form-control" id="hanSuDung" placeholder="Hạn Sử Dụng" />
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Thêm Phụ Tùng</button>
@@ -66,7 +66,7 @@
   </form>
 </div>
 <div class="mt-5">
-  <h3>Danh sách phụ tùng</h3>
+  <h3><b>Danh sách phụ tùng</b></h3>
   <table class="table table-bordered mt-3">
     <thead>
       <tr>
@@ -99,7 +99,7 @@
         <td>Thương Hiệu A</td>
         <td>Mới</td>
         <td>Xe A</td>
-        <td>hinh_anh_a.jpg</td>
+        <td><img src="hinh_anh_a.jpg" alt="Hình Ảnh" style="width: 100px; height: auto" /></td>
         <td>01/01/2023</td>
         <td>01/01/2024</td>
         <td>

@@ -1,4 +1,15 @@
 var app = angular.module("megaviaApp", ["ngRoute"]);
+
+app.controller("MainController", function ($scope) {
+  $scope.isSidebarHidden = false;
+
+  $scope.toggleSidebar = function () {
+    $scope.isSidebarHidden = !$scope.isSidebarHidden;
+  };
+});
+
+// ...existing code...
+
 // Cấu hình các route
 app.config(function ($routeProvider) {
   $routeProvider
@@ -39,7 +50,7 @@ app.config(function ($routeProvider) {
       controller: "StatisticsController",
     })
     .otherwise({
-      redirectTo: "/employee", // Điều hướng mặc định nếu không tìm thấy route
+      redirectTo: "/statistics", // Điều hướng mặc định nếu không tìm thấy route
     });
 });
 
