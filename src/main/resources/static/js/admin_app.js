@@ -1,6 +1,6 @@
-var app = angular.module("megaviaApp", ["ngRoute"]);
+var admin_app = angular.module("megaviaApp", ["ngRoute"]);
 
-app.controller("MainController", function ($scope) {
+admin_app.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
 
   $scope.toggleSidebar = function () {
@@ -8,76 +8,106 @@ app.controller("MainController", function ($scope) {
   };
 });
 
-// ...existing code...
-
 // Cấu hình các route
-app.config(function ($routeProvider) {
+admin_app.config(function ($routeProvider) {
   $routeProvider
-    // .when("/home", {
-    //   templateUrl: "home.html", // Trang home
-    //   controller: "HomeController",
-    // })
+    .when("/", {
+      templateUrl: " /statistics",
+      controller: "StatisticsController",
+    })
     .when("/employee", {
-      templateUrl: "employee.html", // Trang schedule
+      templateUrl: "/employee",
       controller: "EmployeeController",
     })
     .when("/customer", {
-      templateUrl: "customer.html", // Trang schedule
+      templateUrl: "/customer",
       controller: "CustomerController",
     })
     .when("/account", {
-      templateUrl: "account.html", // Trang schedule
+      templateUrl: "/account",
       controller: "AccountController",
     })
     .when("/service", {
-      templateUrl: "service.html", // Trang schedule
+      templateUrl: "/service",
       controller: "ServiceController",
     })
     .when("/accessory", {
-      templateUrl: "accessory.html", // Trang schedule
+      templateUrl: "/accessory",
       controller: "AccessoryController",
     })
     .when("/booking", {
-      templateUrl: "booking.html", // Trang booking
+      templateUrl: "/booking",
       controller: "BookingController",
     })
     .when("/invoice", {
-      templateUrl: "invoice.html", // Trang invoice
+      templateUrl: "/invoice",
       controller: "InvoiceController",
     })
-    .when("/statistics", {
-      templateUrl: "statistics.html", // Trang statistics
-      controller: "StatisticsController",
-    })
     .otherwise({
-      redirectTo: "/statistics", // Điều hướng mặc định nếu không tìm thấy route
+      redirectTo: "/", // Điều hướng mặc định nếu không tìm thấy route
     });
 });
 
-// app.controller("HomeController", function ($scope) {
-//   $scope.pageTitle = "Dùng các chức năng";
-// });
-app.controller("EmployeeController", function ($scope) {
+admin_app.controller("EmployeeController", function ($scope, $http) {
   $scope.pageTitle = "Quản lý nhân viên";
+
+  $scope.employees = [];
+  $scope.employee = {};
+
+  // Lấy danh sách nhân viên
+  $scope.getAllEmployees = function () {
+    $http.get("/api/nhanvien").then(function (response) {
+      $scope.employees = response.data;
+    });
+  };
+
+  // Thêm mới nhân viên
+  $scope.addEmployee = function () {
+    $http.post("/api/nhanvien", $scope.employee).then(function (response) {
+      $scope.getAllEmployees();
+      $scope.employee = {}; // Reset form
+    });
+  };
+
+  // Sửa nhân viên
+  $scope.updateEmployee = function () {
+    $http.put("/api/nhanvien/" + $scope.employee.idNhanVien, $scope.employee).then(function (response) {
+      $scope.getAllEmployees();
+      $scope.employee = {}; // Reset form
+    });
+  };
+
+  // Xóa nhân viên
+  $scope.deleteEmployee = function (id) {
+    if (confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
+      $http.delete("/api/nhanvien/" + id).then(function (response) {
+        $scope.getAllEmployees();
+      });
+    }
+  };
+
+  // Gọi hàm để lấy danh sách nhân viên ngay khi khởi tạo
+  $scope.getAllEmployees();
 });
-app.controller("CustomerController", function ($scope) {
+
+admin_app.controller("CustomerController", function ($scope) {
   $scope.pageTitle = "Quản lý khách hàng";
 });
-app.controller("AccountController", function ($scope) {
+admin_app.controller("AccountController", function ($scope) {
   $scope.pageTitle = "Quản lý tài khoản";
 });
-app.controller("ServiceController", function ($scope) {
+admin_app.controller("ServiceController", function ($scope) {
   $scope.pageTitle = "Quản lý dịch vụ";
 });
-app.controller("AccessoryController", function ($scope) {
+admin_app.controller("AccessoryController", function ($scope) {
   $scope.pageTitle = "Quản lý phụ tùng";
 });
-app.controller("BookingController", function ($scope) {
+admin_app.controller("BookingController", function ($scope) {
   $scope.pageTitle = "Quản lý lịch hẹn";
 });
-app.controller("InvoiceController", function ($scope) {
+admin_app.controller("InvoiceController", function ($scope) {
   $scope.pageTitle = "Quản lý hoá đơn";
 });
-app.controller("StatisticsController", function ($scope) {
+admin_app.controller("StatisticsController", function ($scope) {
   $scope.pageTitle = "Thống kê";
 });
