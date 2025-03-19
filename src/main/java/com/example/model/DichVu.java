@@ -19,10 +19,10 @@ public class DichVu {
     private String trangThai;
     private String moTa;
 
-    @OneToMany(mappedBy = "idPhieuDichVuCT")
+    @OneToMany(mappedBy = "phieuDichVuCT")
     List<PhieuDichVuCT> phieuDichVuList;
 
-    @OneToOne(mappedBy = "idPhieuDichVu")
+    @OneToOne(mappedBy = "phieuDichVu")
     private HoaDon hoaDon;
 
     private Date ngayTao;
