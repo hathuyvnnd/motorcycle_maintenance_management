@@ -1,6 +1,9 @@
 package com.example.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +13,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="KhachHang")
 public class KhachHang {
+    @Id
     private String idKhachHang;
     private String idTaiKhoan;
     private String soDienThoai;
@@ -20,14 +26,14 @@ public class KhachHang {
     private String hinhAnh;
     private Date ngayDangKi;
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "khachHang")
     List<LichHen> lichHenList;
 
-    @OneToMany(mappedBy = "idKhachHang")
+    @OneToMany(mappedBy = "khachHang")
     List<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
-    @OneToMany(mappedBy = "idKhachHang")
-    List<HoaDon> hoaDonList;
+    @OneToMany(mappedBy = "khachHang")
+     List<HoaDon> hoaDonList;
 
 
 }

@@ -1,8 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,23 +8,26 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="HoaDon")
 public class HoaDon {
+    @Id
     private String idHoaDon;
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTN")
-    private NhanVien idNhanVien;
+    private NhanVien nhanVien;
 
     @OneToOne
     @JoinColumn(name="IdPhieuDichVu")
-    private PhieuDichVu idPhieuDichVu;
+    private PhieuDichVu phieuDichVu;
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHang idKhachHang;
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHangVangLai idKhachHangVangLai;
+    private KhachHangVangLai khachHangVangLai;
 
 }
