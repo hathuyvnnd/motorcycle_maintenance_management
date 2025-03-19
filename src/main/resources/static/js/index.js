@@ -18,6 +18,24 @@ app.config(function($routeProvider){
         templateUrl:"views/gioithieu.html",
         controller:"GioiThieuController",
     })
+    .when("/datlich",{
+        templateUrl:"views/datLichHen.html",
+        controller:"DatLichController",
+    })
+    .when("/dangki",{
+        templateUrl:"views/dangki.html",
+        controller:"DangKiController",
+    })
+    .when("/dangnhap",{
+        templateUrl:"views/dangnhap.html",
+        controller:"DangNhapController",
+    })
+    .when("/quenmatkhau",{
+        templateUrl:"views/quenmatkhau.html",
+        controller:"QuenMatKhauController",
+    })
+
+
     
 });
 
@@ -32,4 +50,16 @@ app.controller("PhuTungController",function($scope){
 })
 app.controller("GioiThieuController",function($scope){
     $scope.title = "Giới Thiệu";
+})
+app.controller("DatLichController",function($scope){
+    $scope.title = "Đặt Lịch Hẹn";
+})
+app.controller("DangKiController",function($scope){
+    $scope.title = "Đăng Kí";
+})
+app.controller("DangNhapController",function($scope){
+    $scope.title = "Đăng Nhập";
+})
+app.controller("QuenMatKhauController",function($scope){
+    $scope.title = "Quên Mật Khẩu";
 })
