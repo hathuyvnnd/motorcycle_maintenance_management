@@ -1,0 +1,47 @@
+<div class="header d-flex justify-content-between align-items-center p-3" style="height: 10vh">
+  <!-- Toggle Sidebar Button -->
+  <button class="btn btn-primary" ng-click="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+    Quản trị viên
+  </button>
+
+  <!-- Search Bar Centered -->
+  <div class="search-bar d-flex justify-content-center align-items-center mx-auto">
+    <input type="text" class="form-control me-2" placeholder="Tìm kiếm theo ID" />
+    <button class="btn btn-primary">Tìm kiếm</button>
+  </div>
+
+  <!-- Notification and User Profile -->
+  <div class="d-flex align-items-center">
+    <button class="btn me-2">
+      <i class="fa-solid fa-bell"></i>
+      <span class="badge bg-danger">0</span>
+    </button>
+    <div class="dropdown">
+      <button class="btn dropdown-toggle" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-user-secret"></i>
+        Tân Nguyễn
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="userMenuButton">
+        <li>
+          <a class="dropdown-item" href="#!logout">
+            <i class="fa-solid fa-right-from-bracket fa-sm"></i>
+            Đăng Xuất
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#!forgot-password">
+            <i class="fa-solid fa-lock fa-sm"></i>
+            Quên Mật Khẩu
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#!change-password">
+            <i class="fa-solid fa-key fa-sm"></i>
+            Đổi Mật Khẩu
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div>
+  <h3><b>{{pageTitle}}</b></h3>
+  <form class="mt-4">
+    <div class="row mb-3">
+      <label for="idLichHen" class="col-sm-2 col-form-label">ID Lịch Hẹn</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idLichHen" placeholder="ID Lịch Hẹn" />
+      </div>
+      <label for="thoiGian" class="col-sm-2 col-form-label">Thời Gian</label>
+      <div class="col-sm-4">
+        <input type="datetime-local" class="form-control" id="thoiGian" placeholder="Thời Gian" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="idKhachHang" class="col-sm-2 col-form-label">ID Khách Hàng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idKhachHang" placeholder="ID Khách Hàng" />
+      </div>
+      <label for="idLoaiXe" class="col-sm-2 col-form-label">ID Loại Xe</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idLoaiXe" placeholder="ID Loại Xe" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="trangThai" class="col-sm-2 col-form-label">Trạng Thái</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="trangThai" placeholder="Trạng Thái" />
+      </div>
+      <label for="bienSoXe" class="col-sm-2 col-form-label">Biển Số Xe</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="bienSoXe" placeholder="Biển Số Xe" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="ghiChu" class="col-sm-2 col-form-label">Ghi Chú</label>
+      <div class="col-sm-4">
+        <textarea class="form-control" id="ghiChu" placeholder="Ghi Chú"></textarea>
+      </div>
+      <label for="dichVu" class="col-sm-2 col-form-label">Dịch Vụ</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="dichVu" placeholder="Dịch Vụ" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Lịch Hẹn</button>
+    <button type="button" class="btn btn-secondary">Cập Nhật Lịch Hẹn</button>
+  </form>
+</div>
+<div class="mt-5">
+  <h3><b>Danh sách lịch hẹn</b></h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">ID Lịch Hẹn</th>
+        <th scope="col">Thời Gian</th>
+        <th scope="col">ID Khách Hàng</th>
+        <th scope="col">ID Loại Xe</th>
+        <th scope="col">Trạng Thái</th>
+        <th scope="col">Biển Số Xe</th>
+        <th scope="col">Ghi Chú</th>
+        <th scope="col">Dịch Vụ</th>
+        <th scope="col">Chức Năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Example row -->
+      <tr>
+        <th scope="row">1</th>
+        <td>001</td>
+        <td>01/01/2023 10:00</td>
+        <td>KH001</td>
+        <td>LX001</td>
+        <td>Đang Chờ</td>
+        <td>59A-12345</td>
+        <td>Kiểm tra định kỳ</td>
+        <td>Bảo dưỡng</td>
+        <td>
+          <button class="btn btn-warning btn-sm">Sửa</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center mt-3">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

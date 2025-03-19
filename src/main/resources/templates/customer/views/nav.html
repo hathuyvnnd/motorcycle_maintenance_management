@@ -1,0 +1,58 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow "  >
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand " href="#">
+            <img src="../../static/images/logo1.png " class="img-fluid m-0" alt="MotorHub" width="60" >
+        </a>
+
+        <!-- Nút mở menu trên mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto justify-content-center">
+                <li class="nav-item"><a class="nav-link" href="#">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" ng-href="#!/dichvu">Dịch vụ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Đặt lịch</a></li>
+                <li class="nav-item"><a class="nav-link" ng-href="#!/gioithieu">Giới thiệu</a></li>
+                
+                <!-- Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" ng-href="#!/phutung" role="button" data-bs-toggle="dropdown">
+                        Phụ tùng
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" ng-href="#!/phutung">Yamaha</a></li>
+                        <li><a class="dropdown-item" href="#">Honda</a></li>
+                        <li><a class="dropdown-item" href="#">Piaggio</a></li>
+                    </ul>
+                </li>
+                 
+
+            </ul>
+            <!-- Thanh tìm kiếm -->
+            <form class="d-flex me-md-5 flex-grow-1 justify-content-lg-end">
+                <input class="form-control me-1 w-50 " type="search" placeholder="Tìm kiếm..." aria-label="Search" >
+                <button class="btn btn-outline-light" type="submit">🔍</button>
+            </form>
+           
+            <!--Icon user-->
+            <div class="dropdown">
+                <a href="#" class="nav-link text-white dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-user-circle fa-2x"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-md-end dropdown-menu-start">
+                    <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                </ul>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Đăng nhập</a></li>
+                    <li><a class="dropdown-item" href="#">Đăng kí</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
