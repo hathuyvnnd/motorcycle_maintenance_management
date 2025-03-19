@@ -1,0 +1,84 @@
+<div ng-controller="ServiceController">
+
+    <h2 class="mb-4">Phiếu Dịch Vụ</h2>
+            
+    <div class="mb-3">
+        <label class="form-label">Biển số xe</label>
+        <input type="text" ng-model="plateNumber" class="form-control" placeholder="Nhập biển số xe">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Người sửa chữa</label>
+        <input type="text" ng-model="mechanic" class="form-control" placeholder="Nhập họ và tên nhân viên sửa chữa">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Chọn dịch vụ</label>
+        <div class="input-group">
+            <select ng-model="selectedService" class="form-select">
+                <option value="">-- Chọn dịch vụ --</option>
+                <option value="Thay nhớt">Thay nhớt</option>
+                <option value="Bảo dưỡng tổng quát">Bảo dưỡng tổng quát</option>
+                <option value="Sửa phanh">Sửa phanh</option>
+                <option value="Kiểm tra lốp">Kiểm tra lốp</option>
+                <option value="Thay thế phụ tùng">Thay thế phụ tùng</option>
+            </select>
+            <button class="btn btn-primary" ng-click="addService()">Thêm</button>
+        </div>
+    </div>
+    
+    <h5>Dịch vụ đã chọn</h5>
+    <table class="table table-bordered mt-3" ng-if="services.length">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên dịch vụ</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="service in services track by $index">
+                <td>{{$index + 1}}</td>
+                <td>{{ service }}</td>
+                <td><button class="btn btn-danger btn-sm" ng-click="removeService($index)">Xóa</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="text-center" ng-if="services.length === 0">Chưa có dịch vụ nào được thêm</p>
+    
+    <div ng-if="showPartsSelection">
+        <h5 class="mt-4">Chọn phụ tùng</h5>
+        <div class="input-group mb-3">
+            <select ng-model="selectedPart" class="form-select">
+                <option value="">-- Chọn phụ tùng --</option>
+                <option value="Dầu nhớt">Dầu nhớt</option>
+                <option value="Má phanh">Má phanh</option>
+                <option value="Bugi">Bugi</option>
+                <option value="Lốp xe">Lốp xe</option>
+            </select>
+            <input type="number" ng-model="selectedQuantity" class="form-control" placeholder="Số lượng" min="1">
+            <button class="btn btn-primary" ng-click="addPart()">Thêm</button>
+        </div>
+        
+        <h5>Phụ tùng thay thế</h5>
+        <table class="table table-bordered mt-3" ng-if="parts.length">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên phụ tùng</th>
+                    <th>Số lượng</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="part in parts track by $index">
+                    <td>{{$index + 1}}</td>
+                    <td>{{ part.name }}</td>
+                    <td>{{ part.quantity }}</td>
+                    <td><button class="btn btn-danger btn-sm" ng-click="removePart($index)">Xóa</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-center" ng-if="parts.length === 0">Chưa có phụ tùng nào được thêm</p>
+    </div>
+    
+    <button class="btn btn-success mt-3" ng-click="saveServiceTicket()">Lưu Phiếu Dịch Vụ</button>
+</div>

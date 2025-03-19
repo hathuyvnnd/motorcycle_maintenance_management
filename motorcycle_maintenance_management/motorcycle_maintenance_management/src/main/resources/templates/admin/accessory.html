@@ -1,0 +1,126 @@
+<div>
+  <h3><b>{{pageTitle}}</b></h3>
+  <form class="mt-4">
+    <div class="row mb-3">
+      <label for="idPhuTung" class="col-sm-2 col-form-label">ID Phụ Tùng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idPhuTung" placeholder="ID Phụ Tùng" />
+      </div>
+      <label for="tenPhuTung" class="col-sm-2 col-form-label">Tên Phụ Tùng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="tenPhuTung" placeholder="Tên Phụ Tùng" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="gia" class="col-sm-2 col-form-label">Giá</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="gia" placeholder="Giá" />
+      </div>
+      <label for="slTonKho" class="col-sm-2 col-form-label">Số Lượng Tồn Kho</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="slTonKho" placeholder="Số Lượng Tồn Kho" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="idLoaiPT" class="col-sm-2 col-form-label">ID Loại PT</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="idLoaiPT" placeholder="ID Loại PT" />
+      </div>
+      <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
+      <div class="col-sm-4">
+        <textarea class="form-control" id="moTa" placeholder="Mô Tả"></textarea>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="thuongHieu" class="col-sm-2 col-form-label">Thương Hiệu</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="thuongHieu" placeholder="Thương Hiệu" />
+      </div>
+      <label for="tinhTrang" class="col-sm-2 col-form-label">Tình Trạng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="tinhTrang" placeholder="Tình Trạng" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="phuHopLoaiXe" class="col-sm-2 col-form-label">Phù Hợp Loại Xe</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="phuHopLoaiXe" placeholder="Phù Hợp Loại Xe" />
+      </div>
+      <label for="hinhAnh" class="col-sm-2 col-form-label">Hình Ảnh</label>
+      <div class="col-sm-4">
+        <input type="file" class="form-control" id="hinhAnh" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="ngayNhapKho" class="col-sm-2 col-form-label">Ngày Nhập Kho</label>
+      <div class="col-sm-4">
+        <input type="date" class="form-control" id="ngayNhapKho" placeholder="Ngày Nhập Kho" />
+      </div>
+      <label for="hanSuDung" class="col-sm-2 col-form-label">Hạn Sử Dụng</label>
+      <div class="col-sm-4">
+        <input type="date" class="form-control" id="hanSuDung" placeholder="Hạn Sử Dụng" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Phụ Tùng</button>
+    <button type="button" class="btn btn-secondary">Cập Nhật Phụ Tùng</button>
+  </form>
+</div>
+<div class="mt-5">
+  <h3><b>Danh sách phụ tùng</b></h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">ID Phụ Tùng</th>
+        <th scope="col">Tên Phụ Tùng</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Số Lượng Tồn Kho</th>
+        <th scope="col">ID Loại PT</th>
+        <th scope="col">Mô Tả</th>
+        <th scope="col">Thương Hiệu</th>
+        <th scope="col">Tình Trạng</th>
+        <th scope="col">Phù Hợp Loại Xe</th>
+        <th scope="col">Hình Ảnh</th>
+        <th scope="col">Ngày Nhập Kho</th>
+        <th scope="col">Hạn Sử Dụng</th>
+        <th scope="col">Chức Năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Example row -->
+      <tr>
+        <th scope="row">1</th>
+        <td>001</td>
+        <td>Phụ Tùng A</td>
+        <td>500.000VND</td>
+        <td>100</td>
+        <td>01</td>
+        <td>Mô tả phụ tùng A</td>
+        <td>Thương Hiệu A</td>
+        <td>Mới</td>
+        <td>Xe A</td>
+        <td><img src="hinh_anh_a.jpg" alt="Hình Ảnh" style="width: 100px; height: auto" /></td>
+        <td>01/01/2023</td>
+        <td>01/01/2024</td>
+        <td>
+          <button class="btn btn-warning btn-sm">Sửa</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center mt-3">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
