@@ -1,7 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,10 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="PhieuGhiNhanTinhTrangXe")
 public class PhieuGhiNhanTinhTrangXe {
+    @Id
     private String idPhieuGNX;
     private Date ngayNhan;
     private String moTaTinhTrangXe;
@@ -19,13 +21,13 @@ public class PhieuGhiNhanTinhTrangXe {
 
     @ManyToOne
     @JoinColumn(name="IdNhanVien")
-    private NhanVien idNhanVien;
+    private NhanVien nhanVien;
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHang idKhachHang;
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHangVangLai idKhachHangVangLai;
+    private KhachHangVangLai khachHangVangLai;
 }
