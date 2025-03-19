@@ -1,8 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="PhuTung")
 public class PhuTung {
+    @Id
     private String idPhuTung;
     private String tenPhuTung;
     private Float giaPhuTung;
@@ -21,7 +22,7 @@ public class PhuTung {
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiPT")
-    private LoaiPhuTung idLoaiPT;
+    private LoaiPhuTung loaiPT;
 
     String moTa;
     private String thuongHieu;
@@ -31,8 +32,8 @@ public class PhuTung {
     private Date ngayNhapKho;
     private Date hanSuDung;
 
-    @OneToMany(mappedBy = "idPhuTung")
-    List<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
+    @OneToMany(mappedBy = "phuTung")
+    private List<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
 
 
 }
