@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -38,8 +40,8 @@ public class DichVu {
     @Column(name = "MoTa")
     private String moTa;
 
-    @OneToMany(mappedBy = "dichVu")
-    @JsonManagedReference
-    List<PhieuDichVuCT> phieuDichVuList;
+    @OneToMany(mappedBy = "dichVu", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuDichVuCT> phieuDichVuList;
 
 }

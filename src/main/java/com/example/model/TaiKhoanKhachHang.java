@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("KhachHang")
 public class TaiKhoanKhachHang extends TaiKhoan {
-    @OneToOne(mappedBy = "taiKhoanKH")
+    @OneToOne(mappedBy = "taiKhoanKH", fetch = FetchType.LAZY)
     private KhachHang khachHang;
 }

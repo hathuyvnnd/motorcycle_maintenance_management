@@ -30,11 +30,11 @@ public class PhieuDichVuCT {
 
     @ManyToOne
     @JoinColumn(name = "IdDichVu")
-    @JsonBackReference
+    // @JsonBackReference
     private DichVu dichVu;
 
     @ManyToOne
     @JoinColumn(name = "IdPhieuDichVu")
-    @JsonBackReference
+    // @JsonBackReference
     private PhieuDichVu phieuDichVu;
 }

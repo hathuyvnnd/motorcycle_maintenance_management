@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -40,7 +42,7 @@ public class LoaiXe {
     @Column(name = "MoTa")
     private String moTa;
 
-    @OneToMany(mappedBy = "idLoaiXe")
-    @JsonManagedReference
-    List<LichHen> lichHenList;
+    @OneToMany(mappedBy = "idLoaiXe", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<LichHen> lichHenList;
 }

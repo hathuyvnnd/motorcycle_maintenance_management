@@ -25,12 +25,12 @@ public class LichHen {
 
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
-    @JsonBackReference
+    // @JsonBackReference
     private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiXe")
-    @JsonBackReference
+    // @JsonBackReference
     private LoaiXe idLoaiXe;
 
     @Column(name = "TrangThai")

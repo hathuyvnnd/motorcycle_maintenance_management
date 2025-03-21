@@ -25,12 +25,12 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTN")
-    @JsonBackReference
+    // @JsonBackReference
     private NhanVien nhanVien;
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
-    @JsonManagedReference
+    // @JsonManagedReference
     private PhieuDichVu phieuDichVuHD;
 
     @Column(name = "NgayTao")
@@ -38,7 +38,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
-    @JsonBackReference
+    // @JsonBackReference
     private KhachHang khachHang;
 
     @Column(name = "PhuongThucThanhToan")

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -26,7 +27,7 @@ public class PhieuDichVu {
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTaoPhieu")
-    @JsonBackReference
+    // @JsonBackReference
     private NhanVien nhanVienTaoPhieu;
 
     @Column(name = "NgayThucHien")
@@ -41,13 +42,13 @@ public class PhieuDichVu {
     @Column(name = "TenNhanVienSuaChua")
     private String tenNhanVienSuaChua;
 
-    @OneToMany(mappedBy = "phieuDichVu")
-    @JsonManagedReference
-    List<PhieuDichVuCT> phieuDichVuCTList;
+    @OneToMany(mappedBy = "phieuDichVu", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuDichVuCT> phieuDichVuCTList;
 
-    @OneToMany(mappedBy = "phieuDichVu")
-    @JsonManagedReference
-    List<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
+    @OneToMany(mappedBy = "phieuDichVu", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
 
     @OneToOne(mappedBy = "phieuDichVuHD")
     private HoaDon hoaDon;

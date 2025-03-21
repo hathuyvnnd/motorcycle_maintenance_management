@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -50,16 +52,16 @@ public class KhachHang {
     @Column(name = "NgayDangKi")
     private Date ngayDangKi;
 
-    @OneToMany(mappedBy = "khachHang")
-    @JsonManagedReference
-    List<LichHen> lichHenList;
+    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<LichHen> lichHenList;
 
-    @OneToMany(mappedBy = "khachHang")
-    @JsonManagedReference
-    List<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
+    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
-    @OneToMany(mappedBy = "khachHang")
-    @JsonManagedReference
-    List<HoaDon> hoaDonList;
+    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<HoaDon> hoaDonList;
 
 }

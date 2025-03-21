@@ -1,6 +1,7 @@
 package com.example.model;
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,15 +42,15 @@ public class NhanVien {
     @Column(name = "HinhAnh")
     private String hinhAnh;
 
-    @OneToMany(mappedBy = "nhanVien")
-    @JsonManagedReference
-    List<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
-    @OneToMany(mappedBy = "nhanVien")
-    @JsonManagedReference
-    List<HoaDon> hoaDonList;
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<HoaDon> hoaDonList;
 
-    @OneToMany(mappedBy = "nhanVienTaoPhieu")
-    @JsonManagedReference
-    List<PhieuDichVu> phieuDichVuList;
+    @OneToMany(mappedBy = "nhanVienTaoPhieu", fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    Set<PhieuDichVu> phieuDichVuList;
 }

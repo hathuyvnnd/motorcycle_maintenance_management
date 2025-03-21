@@ -1,12 +1,9 @@
 package com.example.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "VaiTro", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "TaiKhoan")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idTaiKhoan")
 public class TaiKhoan {
     @Id
     @Column(name = "IdTaiKhoan")
@@ -29,12 +27,6 @@ public class TaiKhoan {
     @Column(name = "TrangThai")
     private Boolean trangThai;
 
-    // @Column(name = "VaiTro")
-    // private String vaiTro;
-
-    // @OneToOne(mappedBy = "taiKhoanNV")
-    // private NhanVien nhanVien;
-
-    // @OneToOne(mappedBy = "taiKhoanKH")
-    // private KhachHang khachHang;
+    @Column(name = "VaiTro", insertable = false, updatable = false)
+    private String vaiTro;
 }
