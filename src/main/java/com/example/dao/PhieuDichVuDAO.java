@@ -1,9 +1,9 @@
 package com.example.dao;
 
-import com.example.model.NhanVien;
+import com.example.model.PhieuDichVu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NhanVienDao extends JpaRepository<NhanVien, String> {
+public interface PhieuDichVuDAO extends JpaRepository<PhieuDichVu, String> {
 }

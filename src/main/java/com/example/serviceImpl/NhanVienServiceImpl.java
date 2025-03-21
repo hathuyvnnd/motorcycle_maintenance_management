@@ -3,7 +3,6 @@ package com.example.serviceimpl;
 import com.example.dao.NhanVienDao;
 import com.example.model.NhanVien;
 import com.example.service.NhanVienService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,50 +10,47 @@ import java.util.Optional;
 
 @Service
 public class NhanVienServiceImpl implements NhanVienService {
-	 @Autowired
-	    private NhanVienDao nhanVienDao;
 
-	    // Lấy danh sách tất cả nhân viên
-	    @Override
-	    public List<NhanVien> findAll() {
-	        return nhanVienDao.findAll();
-	    }
+    private final NhanVienDao nhanVienDao;
 
-	    // Tìm nhân viên theo ID
-	    @Override
-	    public NhanVien findById(String id) {
-	        Optional<NhanVien> optionalNhanVien = nhanVienDao.findById(id);
-	        return optionalNhanVien.orElse(null);
-	    }
+    // Constructor injection
+    public NhanVienServiceImpl(NhanVienDao nhanVienDao) {
+        this.nhanVienDao = nhanVienDao;
+    }
 
-	    // Thêm mới nhân viên
-	    @Override
-	    public NhanVien create(NhanVien nhanVien) {
-	        return nhanVienDao.save(nhanVien);
-	    }
-	    
-	    // Kiểm tra xem nhân viên có tồn tại hay không
-	    @Override
-	    public boolean exitsById(String id) {
-	        return nhanVienDao.existsById(id);
-	    }
-	    
-	    // Cập nhật thông tin nhân viên
-	    @Override
-	    public void update(NhanVien nhanVien) {
-	        // Kiểm tra nhân viên tồn tại trước khi cập nhật
-	        if (nhanVienDao.existsById(nhanVien.getIdNhanVien())) {
-	            nhanVienDao.save(nhanVien);
-	        }
-	    }
+    @Override
+    public List<NhanVien> findAll() {
+        return nhanVienDao.findAll();
+    }
 
-	    // Xóa nhân viên theo ID
-	    @Override
-	    public void deleteById(String id) {
-	        if (nhanVienDao.existsById(id)) {
-	            nhanVienDao.deleteById(id);
-	        }
-	    }
+    @Override
+    public NhanVien findById(String id) {
+        Optional<NhanVien> opt = nhanVienDao.findById(id);
+        return opt.orElse(null);
+    }
 
-	   
+    @Override
+    public NhanVien create(NhanVien entity) {
+        // Nếu muốn sinh khóa tự động (String) thì cần logic riêng,
+        // hoặc bạn đã có sẵn ID => save thẳng
+        return nhanVienDao.save(entity);
+    }
+
+    @Override
+    public void update(NhanVien entity) {
+        // Thông thường, với JpaRepository, update = save (nếu ID đã tồn tại)
+        if (nhanVienDao.existsById(entity.getIdNhanVien())) {
+            nhanVienDao.save(entity);
+        }
+    }
+
+    @Override
+    public void deleteById(String id) {
+        nhanVienDao.deleteById(id);
+    }
+
+    @Override
+    public boolean exitsById(String id) {
+        return nhanVienDao.existsById(id);
+    }
 }

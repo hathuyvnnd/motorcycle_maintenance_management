@@ -1,0 +1,16 @@
+package com.example.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("KhachHang")
+public class TaiKhoanKhachHang extends TaiKhoan {
+    @OneToOne(mappedBy = "taiKhoanKH")
+    private KhachHang khachHang;
+}
