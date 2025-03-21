@@ -27,7 +27,5 @@ public class PhieuGhiNhanTinhTrangXe {
     @JoinColumn(name="IdKhachHang")
     private KhachHang khachHang;
 
-    @ManyToOne
-    @JoinColumn(name="IdKhachHang")
-    private KhachHangVangLai khachHangVangLai;
+
 }
