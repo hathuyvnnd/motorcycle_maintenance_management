@@ -125,7 +125,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
   $scope.addEmployee = function () {
     NhanVienService.addNhanVien($scope.newEmployee).then(
       function (response) {
-        $scope.employees.push(response.data);
+        // Sau khi thêm thành công, load lại danh sách từ server
+        $scope.getAllEmployees();
         $scope.newEmployee = {}; // Reset form
       },
       function (error) {
