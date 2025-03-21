@@ -1,4 +1,4 @@
-package com.example.serviceimpl;
+package com.example.service_impl;
 
 import com.example.dao.NhanVienDao;
 import com.example.model.NhanVien;
