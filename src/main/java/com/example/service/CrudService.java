@@ -1,8 +1,8 @@
-package com.example.serviceImpl;
+package com.example.service;
 
 import java.util.List;
 
-public interface CrudServiceImpl<T, ID> {
+public interface CrudService<T, ID> {
     default List<T> findAll() {
         return List.of();
     }
