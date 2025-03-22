@@ -64,8 +64,16 @@ app.factory("NhanVienService", function ($http) {
       return $http.get(baseUrl + "/" + id);
     },
     // Thêm nhân viên
-    addNhanVien: function (nhanVien) {
-      return $http.post(baseUrl, nhanVien);
+    addNhanVien: function (nhanVien, hinhAnh) {
+      var formData = new FormData();
+      formData.append("nhanVien", new Blob([JSON.stringify(nhanVien)], { type: "application/json" }));
+      formData.append("file", hinhAnh);
+
+      return $http.post(baseUrl + "/upload", formData, {
+        headers: {
+          "Content-Type": undefined,
+        },
+      });
     },
     // Cập nhật nhân viên
     updateNhanVien: function (id, nhanVien) {
@@ -84,10 +92,10 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
   $scope.employees = [];
   $scope.newEmployee = {}; // Đối tượng dùng để thêm mới
   $scope.selectedEmployee = {}; // Đối tượng dùng để sửa
-
+  $scope.file = null;
   // Biến phân trang
   $scope.currentPage = 1;
-  $scope.pageSize = 10; // Số mục trên mỗi trang
+  $scope.pageSize = 5; // Số mục trên mỗi trang
   $scope.totalItems = 0;
 
   // Hàm load danh sách nhân viên
@@ -96,6 +104,9 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
       function (response) {
         $scope.employees = response.data;
         $scope.totalItems = $scope.employees.length;
+
+        //Gán timestamp để tránh cache ảnh
+        // $scope.currentTimestamp = new Date().getTime();
       },
       function (error) {
         console.error("Lỗi khi lấy danh sách nhân viên:", error);
@@ -120,19 +131,32 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
     var start = ($scope.currentPage - 1) * $scope.pageSize;
     return $scope.employees.slice(start, start + $scope.pageSize);
   };
+  // Hàm gán file từ input vào biến $scope.file
+  $scope.setFile = function (files) {
+    if (files && files.length > 0) {
+      $scope.file = files[0];
+      $scope.$apply(); // Cập nhật lại scope nếu cần
+    }
+  };
 
-  // Thêm nhân viên mới
+  // Hàm thêm nhân viên mới với file upload
   $scope.addEmployee = function () {
-    NhanVienService.addNhanVien($scope.newEmployee).then(
-      function (response) {
-        // Sau khi thêm thành công, load lại danh sách từ server
-        $scope.getAllEmployees();
-        $scope.newEmployee = {}; // Reset form
-      },
-      function (error) {
-        console.error("Lỗi khi thêm nhân viên:", error);
-      }
-    );
+    if ($scope.file) {
+      NhanVienService.addNhanVien($scope.newEmployee, $scope.file).then(
+        function (response) {
+          $scope.getAllEmployees();
+          $scope.newEmployee = {};
+          $scope.file = null;
+          // Nếu muốn reset input file, bạn có thể thực hiện thêm sau:
+          document.getElementById("profileImage").value = "";
+        },
+        function (error) {
+          console.error("Lỗi khi thêm nhân viên:", error);
+        }
+      );
+    } else {
+      alert("Vui lòng chọn file ảnh");
+    }
   };
 
   // Chọn nhân viên để chỉnh sửa

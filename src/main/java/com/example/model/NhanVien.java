@@ -23,7 +23,7 @@ public class NhanVien {
     @Column(name = "IdNhanVien", unique = true)
     private String idNhanVien;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "IdTaiKhoan", referencedColumnName = "IdTaiKhoan", unique = true)
     private TaiKhoan taiKhoanNV;
 
