@@ -2,7 +2,6 @@ var app = angular.module("megaviaApp", ["ngRoute"]);
 
 app.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
-
   $scope.toggleSidebar = function () {
     $scope.isSidebarHidden = !$scope.isSidebarHidden;
   };
@@ -50,63 +49,67 @@ app.config(function ($routeProvider) {
     });
 });
 
-// MHÂN VIÊN ------------------------------------------------------------------------------------
-// Service cho NhanVien: gọi API của Spring Boot tại /api/nhanvien
+// ========================= NhanVienService =========================
+// ============== Service cho NhanVien ==============
 app.factory("NhanVienService", function ($http) {
   var baseUrl = "/api/nhanvien";
   return {
-    // Lấy tất cả nhân viên
+    // 1. Lấy tất cả nhân viên
     getAllNhanVien: function () {
       return $http.get(baseUrl);
     },
-    // Lấy nhân viên theo ID
+    // 2. Lấy nhân viên theo ID
     getNhanVienById: function (id) {
       return $http.get(baseUrl + "/" + id);
     },
-    // Thêm nhân viên
-    addNhanVien: function (nhanVien, hinhAnh) {
+    // 3. Thêm nhân viên (kèm file)
+    addNhanVien: function (nhanVien, file) {
       var formData = new FormData();
       formData.append("nhanVien", new Blob([JSON.stringify(nhanVien)], { type: "application/json" }));
-      formData.append("file", hinhAnh);
-
+      formData.append("file", file);
       return $http.post(baseUrl + "/upload", formData, {
-        headers: {
-          "Content-Type": undefined,
-        },
+        headers: { "Content-Type": undefined },
       });
     },
-    // Cập nhật nhân viên
+    // 4a. Cập nhật nhân viên không có file
     updateNhanVien: function (id, nhanVien) {
       return $http.put(baseUrl + "/" + id, nhanVien);
     },
-    // Xóa nhân viên
+    // 4b. Cập nhật nhân viên có file
+    updateNhanVienWithFile: function (id, nhanVien, file) {
+      var formData = new FormData();
+      formData.append("nhanVien", new Blob([JSON.stringify(nhanVien)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.put(baseUrl + "/updateWithFile/" + id, formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 5. Xóa nhân viên
     deleteNhanVien: function (id) {
       return $http.delete(baseUrl + "/" + id);
     },
   };
 });
 
-// Controller cho trang quản lý nhân viên
+// ============== Controller cho trang quản lý nhân viên ==============
 app.controller("EmployeeController", function ($scope, NhanVienService) {
   $scope.pageTitle = "Quản lý nhân viên";
   $scope.employees = [];
-  $scope.newEmployee = {}; // Đối tượng dùng để thêm mới
-  $scope.selectedEmployee = {}; // Đối tượng dùng để sửa
+  $scope.newEmployee = { taiKhoanNV: {} };
+  $scope.isEditMode = false;
   $scope.file = null;
-  // Biến phân trang
+
+  // Phân trang
   $scope.currentPage = 1;
-  $scope.pageSize = 5; // Số mục trên mỗi trang
+  $scope.pageSize = 5;
   $scope.totalItems = 0;
 
-  // Hàm load danh sách nhân viên
+  // Load danh sách
   $scope.getAllEmployees = function () {
     NhanVienService.getAllNhanVien().then(
       function (response) {
         $scope.employees = response.data;
         $scope.totalItems = $scope.employees.length;
-
-        //Gán timestamp để tránh cache ảnh
-        // $scope.currentTimestamp = new Date().getTime();
       },
       function (error) {
         console.error("Lỗi khi lấy danh sách nhân viên:", error);
@@ -114,88 +117,110 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
     );
   };
 
-  // Hàm trả về số trang
   $scope.getPageCount = function () {
     return Math.ceil($scope.totalItems / $scope.pageSize);
   };
 
-  // Hàm chuyển trang
   $scope.setPage = function (page) {
     if (page >= 1 && page <= $scope.getPageCount()) {
       $scope.currentPage = page;
     }
   };
 
-  // Hàm cắt dữ liệu theo trang hiện tại
   $scope.getPaginatedData = function () {
     var start = ($scope.currentPage - 1) * $scope.pageSize;
     return $scope.employees.slice(start, start + $scope.pageSize);
   };
-  // Hàm gán file từ input vào biến $scope.file
+
+  // Lưu file chọn vào $scope.file
   $scope.setFile = function (files) {
     if (files && files.length > 0) {
       $scope.file = files[0];
-      $scope.$apply(); // Cập nhật lại scope nếu cần
+      $scope.$apply();
     }
   };
 
-  // Hàm thêm nhân viên mới với file upload
-  $scope.addEmployee = function () {
-    if ($scope.file) {
+  // Lưu nhân viên (thêm mới hoặc sửa)
+  $scope.saveEmployee = function () {
+    if (!$scope.isEditMode) {
+      // Thêm mới
+      if (!$scope.file) {
+        alert("Vui lòng chọn file ảnh!");
+        return;
+      }
       NhanVienService.addNhanVien($scope.newEmployee, $scope.file).then(
-        function (response) {
+        function (res) {
           $scope.getAllEmployees();
-          $scope.newEmployee = {};
+          $scope.newEmployee = { taiKhoanNV: {} };
           $scope.file = null;
-          // Nếu muốn reset input file, bạn có thể thực hiện thêm sau:
           document.getElementById("profileImage").value = "";
         },
-        function (error) {
-          console.error("Lỗi khi thêm nhân viên:", error);
+        function (err) {
+          console.error("Lỗi khi thêm nhân viên:", err);
         }
       );
     } else {
-      alert("Vui lòng chọn file ảnh");
+      // Cập nhật
+      if ($scope.file) {
+        // Cập nhật có file
+        NhanVienService.updateNhanVienWithFile($scope.newEmployee.idNhanVien, $scope.newEmployee, $scope.file).then(
+          function (res) {
+            $scope.getAllEmployees();
+            $scope.newEmployee = { taiKhoanNV: {} };
+            $scope.isEditMode = false;
+            $scope.file = null;
+            document.getElementById("profileImage").value = "";
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật nhân viên:", err);
+          }
+        );
+      } else {
+        // Cập nhật không file
+        NhanVienService.updateNhanVien($scope.newEmployee.idNhanVien, $scope.newEmployee).then(
+          function (res) {
+            $scope.getAllEmployees();
+            $scope.newEmployee = { taiKhoanNV: {} };
+            $scope.isEditMode = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật nhân viên:", err);
+          }
+        );
+      }
     }
   };
 
-  // Chọn nhân viên để chỉnh sửa
+  // Chọn nhân viên để sửa
   $scope.selectEmployee = function (employee) {
-    $scope.selectedEmployee = angular.copy(employee);
+    $scope.newEmployee = angular.copy(employee);
+    if (!$scope.newEmployee.taiKhoanNV) {
+      $scope.newEmployee.taiKhoanNV = {};
+    }
+    $scope.isEditMode = true;
   };
 
-  // Cập nhật nhân viên
-  $scope.updateEmployee = function () {
-    NhanVienService.updateNhanVien($scope.selectedEmployee.idNhanVien, $scope.selectedEmployee).then(
-      function (response) {
-        $scope.getAllEmployees(); // Load lại danh sách
-        $scope.selectedEmployee = {};
-      },
-      function (error) {
-        console.error("Lỗi khi cập nhật nhân viên:", error);
-      }
-    );
-  };
-
-  // Xóa nhân viên
+  // Hàm xóa nhân viên
   $scope.deleteEmployee = function (idNhanVien) {
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
       NhanVienService.deleteNhanVien(idNhanVien).then(
         function () {
+          alert("Nhân viên đã được xóa thành công!");
           $scope.getAllEmployees();
         },
-        function (error) {
-          console.error("Lỗi khi xóa nhân viên:", error);
+        function (err) {
+          console.error("Lỗi khi xóa nhân viên:", err);
+          alert("Lỗi khi xóa nhân viên, vui lòng thử lại.");
         }
       );
     }
   };
 
-  // Gọi hàm load danh sách khi controller khởi tạo
+  // Khởi tạo
   $scope.getAllEmployees();
 });
-// MHÂN VIÊN ------------------------------------------------------------------------------------
 
+// Các Controller khác
 app.controller("CustomerController", function ($scope) {
   $scope.pageTitle = "Quản lý khách hàng";
 });

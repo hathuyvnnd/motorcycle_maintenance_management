@@ -2,7 +2,6 @@ package com.example.controller.admin;
 
 import com.example.model.NhanVien;
 import com.example.service.NhanVienService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,8 @@ import java.util.List;
 public class NhanVienController {
 
     private final NhanVienService nhanVienService;
+
+    // Đường dẫn lưu file ảnh
     private final String uploadDir = "C:/TN/Workspace/MotorBike/motorcycle_maintenance_management/src/main/resources/static/images/";
 
     public NhanVienController(NhanVienService nhanVienService) {
@@ -35,43 +36,61 @@ public class NhanVienController {
         return nhanVienService.findById(id);
     }
 
-    // 3. Thêm mới NhanVien
-    // @PostMapping
-    // public NhanVien create(@RequestBody NhanVien nv) {
-    // return nhanVienService.create(nv);
-    // }
-    // 3. Thêm mới NhanVien với upload hình ảnh
+    // 3. Thêm mới NhanVien (kèm file)
     @PostMapping("/upload")
     public ResponseEntity<NhanVien> create(
             @RequestPart("nhanVien") NhanVien nv,
             @RequestPart("file") MultipartFile file) {
 
-        // Xử lý lưu file vào thư mục images của dự án
+        // Xử lý lưu file vào thư mục images
         if (!file.isEmpty()) {
             try {
                 File uploadFile = new File(uploadDir + file.getOriginalFilename());
-                file.transferTo(uploadFile); // Lưu file lên server
-                nv.setHinhAnh(file.getOriginalFilename()); // Lưu tên file (hoặc đường dẫn tương đối nếu cần)
+                file.transferTo(uploadFile);
+                nv.setHinhAnh(file.getOriginalFilename());
             } catch (IOException e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-
-        // Thêm nhân viên
+        // Lưu nhân viên
         NhanVien savedNhanVien = nhanVienService.create(nv);
         return new ResponseEntity<>(savedNhanVien, HttpStatus.CREATED);
     }
 
-    // 4. Cập nhật NhanVien
+    // 4a. Cập nhật nhân viên KHÔNG kèm file
     @PutMapping("/{id}")
     public NhanVien update(@PathVariable String id, @RequestBody NhanVien nv) {
-        // Đảm bảo ID của entity trùng với ID param
         nv.setIdNhanVien(id);
         nhanVienService.update(nv);
         return nv;
     }
 
-    // 5. Xóa NhanVien
+    // 4b. Cập nhật nhân viên CÓ kèm file
+    @PutMapping("/updateWithFile/{id}")
+    public NhanVien updateWithFile(
+            @PathVariable String id,
+            @RequestPart("nhanVien") NhanVien nv,
+            @RequestPart("file") MultipartFile file) {
+
+        if (!file.isEmpty()) {
+            try {
+                File uploadFile = new File(uploadDir + file.getOriginalFilename());
+                file.transferTo(uploadFile);
+                nv.setHinhAnh(file.getOriginalFilename());
+            } catch (IOException e) {
+                throw new RuntimeException("Lỗi khi upload file", e);
+            }
+        } else {
+            // Nếu không có file mới, giữ nguyên ảnh cũ
+            NhanVien existing = nhanVienService.findById(id);
+            nv.setHinhAnh(existing.getHinhAnh());
+        }
+
+        nv.setIdNhanVien(id);
+        nhanVienService.update(nv);
+        return nv;
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         nhanVienService.deleteById(id);

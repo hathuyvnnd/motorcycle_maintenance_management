@@ -44,8 +44,8 @@ public class HoaDon {
     @Column(name = "PhuongThucThanhToan")
     private String phuongThucThanhToan;
 
-    @Column(name = "TrangThai") // Ensure this matches the actual column name in the database
-    private String trangThai;
+    @Column(name = "TrangThaiThanhToan") // Ensure this matches the actual column name in the database
+    private String trangThaiThanhToan;
 
     @Column(name = "TongTien")
     private float tongTien;

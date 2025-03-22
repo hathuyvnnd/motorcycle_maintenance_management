@@ -46,7 +46,12 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     @Override
     public void deleteById(String id) {
-        nhanVienDao.deleteById(id);
+        NhanVien existing = nhanVienDao.findById(id).orElse(null);
+        if (existing != null) {
+            // Nếu cần, cắt quan hệ để tránh cascade xóa tài khoản
+            existing.setTaiKhoanNV(null);
+            nhanVienDao.delete(existing);
+        }
     }
 
     @Override

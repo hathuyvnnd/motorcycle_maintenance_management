@@ -17,13 +17,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "NhanVien")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idNhanVien")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "idNhanVien")
 public class NhanVien {
     @Id
     @Column(name = "IdNhanVien", unique = true)
     private String idNhanVien;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdTaiKhoan", referencedColumnName = "IdTaiKhoan", unique = true)
     private TaiKhoan taiKhoanNV;
 
@@ -42,15 +43,16 @@ public class NhanVien {
     @Column(name = "HinhAnh")
     private String hinhAnh;
 
-    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    // cascade = CascadeType.REMOVE: dùng để xoá luôn bảng con khi xoá bảng cha
     // @JsonManagedReference
     Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
-    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     // @JsonManagedReference
     Set<HoaDon> hoaDonList;
 
-    @OneToMany(mappedBy = "nhanVienTaoPhieu", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "nhanVienTaoPhieu", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     // @JsonManagedReference
     Set<PhieuDichVu> phieuDichVuList;
 }
