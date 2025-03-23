@@ -11,7 +11,8 @@
           class="form-control"
           id="employeeId"
           placeholder="ID Nhân Viên"
-          ng-model="newEmployee.idNhanVien" />
+          ng-model="newEmployee.idNhanVien"
+          ng-disabled="isEditMode" />
         <!-- Đã cập nhật: Disable khi sửa -->
       </div>
       <label for="employeeName" class="col-sm-2 col-form-label">Tên Nhân Viên</label>
