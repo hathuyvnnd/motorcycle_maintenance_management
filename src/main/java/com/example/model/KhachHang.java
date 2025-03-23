@@ -52,7 +52,7 @@ public class KhachHang {
     @Column(name = "NgayDangKi")
     private Date ngayDangKi;
 
-    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idKhachHang", fetch = FetchType.LAZY)
     // @JsonManagedReference
     Set<LichHen> lichHenList;
 

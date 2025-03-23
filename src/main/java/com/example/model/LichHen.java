@@ -26,7 +26,7 @@ public class LichHen {
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
     // @JsonBackReference
-    private KhachHang khachHang;
+    private KhachHang idKhachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiXe")

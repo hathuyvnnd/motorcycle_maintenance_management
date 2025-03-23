@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = { "com.example.config", "com.example.controller", "com.example.controller.admin",
         "com.example.service",
         "com.example.service_impl",
-        "com.example.dao" })
+        "com.example.dao","com.example" })
 @EntityScan(basePackages = "com.example.model")
 @EnableJpaRepositories(basePackages = "com.example.dao")
 public class MainteneceMotorcycleManagementApplication {
