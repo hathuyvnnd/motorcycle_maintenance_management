@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "VaiTro", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "VaiTro", discriminatorType = DiscriminatorType.STRING, columnDefinition = "NVARCHAR(20)")
 @Table(name = "TaiKhoan")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idTaiKhoan")
 public class TaiKhoan {
@@ -27,6 +27,6 @@ public class TaiKhoan {
     @Column(name = "TrangThai")
     private Boolean trangThai;
 
-    @Column(name = "VaiTro", insertable = false, updatable = false)
+    @Column(name = "VaiTro", insertable = false, updatable = false, columnDefinition = "NVARCHAR(20)")
     private String vaiTro;
 }

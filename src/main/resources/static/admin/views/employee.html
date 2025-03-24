@@ -1,7 +1,7 @@
 <div ng-controller="EmployeeController">
   <h3><b>{{ pageTitle }}</b></h3>
   <!-- Form thêm mới / sửa nhân viên -->
-  <form class="mt-4" novalidate>
+  <form class="mt-4" name="employeeForm" novalidate>
     <div class="row mb-3">
       <label for="employeeId" class="col-sm-2 col-form-label">ID Nhân Viên</label>
       <div class="col-sm-4">
@@ -46,11 +46,11 @@
       <div class="col-sm-4">
         <input
           type="text"
+          name="phoneNumber"
           class="form-control"
           id="phoneNumber"
           placeholder="Số Điện Thoại"
-          ng-model="newEmployee.soDienThoai"
-          pattern="\d*" />
+          ng-model="newEmployee.soDienThoai" />
       </div>
       <label for="email" class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-4">

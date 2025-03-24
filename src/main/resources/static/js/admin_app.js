@@ -49,7 +49,6 @@ app.config(function ($routeProvider) {
     });
 });
 
-// ========================= NhanVienService =========================
 // ============== Service cho NhanVien ==============
 app.factory("NhanVienService", function ($http) {
   var baseUrl = "/api/nhanvien";
@@ -220,13 +219,214 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
   $scope.getAllEmployees();
 });
 
-// Các Controller khác
 app.controller("CustomerController", function ($scope) {
   $scope.pageTitle = "Quản lý khách hàng";
 });
-app.controller("AccountController", function ($scope) {
-  $scope.pageTitle = "Quản lý tài khoản";
+// ============== Service cho Account ==============
+app.factory("AccountService", function ($http) {
+  var baseUrl = "/api/taikhoan";
+  return {
+    // 1. Lấy tất cả tài khoản
+    getAllAccounts: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy tài khoản theo ID
+    getAccountById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+    // 3. Thêm tài khoản
+    addAccount: function (account) {
+      return $http.post(baseUrl + "/add_account", account);
+    },
+    // 4. Cập nhật tài khoản
+    updateAccount: function (id, account) {
+      return $http.put(baseUrl + "/update/" + id, account);
+    },
+    // 5. Xóa tài khoản
+    deleteAccount: function (id) {
+      return $http.delete(baseUrl + "/" + id);
+    },
+  };
 });
+
+// ============== Controller cho Account ==============
+app.controller("AccountController", function ($scope, AccountService) {
+  $scope.pageTitle = "Quản lý tài khoản";
+  $scope.accounts = [];
+  // Danh sách tài khoản theo vai trò
+  $scope.accountsAdmin = [];
+  $scope.accountsEmployee = [];
+  $scope.accountsCustomer = [];
+
+  // Các biến dữ liệu từng tab
+  $scope.newAccountAdmin = {};
+  $scope.newAccountEmployee = {};
+  $scope.newAccountCustomer = {};
+  // Các biến trạng thái sửa
+  $scope.isEditModeAdmin = false;
+  $scope.isEditModeEmployee = false;
+  $scope.isEditModeCustomer = false;
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+  // Khởi tạo các biến hiển thị mật khẩu
+  $scope.showPasswordAdmin = false;
+  $scope.showRePasswordAdmin = false;
+  $scope.showPasswordEmployee = false;
+  $scope.showRePasswordEmployee = false;
+  $scope.showPasswordCustomer = false;
+  $scope.showRePasswordCustomer = false;
+  // Load danh sách tài khoản và phân loại theo vai trò
+  $scope.getAllAccounts = function () {
+    AccountService.getAllAccounts().then(
+      function (response) {
+        $scope.accounts = response.data;
+        // Phân loại theo vai trò dựa trên giá trị vaiTro
+        $scope.accountsAdmin = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Admin";
+        });
+        $scope.accountsEmployee = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Nhân viên";
+        });
+        $scope.accountsCustomer = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Khách hàng";
+        });
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách tài khoản:", error);
+      }
+    );
+  };
+
+  // Các hàm thêm/cập nhật/xóa tài khoản dựa trên vai trò
+  $scope.saveAccount = function (role) {
+    if (role === "admin") {
+      // Gán vai trò mặc định cho tài khoản quản trị viên
+      $scope.newAccountAdmin.vaiTro = "Admin";
+      if (!$scope.isEditModeAdmin) {
+        AccountService.addAccount($scope.newAccountAdmin).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountAdmin = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản quản trị viên:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountAdmin.idTaiKhoan, $scope.newAccountAdmin).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountAdmin = {};
+            $scope.isEditModeAdmin = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản quản trị viên:", err);
+          }
+        );
+      }
+    } else if (role === "employee") {
+      // Gán vai trò mặc định cho tài khoản nhân viên
+      $scope.newAccountEmployee.vaiTro = "Nhân viên";
+      if (!$scope.isEditModeEmployee) {
+        AccountService.addAccount($scope.newAccountEmployee).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountEmployee = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản nhân viên:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountEmployee.idTaiKhoan, $scope.newAccountEmployee).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountEmployee = {};
+            $scope.isEditModeEmployee = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản nhân viên:", err);
+          }
+        );
+      }
+    } else if (role === "customer") {
+      // Gán vai trò mặc định cho tài khoản khách hàng
+      $scope.newAccountCustomer.vaiTro = "Khách hàng";
+      if (!$scope.isEditModeCustomer) {
+        AccountService.addAccount($scope.newAccountCustomer).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountCustomer = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản khách hàng:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountCustomer.idTaiKhoan, $scope.newAccountCustomer).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountCustomer = {};
+            $scope.isEditModeCustomer = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản khách hàng:", err);
+          }
+        );
+      }
+    }
+  };
+
+  // Hàm chọn tài khoản để sửa
+  $scope.selectAccount = function (account, role) {
+    if (role === "admin") {
+      $scope.newAccountAdmin = angular.copy(account);
+      $scope.isEditModeAdmin = true;
+    } else if (role === "employee") {
+      $scope.newAccountEmployee = angular.copy(account);
+      $scope.isEditModeEmployee = true;
+    } else if (role === "customer") {
+      $scope.newAccountCustomer = angular.copy(account);
+      $scope.isEditModeCustomer = true;
+    }
+  };
+
+  // Hàm xóa tài khoản
+  $scope.deleteAccount = function (idTaiKhoan, role) {
+    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+      AccountService.deleteAccount(idTaiKhoan).then(
+        function () {
+          alert("Tài khoản đã được xóa thành công!");
+          $scope.getAllAccounts();
+        },
+        function (err) {
+          console.error("Lỗi khi xóa tài khoản:", err);
+          alert("Lỗi khi xóa tài khoản, vui lòng thử lại.");
+        }
+      );
+    }
+  };
+
+  // Các hàm reset form tương ứng cho từng loại
+  $scope.resetAdminForm = function () {
+    $scope.newAccountAdmin = {};
+    $scope.isEditModeAdmin = false;
+  };
+  $scope.resetEmployeeForm = function () {
+    $scope.newAccountEmployee = {};
+    $scope.isEditModeEmployee = false;
+  };
+  $scope.resetCustomerForm = function () {
+    $scope.newAccountCustomer = {};
+    $scope.isEditModeCustomer = false;
+  };
+
+  // Khởi tạo: load danh sách tài khoản
+  $scope.getAllAccounts();
+});
+
 app.controller("ServiceController", function ($scope) {
   $scope.pageTitle = "Quản lý dịch vụ";
 });
