@@ -1,0 +1,44 @@
+<div class="container mt-5" style="width: 40%;margin: 0 auto">
+    <h2 class="text-center" style="font-weight: bold">Đặt Lịch Hẹn</h2>
+    <form>
+        <div class="mb-3">
+            <label for="hoTen" class="form-label">Họ Tên</label>
+            <input type="text" class="form-control" id="hoTen" placeholder="Nhập họ tên của bạn" required>
+        </div>
+        <div class="mb-3">
+            <label for="soDienThoai" class="form-label">Số Điện Thoại</label>
+            <input type="tel" class="form-control" id="soDienThoai" placeholder="Nhập số điện thoại" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Nhập email của bạn">
+        </div>
+        <div class="mb-3">
+            <label for="diaChi" class="form-label">Địa Chỉ</label>
+            <input type="text" class="form-control" id="diaChi" placeholder="Nhập địa chỉ">
+        </div>
+        <div class="mb-3">
+            <label for="ngayDangKi" class="form-label">Ngày Đăng Ký</label>
+            <input type="date" class="form-control" id="ngayDangKi" required>
+        </div>
+
+        <!-- Select box Dịch Vụ -->
+        <div class="mb-3">
+            <label for="dichVu" class="form-label">Dịch Vụ</label>
+            <select class="form-control" id="dichVu" required>
+                <option value="">Chọn dịch vụ</option>
+                <option value="bao_duong">Bảo dưỡng định kỳ</option>
+                <option value="thay_dau">Thay dầu động cơ</option>
+                <option value="kiem_tra_phanh">Kiểm tra phanh</option>
+                <option value="sua_chua_dien">Sửa chữa điện</option>
+                <option value="can_chinh_banh">Cân chỉnh bánh xe</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="hinhAnh" class="form-label">Hình Ảnh</label>
+            <input type="file" class="form-control" id="hinhAnh">
+        </div>
+        <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 50px">Đặt Lịch</button>
+    </form>
+</div>

@@ -1,0 +1,220 @@
+h2 {
+    font-size: 26px;
+}
+
+/* Tăng khoảng cách cho đoạn văn */
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+/* Điều chỉnh NAV*/
+.navbar-nav .nav-item .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+.navbar-nav .nav-item .nav-link:hover {
+    color: #80807d; /* Màu khi hover */
+}
+.navbar-nav .nav-item .nav-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #c70707;
+    transition: width 0.3s ease;
+}
+.navbar-nav .nav-item .nav-link:hover::after {
+    width: 100%;
+}
+a > .dropdown-item:hover::after{
+    background: #f7cece;
+}
+.navbar-nav .nav-item a{
+    color: black;
+}
+nav{
+    background: lightgray;
+    max-width: 2000px; /* Không vượt quá 1200px */
+    width: 100%;
+    margin: auto; /* Căn giữa */
+}
+
+    .banner {
+        background: url('banner.jpg') no-repeat center center;
+        background-size: cover;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+    
+    .logo-section img {
+        max-width: 150px;
+        height: auto;
+    }
+    .navbar-toggler-icon{
+        
+        filter: invert(100%);
+    }
+
+
+/* LOGO 3 hãng sửa chữa */    
+/* Cố định kích thước logo */
+.brand-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background-color: #f2f2f2; /* Màu nền để làm nổi bật logo */
+    padding: 5px;
+    border-radius: 10px;
+}
+
+/* Căn chỉnh khoảng cách giữa các logo trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .logo-section {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}
+
+
+.circle-image {
+    width: 100%;
+    
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: block;
+    margin: auto; /* Căn giữa ảnh */
+}
+
+/* Nút hình oval */
+.oval-button {
+    width: 100%;
+    max-width: 250px;
+    height: 80px;
+    background-color: lightgray;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-weight: bold;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+/* Hover hiệu ứng */
+.oval-button:hover {
+    background-color: #f8c3c3;
+}
+
+/* Khoảng cách giữa các nút khi thu nhỏ */
+@media (max-width: 768px) {
+    .oval-button {
+        width: 90%;
+        max-width: 200px;
+        height: 70px;
+        font-size: 14px;
+    }
+    
+}
+
+/* Css footer*/
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.highlight {
+    color: red;
+}
+
+.description {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.social-icons {
+    margin: 10px 0;
+}
+
+.icon {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: black;
+    color: white;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 50%;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+.icon:hover {
+    background: red;
+}
+
+.links {
+    list-style: none;
+    padding: 0;
+}
+
+.links li {
+    margin: 5px 0;
+}
+
+.links a {
+    text-decoration: none;
+    color: rgb(70, 69, 69);
+    font-size: 16px;
+}
+
+.links a:hover {
+    color: red;
+}
+
+#footer h5 {
+    font-size: 18px;
+    color: hsl(236, 100%, 51%);
+}
+
+#footer p {
+    font-size: 16px;
+    margin: 2px 0;
+
+}
+#footer {
+    background: url('../images/footer.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 40px 0;
+}
+footer{
+    max-width: 2000px; /* Không vượt quá 1200px */
+    width: 100%;
+    margin: auto; /* Căn giữa */
+}
+
+#carouselExampleIndicators{
+    max-width: 2000px;
+    width: 100%;
+ 
+    margin: auto;
+}
+.carousel-item img {
+    aspect-ratio: 16 / 9; /* Tỷ lệ khung hình */
+    object-fit: contain; 
+}
+
+ng-view {
+    margin-top: 7%; /* Tạo khoảng cách 50px giữa nav và nội dung */
+    display: block; /* Đảm bảo ng-view hiển thị đúng */
+}

@@ -1,0 +1,46 @@
+<div class="container mt-5" style="width: 40%;margin: 0 auto" ng-app="scheduleApp" ng-controller="ScheduleController">
+    <h2 class="text-center" style="font-weight: bold">Đặt Lịch Hẹn</h2>
+    <form ng-submit="submitForm()">
+
+        <div class="mb-3">
+            <label for="idLichHen" class="form-label">ID</label>
+            <input type="text" class="form-control" id="idLichHen" ng-model="formData.idLichHen" required>
+        </div>
+        <div class="mb-3">
+            <label for="idLoaiXe" class="form-label">Loại Xe</label>
+            <select class="form-control" id="idLoaiXe" ng-model="formData.idLoaiXe" required>
+                <option value="">Chọn loại xe</option>
+                <option ng-repeat="vehicle in vehicles" value="{{vehicle.idLoaiXe}}">{{vehicle.tenLoaiXe}}</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="thoiGian" class="form-label">Thời Gian</label>
+            <input type="datetime-local" class="form-control" id="thoiGian" ng-model="formData.thoiGian" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="bienSoXe" class="form-label">Biển Số Xe</label>
+            <input type="text" class="form-control" id="bienSoXe" ng-model="formData.bienSoXe" placeholder="Nhập biển số xe" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="dichVu" class="form-label">Dịch Vụ</label>
+            <select class="form-control" id="dichVu" ng-model="formData.dichVu" required>
+                <option value="">Chọn dịch vụ</option>
+                <option value="bao_duong">Bảo dưỡng định kỳ</option>
+                <option value="thay_dau">Thay dầu động cơ</option>
+                <option value="kiem_tra_phanh">Kiểm tra phanh</option>
+                <option value="sua_chua_dien">Sửa chữa điện</option>
+                <option value="can_chinh_banh">Cân chỉnh bánh xe</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="ghiChu" class="form-label">Ghi Chú</label>
+            <textarea class="form-control" id="ghiChu" ng-model="formData.ghiChu" placeholder="Nhập ghi chú"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 50px">Đặt Lịch</button>
+    </form>
+</div>
