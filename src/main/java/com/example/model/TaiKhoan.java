@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +19,10 @@ public class TaiKhoan {
     private String matKhau;
     private Boolean trangThai;
     private String vaiTro;
+
+    @OneToOne(mappedBy = "taiKhhoanNV")
+    NhanVien nhanVien;
+
+    @OneToOne(mappedBy = "taiKhoanKH")
+    KhachHang khachHang;
 }

@@ -2,7 +2,9 @@ package com.example.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,14 +28,16 @@ public class KhachHang {
     private String hinhAnh;
     private Date ngayDangKi;
 
-    @OneToMany(mappedBy = "khachHang")
+    @OneToMany(mappedBy = "khachHangLH")
     List<LichHen> lichHenList;
 
-    @OneToMany(mappedBy = "khachHang")
+    @OneToMany(mappedBy = "khachHangPGN")
     List<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
     @OneToMany(mappedBy = "khachHang")
      List<HoaDon> hoaDonList;
 
-
+    @OneToOne
+    @JoinColumn(name = "IdTaiKhoan")
+    TaiKhoan taiKhoanKH;
 }

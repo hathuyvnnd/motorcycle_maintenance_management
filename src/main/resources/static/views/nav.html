@@ -25,9 +25,9 @@
                         Phụ tùng
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" ng-href="#!/phutung">Yamaha</a></li>
-                        <li><a class="dropdown-item" href="#">Honda</a></li>
-                        <li><a class="dropdown-item" href="#">Piaggio</a></li>
+                        <li ng-repeat="loaiPT in listLoaiPT">
+                            <a class="dropdown-item" href="">{{ loaiPT.tenLoaiPT }}</a>
+                        </li>
                     </ul>
                 </li>
                  

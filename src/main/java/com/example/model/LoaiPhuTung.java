@@ -1,16 +1,16 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,7 +21,8 @@ public class LoaiPhuTung {
     private String tenLoaiPT;
     private String moTa;
     private String ghiChu;
-
+    @JsonIgnore  // Chặn vòng lặp vô hạn
     @OneToMany(mappedBy = "loaiPT")
+    
     List<PhuTung> phuTungList;
 }

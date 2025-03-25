@@ -19,7 +19,7 @@ public class LichHen {
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHang khachHang;
+    private KhachHang khachHangLH;
 
     @ManyToOne
     @JoinColumn(name="IdLoaiXe")

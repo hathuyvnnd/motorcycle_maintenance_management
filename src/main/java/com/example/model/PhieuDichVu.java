@@ -12,21 +12,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="DichVu")
+@Table(name="PhieuDichVu")
 public class PhieuDichVu {
     @Id
     private String idPhieuDichVu;
+
     @ManyToOne
-    @JoinColumn(name="NhanVien")
+    @JoinColumn(name="IdNhanVienTaoPhieu")
     private NhanVien idNhanVienTaoPhieu;
+    
     private Date ngayThucHien;
     private Date ngayHoanThanh;
     private String trangThaiSuaChua;
     private String tenNhanVienSuaChua;
 
-    @OneToMany(mappedBy = "dichVu")
-    List<PhieuDichVuCT> phieuDichVuCTList;
+    @OneToMany(mappedBy = "phieuDichVuCT")
+    List<PhieuDichVuCT> phieuDichVUCTList;
 
-    @OneToMany(mappedBy = "phieuDichVu")
-    List<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
+    @OneToOne(mappedBy = "phieuDichVu")
+    private HoaDon hoaDon;
 }

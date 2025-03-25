@@ -1,14 +1,14 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,6 +22,7 @@ public class PhuTung {
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiPT")
+    @JsonBackReference
     private LoaiPhuTung loaiPT;
 
     String moTa;

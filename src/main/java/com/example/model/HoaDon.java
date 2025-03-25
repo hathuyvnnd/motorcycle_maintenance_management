@@ -13,18 +13,19 @@ import lombok.NoArgsConstructor;
 public class HoaDon {
     @Id
     private String idHoaDon;
+    @ManyToOne
+    @JoinColumn(name="IdKhachHang")
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTN")
-    private NhanVien nhanVien;
+    private NhanVien nhanVienTN;
 
     @OneToOne
     @JoinColumn(name="IdPhieuDichVu")
     private PhieuDichVu phieuDichVu;
 
-    @ManyToOne
-    @JoinColumn(name="IdKhachHang")
-    private KhachHang khachHang;
+    
 
 
 }

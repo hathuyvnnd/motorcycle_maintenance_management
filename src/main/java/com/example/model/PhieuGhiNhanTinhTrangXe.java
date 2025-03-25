@@ -21,11 +21,11 @@ public class PhieuGhiNhanTinhTrangXe {
 
     @ManyToOne
     @JoinColumn(name="IdNhanVien")
-    private NhanVien nhanVien;
+    private NhanVien nhanVienPGN;
 
     @ManyToOne
     @JoinColumn(name="IdKhachHang")
-    private KhachHang khachHang;
+    private KhachHang khachHangPGN;
 
 
 }

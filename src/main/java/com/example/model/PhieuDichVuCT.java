@@ -24,5 +24,5 @@ public class PhieuDichVuCT {
 
     @ManyToOne
     @JoinColumn(name="IdPhieuDichVu")
-    private DichVu phieuDichVuCT;
+    private PhieuDichVu phieuDichVuCT;
 }
