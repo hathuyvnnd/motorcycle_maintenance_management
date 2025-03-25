@@ -28,11 +28,8 @@ public class KhachHang {
     private String idKhachHang;
 
     @OneToOne
-    @JoinColumn(name = "IdTaiKhoan", referencedColumnName = "IdTaiKhoan", unique = true)
+    @JoinColumn(name = "SoDienThoai", referencedColumnName = "IdTaiKhoan", unique = true)
     private TaiKhoan taiKhoanKH;
-
-    @Column(name = "SoDienThoai")
-    private String soDienThoai;
 
     @Column(name = "DiaChi")
     private String diaChi;

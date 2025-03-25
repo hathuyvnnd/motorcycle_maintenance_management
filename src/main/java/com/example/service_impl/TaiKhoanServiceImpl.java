@@ -34,8 +34,8 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public TaiKhoan create(TaiKhoan taiKhoan) {
         // Sinh ID tự động
-        String newId = generateNewId();
-        taiKhoan.setIdTaiKhoan(newId);
+        // String newId = generateNewId();
+        // taiKhoan.setIdTaiKhoan(newId);
 
         // Chuyển đổi đối tượng sang lớp con tương ứng dựa vào giá trị vaiTro
         if ("Nhân viên".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanNhanVien)) {
@@ -55,22 +55,23 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     }
 
     // Hàm sinh ID mới
-    private String generateNewId() {
-        // Lấy ID cuối cùng
-        String lastId = taiKhoanDao.findLastId();
+    // private String generateNewId() {
+    // // Lấy ID cuối cùng
+    // String lastId = taiKhoanDao.findLastId();
 
-        // Nếu không có ID, tạo ID đầu tiên
-        if (lastId == null) {
-            return "TK001";
-        }
+    // // Nếu không có ID, tạo ID đầu tiên
+    // if (lastId == null) {
+    // return "TK001";
+    // }
 
-        // Lấy phần số từ ID (bỏ phần "TK") và tăng nó lên
-        int number = Integer.parseInt(lastId.substring(2));
-        number++;
+    // // Lấy phần số từ ID (bỏ phần "TK") và tăng nó lên
+    // int number = Integer.parseInt(lastId.substring(2));
+    // number++;
 
-        // Ghép phần số mới với "TK"
-        return String.format("TK%03d", number); // Định dạng với 3 chữ số, ví dụ: TK002
-    }
+    // // Ghép phần số mới với "TK"
+    // return String.format("TK%03d", number); // Định dạng với 3 chữ số, ví dụ:
+    // TK002
+    // }
 
     @Override
     public void update(TaiKhoan taiKhoan) {

@@ -30,17 +30,39 @@ public class NhanVienServiceImpl implements NhanVienService {
     }
 
     @Override
-    public NhanVien create(NhanVien entity) {
-        // Nếu muốn sinh khóa tự động (String) thì cần logic riêng,
-        // hoặc bạn đã có sẵn ID => save thẳng
-        return nhanVienDao.save(entity);
+    public NhanVien create(NhanVien nhanVien) {
+
+        // Sinh ID tự động
+        String newId = generateNewId();
+        nhanVien.setIdNhanVien(newId);
+        ;
+        return nhanVienDao.save(nhanVien);
+    }
+
+    // Hàm sinh ID mới
+    private String generateNewId() {
+        // Lấy ID cuối cùng
+        String lastId = nhanVienDao.findLastId();
+
+        // Nếu không có ID, tạo ID đầu tiên
+        if (lastId == null) {
+            return "NV001";
+        }
+
+        // Lấy phần số từ ID (bỏ phần "NV") và tăng nó lên
+        int number = Integer.parseInt(lastId.substring(2));
+        number++;
+
+        // Ghép phần số mới với "NV"
+        return String.format("NV%03d", number); // Định dạng với 3 chữ số, ví dụ:NV002
+
     }
 
     @Override
-    public void update(NhanVien entity) {
+    public void update(NhanVien nhaVien) {
         // Thông thường, với JpaRepository, update = save (nếu ID đã tồn tại)
-        if (nhanVienDao.existsById(entity.getIdNhanVien())) {
-            nhanVienDao.save(entity);
+        if (nhanVienDao.existsById(nhaVien.getIdNhanVien())) {
+            nhanVienDao.save(nhaVien);
         }
     }
 

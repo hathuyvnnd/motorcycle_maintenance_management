@@ -4,26 +4,13 @@
     <li class="nav-item" role="presentation">
       <button
         class="nav-link active"
-        id="admin-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#admin"
-        type="button"
-        role="tab"
-        aria-controls="admin"
-        aria-selected="true">
-        Tài khoản quản trị viên
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link"
         id="employee-tab"
         data-bs-toggle="tab"
         data-bs-target="#employee"
         type="button"
         role="tab"
         aria-controls="employee"
-        aria-selected="false">
+        aria-selected="true">
         Tài khoản nhân viên
       </button>
     </li>
@@ -43,110 +30,20 @@
   </ul>
 
   <div class="tab-content mt-3" id="accountTabsContent">
-    <!-- Admin Accounts Tab -->
-    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-      <form class="mt-4" name="adminForm" novalidate ng-submit="saveAccount('admin')">
-        <div class="row mb-3">
-          <label for="matKhauAdmin" class="col-sm-2 col-form-label">Mật Khẩu</label>
-          <div class="col-sm-4 position-relative">
-            <input
-              ng-attr-type="{{ showPasswordAdmin ? 'text' : 'password' }}"
-              class="form-control"
-              id="matKhauAdmin"
-              placeholder="Mật Khẩu"
-              ng-model="newAccountAdmin.matKhau"
-              required />
-            <span
-              class="position-absolute top-50 end-0 translate-middle-y pe-3"
-              style="cursor: pointer"
-              ng-click="showPasswordAdmin = !showPasswordAdmin">
-              <i class="fa" ng-class="{'fa-eye': !showPasswordAdmin, 'fa-eye-slash': showPasswordAdmin}"></i>
-            </span>
-          </div>
-          <label for="nhapLaiMatKhauAdmin" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
-          <div class="col-sm-4 position-relative">
-            <input
-              ng-attr-type="{{ showRePasswordAdmin ? 'text' : 'password' }}"
-              class="form-control"
-              id="nhapLaiMatKhauAdmin"
-              placeholder="Nhập Lại Mật Khẩu"
-              ng-model="newAccountAdmin.nhapLaiMatKhau"
-              required />
-            <span
-              class="position-absolute top-50 end-0 translate-middle-y pe-3"
-              style="cursor: pointer"
-              ng-click="showRePasswordAdmin = !showRePasswordAdmin">
-              <i class="fa" ng-class="{'fa-eye': !showRePasswordAdmin, 'fa-eye-slash': showRePasswordAdmin}"></i>
-            </span>
-          </div>
-        </div>
-        <!-- Thông báo ngay khi nhập -->
-        <div class="row mb-3" ng-if="newAccountAdmin.matKhau && newAccountAdmin.nhapLaiMatKhau">
-          <div class="col-sm-12">
-            <span ng-if="newAccountAdmin.matKhau === newAccountAdmin.nhapLaiMatKhau" class="text-success">
-              Mật khẩu khớp.
-            </span>
-            <span ng-if="newAccountAdmin.matKhau !== newAccountAdmin.nhapLaiMatKhau" class="text-danger">
-              Mật khẩu và nhập lại mật khẩu không khớp.
-            </span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label for="trangThaiAdmin" class="col-sm-2 col-form-label">Trạng Thái</label>
-          <div class="col-sm-4">
-            <select class="form-select" id="trangThaiAdmin" ng-model="newAccountAdmin.trangThai" required>
-              <option value="true" selected>Hoạt động</option>
-              <option value="false">Không hoạt động</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <!-- Nút submit bị vô hiệu nếu mật khẩu không trùng -->
-          <button
-            type="submit"
-            class="btn btn-primary me-2"
-            ng-disabled="newAccountAdmin.matKhau !== newAccountAdmin.nhapLaiMatKhau">
-            {{ isEditModeAdmin ? "Cập Nhật Tài Khoản" : "Thêm Tài Khoản" }}
-          </button>
-          <button type="button" class="btn btn-secondary" ng-click="resetAdminForm()">Reset</button>
-        </div>
-      </form>
-      <!-- Danh sách tài khoản quản trị viên -->
-      <div class="mt-5">
-        <h3><b>Danh sách tài khoản quản trị viên</b></h3>
-        <table class="table table-bordered mt-3">
-          <thead>
-            <tr>
-              <th scope="col">STT</th>
-              <th scope="col">ID Tài Khoản</th>
-              <th scope="col">Mật Khẩu</th>
-              <th scope="col">Vai Trò</th>
-              <th scope="col">Trạng Thái</th>
-              <th scope="col">Chức Năng</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="account in accountsAdmin track by $index">
-              <th scope="row">{{ $index + 1 }}</th>
-              <td>{{ account.idTaiKhoan }}</td>
-              <td>{{ account.matKhau }}</td>
-              <td>{{ account.vaiTro }}</td>
-              <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
-              <td>
-                <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'admin')">Sửa</button>
-                <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'admin')">Xóa</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Tương tự, cập nhật form cho Employee và Customer theo cấu trúc trên -->
     <!-- Employee Accounts Tab -->
-    <div class="tab-pane fade" id="employee" role="tabpanel" aria-labelledby="employee-tab">
+    <div class="tab-pane fade show active" id="employee" role="tabpanel" aria-labelledby="employee-tab">
       <form class="mt-4" name="employeeForm" novalidate ng-submit="saveAccount('employee')">
         <div class="row mb-3">
+          <label for="idTaiKhoanEmployee" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="idTaiKhoanEmployee"
+              placeholder="ID Tài Khoản"
+              ng-model="newAccountEmployee.idTaiKhoan"
+              ng-disabled="isEditModeEmployee" />
+          </div>
           <label for="matKhauNhanVien" class="col-sm-2 col-form-label">Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
             <input
@@ -162,6 +59,15 @@
               ng-click="showPasswordEmployee = !showPasswordEmployee">
               <i class="fa" ng-class="{'fa-eye': !showPasswordEmployee, 'fa-eye-slash': showPasswordEmployee}"></i>
             </span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
+            </select>
           </div>
           <label for="nhapLaiMatKhauNhanVien" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
@@ -190,7 +96,7 @@
             </span>
           </div>
         </div>
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
             <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
@@ -198,7 +104,7 @@
               <option value="false">Không hoạt động</option>
             </select>
           </div>
-        </div>
+        </div> -->
         <div>
           <button
             type="submit"
@@ -245,6 +151,16 @@
     <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
       <form class="mt-4" name="customerForm" novalidate ng-submit="saveAccount('customer')">
         <div class="row mb-3">
+          <label for="idTaiKhoanCustomer" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="idTaiKhoanCustomer"
+              placeholder="ID Tài Khoản"
+              ng-model="newAccountCustomer.idTaiKhoan"
+              ng-disabled="isEditModeCustomer" />
+          </div>
           <label for="matKhauKhachHang" class="col-sm-2 col-form-label">Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
             <input
@@ -260,6 +176,15 @@
               ng-click="showPasswordCustomer = !showPasswordCustomer">
               <i class="fa" ng-class="{'fa-eye': !showPasswordCustomer, 'fa-eye-slash': showPasswordCustomer}"></i>
             </span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiKhachHang" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <select class="form-select" id="trangThaiKhachHang" ng-model="newAccountCustomer.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
+            </select>
           </div>
           <label for="nhapLaiMatKhauKhachHang" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
@@ -288,7 +213,7 @@
             </span>
           </div>
         </div>
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label for="trangThaiKhachHang" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
             <select class="form-select" id="trangThaiKhachHang" ng-model="newAccountCustomer.trangThai" required>
@@ -296,7 +221,7 @@
               <option value="false">Không hoạt động</option>
             </select>
           </div>
-        </div>
+        </div> -->
         <div>
           <button
             type="submit"

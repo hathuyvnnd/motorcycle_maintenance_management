@@ -2,7 +2,6 @@ package com.example.model;
 
 import java.util.Set;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,11 +20,8 @@ public class NhanVien {
     private String idNhanVien;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdTaiKhoan", referencedColumnName = "IdTaiKhoan", unique = true)
+    @JoinColumn(name = "SoDienThoai", referencedColumnName = "IdTaiKhoan", unique = true)
     private TaiKhoan taiKhoanNV;
-
-    @Column(name = "SoDienThoai")
-    private String soDienThoai;
 
     @Column(name = "Ten")
     private String ten;

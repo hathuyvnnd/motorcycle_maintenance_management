@@ -91,13 +91,13 @@ app.factory("NhanVienService", function ($http) {
 });
 
 // ============== Controller cho trang quản lý nhân viên ==============
-app.controller("EmployeeController", function ($scope, NhanVienService) {
+app.controller("EmployeeController", function ($scope, NhanVienService, AccountService) {
   $scope.pageTitle = "Quản lý nhân viên";
   $scope.employees = [];
   $scope.newEmployee = { taiKhoanNV: {} };
   $scope.isEditMode = false;
   $scope.file = null;
-
+  $scope.availableAccounts = []; // Mảng lưu danh sách tài khoản khả dụng
   // Phân trang
   $scope.currentPage = 1;
   $scope.pageSize = 5;
@@ -150,6 +150,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
       NhanVienService.addNhanVien($scope.newEmployee, $scope.file).then(
         function (res) {
           $scope.getAllEmployees();
+          // Gọi lại loadAvailableAccounts() để refresh danh sách tài khoản khả dụng (chưa liên kết với nhân viên) trên client
+          $scope.loadAvailableAccounts();
           $scope.newEmployee = { taiKhoanNV: {} };
           $scope.file = null;
           document.getElementById("profileImage").value = "";
@@ -214,13 +216,82 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
       );
     }
   };
+  // Hàm load tài khoản khả dụng
+  $scope.loadAvailableAccounts = function () {
+    AccountService.getAvailableAccounts().then(
+      function (response) {
+        $scope.availableAccounts = response.data;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy tài khoản khả dụng:", error);
+      }
+    );
+  };
+
+  // Gọi hàm này khi khởi tạo
+  $scope.init = function () {
+    $scope.getAllEmployees();
+    $scope.loadAvailableAccounts();
+  };
 
   // Khởi tạo
-  $scope.getAllEmployees();
+  $scope.init();
 });
 
-app.controller("CustomerController", function ($scope) {
-  $scope.pageTitle = "Quản lý khách hàng";
+// ============== Service cho Customer ==============
+app.factory("CustomerService", function ($http) {
+  var baseUrl = "/api/khachhang";
+  return {
+    // 1. Lấy tất cả khách hàng
+    getAllCustomers: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy khách hàng theo ID
+    getCustomerById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+  };
+});
+// ============== Controller cho Customer ==============
+app.controller("CustomerController", function ($scope, CustomerService) {
+  $scope.customers = [];
+  $scope.newCustomer = { taiKhoanKH: {} };
+  $scope.isEditMode = false;
+  $scope.file = null;
+
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Load danh sách
+  $scope.getAllCustomers = function () {
+    CustomerService.getAllCustomers().then(
+      function (response) {
+        $scope.customers = response.data;
+        $scope.totalItems = $scope.customers.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách khách hàng:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.customers.slice(start, start + $scope.pageSize);
+  };
+  $scope.getAllCustomers();
 });
 // ============== Service cho Account ==============
 app.factory("AccountService", function ($http) {
@@ -245,6 +316,10 @@ app.factory("AccountService", function ($http) {
     // 5. Xóa tài khoản
     deleteAccount: function (id) {
       return $http.delete(baseUrl + "/" + id);
+    },
+    //6. Lấy danh sách tài khoản có sẵn chưa liên kết với nhân viên
+    getAvailableAccounts: function () {
+      return $http.get(baseUrl + "/available");
     },
   };
 });
