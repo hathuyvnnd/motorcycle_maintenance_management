@@ -1,126 +1,227 @@
-<div>
-  <h3><b>{{pageTitle}}</b></h3>
-  <form class="mt-4">
+<div ng-controller="AccessoryController">
+  <h3><b>{{ pageTitle }}</b></h3>
+
+  <!-- Form thêm mới / sửa phụ tùng -->
+  <form class="mt-4" name="accessoryForm" novalidate ng-submit="saveAccessory()">
     <div class="row mb-3">
-      <label for="idPhuTung" class="col-sm-2 col-form-label">ID Phụ Tùng</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="idPhuTung" placeholder="ID Phụ Tùng" />
-      </div>
+      <!-- Tên Phụ Tùng -->
       <label for="tenPhuTung" class="col-sm-2 col-form-label">Tên Phụ Tùng</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="tenPhuTung" placeholder="Tên Phụ Tùng" />
+        <input
+          type="text"
+          class="form-control"
+          id="tenPhuTung"
+          placeholder="Tên Phụ Tùng"
+          ng-model="newAccessory.tenPhuTung"
+          required />
+      </div>
+      <!-- Giá Phụ Tùng -->
+      <label for="giaPhuTung" class="col-sm-2 col-form-label">Giá</label>
+      <div class="col-sm-4">
+        <input
+          type="number"
+          class="form-control"
+          id="giaPhuTung"
+          placeholder="Giá"
+          ng-model="newAccessory.giaPhuTung"
+          required />
       </div>
     </div>
+
     <div class="row mb-3">
-      <label for="gia" class="col-sm-2 col-form-label">Giá</label>
+      <!-- Số Lượng Tồn Kho -->
+      <label for="soLuongTonKho" class="col-sm-2 col-form-label">Số Lượng Tồn Kho</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="gia" placeholder="Giá" />
+        <input
+          type="number"
+          class="form-control"
+          id="soLuongTonKho"
+          placeholder="Số Lượng Tồn Kho"
+          ng-model="newAccessory.soLuongTonKho"
+          required />
       </div>
-      <label for="slTonKho" class="col-sm-2 col-form-label">Số Lượng Tồn Kho</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="slTonKho" placeholder="Số Lượng Tồn Kho" />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="idLoaiPT" class="col-sm-2 col-form-label">ID Loại PT</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="idLoaiPT" placeholder="ID Loại PT" />
-      </div>
-      <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
-      <div class="col-sm-4">
-        <textarea class="form-control" id="moTa" placeholder="Mô Tả"></textarea>
-      </div>
-    </div>
-    <div class="row mb-3">
+      <!-- Thương Hiệu -->
       <label for="thuongHieu" class="col-sm-2 col-form-label">Thương Hiệu</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="thuongHieu" placeholder="Thương Hiệu" />
-      </div>
-      <label for="tinhTrang" class="col-sm-2 col-form-label">Tình Trạng</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="tinhTrang" placeholder="Tình Trạng" />
+        <input
+          type="text"
+          class="form-control"
+          id="thuongHieu"
+          placeholder="Thương Hiệu"
+          ng-model="newAccessory.thuongHieu" />
       </div>
     </div>
+
     <div class="row mb-3">
+      <!-- Phù Hợp Loại Xe -->
       <label for="phuHopLoaiXe" class="col-sm-2 col-form-label">Phù Hợp Loại Xe</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="phuHopLoaiXe" placeholder="Phù Hợp Loại Xe" />
+        <input
+          type="text"
+          class="form-control"
+          id="phuHopLoaiXe"
+          placeholder="Phù Hợp Loại Xe"
+          ng-model="newAccessory.phuHopLoaiXe" />
       </div>
-      <label for="hinhAnh" class="col-sm-2 col-form-label">Hình Ảnh</label>
-      <div class="col-sm-4">
-        <input type="file" class="form-control" id="hinhAnh" />
-      </div>
-    </div>
-    <div class="row mb-3">
+      <!-- Ngày Nhập Kho -->
       <label for="ngayNhapKho" class="col-sm-2 col-form-label">Ngày Nhập Kho</label>
       <div class="col-sm-4">
-        <input type="date" class="form-control" id="ngayNhapKho" placeholder="Ngày Nhập Kho" />
-      </div>
-      <label for="hanSuDung" class="col-sm-2 col-form-label">Hạn Sử Dụng</label>
-      <div class="col-sm-4">
-        <input type="date" class="form-control" id="hanSuDung" placeholder="Hạn Sử Dụng" />
+        <input
+          type="date"
+          class="form-control"
+          id="ngayNhapKho"
+          placeholder="Ngày Nhập Kho"
+          ng-model="newAccessory.ngayNhapKho" />
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Thêm Phụ Tùng</button>
-    <button type="button" class="btn btn-secondary">Cập Nhật Phụ Tùng</button>
+
+    <div class="row mb-3">
+      <!-- Hạn Sử Dụng -->
+      <label for="hanSuDung" class="col-sm-2 col-form-label">Hạn Sử Dụng</label>
+      <div class="col-sm-4">
+        <input
+          type="date"
+          class="form-control"
+          id="hanSuDung"
+          placeholder="Hạn Sử Dụng"
+          ng-model="newAccessory.hanSuDung" />
+      </div>
+      <!-- Loại Phụ Tùng (chỉ ID) -->
+      <label for="idLoaiPT" class="col-sm-2 col-form-label">Loại Phụ Tùng</label>
+      <div class="col-sm-4">
+        <select
+          class="form-select"
+          id="idLoaiPT"
+          ng-model="newAccessory.loaiPT"
+          ng-options="loai as loai.tenLoaiPT for loai in listLoaiPhuTung track by loai.idLoaiPT"
+          required>
+          <option value="">Chọn loại phụ tùng</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Dịch Vụ (chỉ ID) -->
+      <label for="idDichVu" class="col-sm-2 col-form-label">Dịch Vụ</label>
+      <div class="col-sm-4">
+        <select
+          class="form-select"
+          id="idDichVu"
+          ng-model="newAccessory.dichVuPT"
+          ng-options="dv as dv.tenDichVu for dv in listDichVu track by dv.idDichVu"
+          required>
+          <option value="">Chọn dịch vụ</option>
+        </select>
+      </div>
+      <!-- Mô Tả -->
+      <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
+      <div class="col-sm-4">
+        <textarea class="form-control" id="moTa" placeholder="Mô Tả" ng-model="newAccessory.moTa"></textarea>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Tình Trạng -->
+      <label for="tinhTrang" class="col-sm-2 col-form-label">Tình Trạng</label>
+      <div class="col-sm-4">
+        <select class="form-select" id="tinhTrang" ng-model="newAccessory.tinhTrang" required>
+          <option ng-value="true">Mới</option>
+          <option ng-value="false">Cũ</option>
+        </select>
+      </div>
+      <!-- Hình Ảnh -->
+      <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
+      <div class="col-sm-4">
+        <input
+          type="file"
+          class="form-control"
+          id="profileImage"
+          accept="image/*"
+          onchange="angular.element(this).scope().setFile(this.files)" />
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary me-2" ng-disabled="accessoryForm.$invalid">
+        {{ isEditMode ? "Cập Nhật Phụ Tùng" : "Thêm Phụ Tùng" }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        ng-click="newAccessory = { tinhTrang: true }; isEditMode = false;">
+        Reset
+      </button>
+    </div>
   </form>
-</div>
-<div class="mt-5">
-  <h3><b>Danh sách phụ tùng</b></h3>
-  <table class="table table-bordered mt-3">
-    <thead>
-      <tr>
-        <th scope="col">STT</th>
-        <th scope="col">ID Phụ Tùng</th>
-        <th scope="col">Tên Phụ Tùng</th>
-        <th scope="col">Giá</th>
-        <th scope="col">Số Lượng Tồn Kho</th>
-        <th scope="col">ID Loại PT</th>
-        <th scope="col">Mô Tả</th>
-        <th scope="col">Thương Hiệu</th>
-        <th scope="col">Tình Trạng</th>
-        <th scope="col">Phù Hợp Loại Xe</th>
-        <th scope="col">Hình Ảnh</th>
-        <th scope="col">Ngày Nhập Kho</th>
-        <th scope="col">Hạn Sử Dụng</th>
-        <th scope="col">Chức Năng</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Example row -->
-      <tr>
-        <th scope="row">1</th>
-        <td>001</td>
-        <td>Phụ Tùng A</td>
-        <td>500.000VND</td>
-        <td>100</td>
-        <td>01</td>
-        <td>Mô tả phụ tùng A</td>
-        <td>Thương Hiệu A</td>
-        <td>Mới</td>
-        <td>Xe A</td>
-        <td><img src="hinh_anh_a.jpg" alt="Hình Ảnh" style="width: 100px; height: auto" /></td>
-        <td>01/01/2023</td>
-        <td>01/01/2024</td>
-        <td>
-          <button class="btn btn-warning btn-sm">Sửa</button>
-          <button class="btn btn-danger btn-sm">Xóa</button>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center mt-3">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav>
+
+  <!-- Danh sách phụ tùng -->
+  <div class="mt-5">
+    <h3><b>Danh sách phụ tùng</b></h3>
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>ID Phụ Tùng</th>
+          <th>Tên Phụ Tùng</th>
+          <th>Giá</th>
+          <th>Số Lượng</th>
+          <th>ID Loại PT</th>
+          <th>Mô Tả</th>
+          <th>Thương Hiệu</th>
+          <th>Tình Trạng</th>
+          <th>Phù Hợp</th>
+          <th>Hình Ảnh</th>
+          <th>Ngày Nhập</th>
+          <th>Hạn SD</th>
+          <th>ID Dịch Vụ</th>
+          <th>Chức Năng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="pt in getPaginatedData() track by $index">
+          <td>{{ $index + 1 + (currentPage - 1) * pageSize }}</td>
+          <td>{{ pt.idPhuTung }}</td>
+          <td>{{ pt.tenPhuTung }}</td>
+          <td>{{ pt.giaPhuTung | currency:"":0 }} VND</td>
+          <td>{{ pt.soLuongTonKho }}</td>
+          <td>{{ getLoaiPTDisplay(pt.loaiPT) }}</td>
+          <td>{{ pt.moTa }}</td>
+          <td>{{ pt.thuongHieu }}</td>
+          <td>{{ pt.tinhTrang ? 'Mới' : 'Cũ' }}</td>
+          <td>{{ pt.phuHopLoaiXe }}</td>
+          <td>
+            <img
+              ng-src="/images/phu_tung/{{ pt.hinhAnh }}"
+              alt="Hình Ảnh"
+              class="img-thumbnail"
+              style="width: 50px; height: 50px" />
+          </td>
+          <td>{{ pt.ngayNhapKho | date:'yyyy-MM-dd' }}</td>
+          <td>{{ pt.hanSuDung | date:'yyyy-MM-dd' }}</td>
+          <td>{{ getLoaiDVDisplay(pt.dichVuPT) }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" ng-click="selectAccessory(pt)">Sửa</button>
+            <button class="btn btn-danger btn-sm" ng-click="deletePhuTung(pt.idPhuTung)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage - 1)">Previous</a>
+        </li>
+        <li
+          class="page-item"
+          ng-repeat="page in [].constructor(getPageCount()) track by $index"
+          ng-class="{ active: currentPage === ($index + 1) }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        <li class="page-item" ng-class="{ disabled: currentPage === getPageCount() }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

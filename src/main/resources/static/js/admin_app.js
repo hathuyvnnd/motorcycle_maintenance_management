@@ -519,7 +519,7 @@ app.controller("AccountController", function ($scope, AccountService) {
 
 // ============== Service cho Dịch vụ ==============
 app.factory("DichVuService", function ($http) {
-  var baseUrl = "/api/dichvu_admin";
+  var baseUrl = "/api/admin/dichvu";
   return {
     // 1. Lấy tất cả dịch vụ
     getAllDichVu: function () {
@@ -684,9 +684,254 @@ app.controller("ServiceController", function ($scope, DichVuService) {
   // Khởi tạo: load danh sách dịch vụ
   $scope.getAllServices();
 });
+// ============== Service cho Loại phụ tùng ==============
+app.factory("LoaiPhuTungService", function ($http) {
+  var baseUrl = "/api/admin/loaiphutung";
+  return {
+    getAllLoaiPT: function () {
+      return $http.get(baseUrl);
+    },
+  };
+});
 
-app.controller("AccessoryController", function ($scope) {
+// ============== Service cho Phụ tùng ==============
+app.factory("PhuTungService", function ($http) {
+  var baseUrl = "/api/admin/phutung";
+  return {
+    // 1. Lấy tất cả phụ tùng
+    getAllPhuTung: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy phụ tùng theo ID
+    getPhuTungById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+    // 3. Thêm phụ tùng (kèm file)
+    addPhuTung: function (phuTung, file) {
+      var formData = new FormData();
+      formData.append("phuTung", new Blob([JSON.stringify(phuTung)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.post(baseUrl + "/upload", formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 4a. Cập nhật phụ tùng không có file
+    updatePhuTung: function (id, phuTung) {
+      return $http.put(baseUrl + "/" + id, phuTung);
+    },
+    // 4b. Cập nhật phụ tùng có file
+    updatePhuTungWithFile: function (id, phuTung, file) {
+      var formData = new FormData();
+      formData.append("phuTung", new Blob([JSON.stringify(phuTung)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.put(baseUrl + "/updateWithFile/" + id, formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 5. Xóa dịch vụ
+    deletePhuTung: function (id) {
+      return $http.delete(baseUrl + "/" + id);
+    },
+  };
+});
+
+// ============== Controller cho Phụ tùng ==============
+app.controller("AccessoryController", function ($scope, PhuTungService, DichVuService, LoaiPhuTungService) {
   $scope.pageTitle = "Quản lý phụ tùng";
+  $scope.accessorys = [];
+  $scope.newAccessory = { tinhTrang: true };
+  $scope.isEditMode = false;
+  $scope.file = null;
+  $scope.listLoaiPhuTung = [];
+  $scope.listDichVu = [];
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Hàm load danh sách phụ tùng
+  $scope.getAllAccessorys = function () {
+    PhuTungService.getAllPhuTung().then(
+      function (response) {
+        $scope.accessorys = response.data;
+        $scope.totalItems = $scope.accessorys.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách phụ tùng:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.accessorys.slice(start, start + $scope.pageSize);
+  };
+
+  // Lưu file được chọn vào $scope.file
+  $scope.setFile = function (files) {
+    if (files && files.length > 0) {
+      $scope.file = files[0];
+      $scope.$apply();
+    }
+  };
+
+  // Hàm thêm mới hoặc cập nhật
+  $scope.saveAccessory = function () {
+    if (!$scope.isEditMode) {
+      // Thêm mới
+      if (!$scope.file) {
+        alert("Vui lòng chọn file ảnh!");
+        return;
+      }
+      PhuTungService.addPhuTung($scope.newAccessory, $scope.file).then(
+        function (res) {
+          $scope.getAllAccessorys();
+          $scope.newAccessory = {};
+          $scope.file = null;
+          document.getElementById("profileImage").value = "";
+        },
+        function (err) {
+          console.error("Lỗi khi thêm phụ tùng:", err);
+        }
+      );
+    } else {
+      // Cập nhật
+      if ($scope.file) {
+        // Cập nhật có file
+        PhuTungService.updatePhuTungWithFile($scope.newAccessory.idPhuTung, $scope.newAccessory, $scope.file).then(
+          function (res) {
+            $scope.getAllAccessorys();
+            $scope.newAccessory = {};
+            $scope.isEditMode = false;
+            $scope.file = null;
+            document.getElementById("profileImage").value = "";
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật phụ tùng:", err);
+          }
+        );
+      } else {
+        // Cập nhật không file
+        PhuTungService.updatePhuTung($scope.newAccessory.idPhuTung, $scope.newAccessory).then(
+          function (res) {
+            $scope.getAllAccessorys();
+            $scope.newAccessory = {};
+            $scope.isEditMode = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật phụ tùng:", err);
+          }
+        );
+      }
+    }
+  };
+
+  // Hàm chọn phụ tùng để sửa
+  $scope.selectAccessory = function (accessory) {
+    console.log("listLoaiPhuTung", $scope.listLoaiPhuTung);
+    console.log("accessory.loaiPT", accessory.loaiPT);
+
+    if (typeof accessory.loaiPT === "string") {
+      // Tìm trong listLoaiPhuTung phần tử có idLoaiPT nào
+      var foundLoaiPT = $scope.listLoaiPhuTung.find((item) => item.idLoaiPT === accessory.loaiPT);
+      if (foundLoaiPT) {
+        accessory.loaiPT = foundLoaiPT; // Gán lại object
+      }
+    }
+    if (typeof accessory.dichVuPT === "string") {
+      // Tìm trong listLoaiPhuTung phần tử có idDichVu nào
+      var foundLoaiDV = $scope.listDichVu.find((item) => item.idDichVu === accessory.dichVuPT);
+      if (foundLoaiDV) {
+        accessory.dichVuPT = foundLoaiDV; // Gán lại object
+      }
+    }
+    // Xử lý ngày
+    if (accessory.ngayNhapKho) {
+      accessory.ngayNhapKho = new Date(accessory.ngayNhapKho);
+    }
+    if (accessory.hanSuDung) {
+      accessory.hanSuDung = new Date(accessory.hanSuDung);
+    }
+    $scope.newAccessory = angular.copy(accessory);
+    $scope.isEditMode = true;
+  };
+  // xem pt.loaiPT là object hay chuỗi, rồi trả về ID
+  $scope.getLoaiPTDisplay = function (loaiPT) {
+    // Nếu là object => lấy loaiPT.idLoaiPT
+    if (loaiPT && typeof loaiPT === "object" && loaiPT.idLoaiPT) {
+      return loaiPT.idLoaiPT;
+    }
+    // Nếu là chuỗi => trả về chính chuỗi đó
+    return loaiPT || "";
+  };
+  //xem pt.dichVuPT là object hay chuỗi, rồi trả về ID
+  $scope.getLoaiDVDisplay = function (dichVuPT) {
+    // Nếu là object => lấy loaiPT.idLoaiPT
+    if (dichVuPT && typeof dichVuPT === "object" && dichVuPT.idDichVu) {
+      return dichVuPT.idDichVu;
+    }
+    // Nếu là chuỗi => trả về chính chuỗi đó
+    return dichVuPT || "";
+  };
+  // Hàm xóa phụ tùng
+  $scope.deletePhuTung = function (idPhuTung) {
+    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+      PhuTungService.deletePhuTung(idPhuTung).then(
+        function () {
+          alert("Phụ tùng đã được xóa thành công!");
+          $scope.getAllAccessorys();
+        },
+        function (err) {
+          console.error("Lỗi khi xóa phụ tùng:", err);
+          alert("Lỗi khi xóa phụ tùng, vui lòng thử lại.");
+        }
+      );
+    }
+  };
+  // ========== Load danh sách loại phụ tùng cho dropdown ==========
+  $scope.loadListLoaiPT = function () {
+    LoaiPhuTungService.getAllLoaiPT().then(
+      function (response) {
+        $scope.listLoaiPhuTung = response.data;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy loại phụ tùng:", error);
+        $window.alert("Lỗi khi tải danh sách loại phụ tùng.");
+      }
+    );
+  };
+
+  // ========== Load danh sách dịch vụ cho dropdown ==========
+  $scope.loadListDV = function () {
+    DichVuService.getAllDichVu().then(
+      function (response) {
+        $scope.listDichVu = response.data;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy dịch vụ:", error);
+      }
+    );
+  };
+
+  // Hàm khởi tạo
+  $scope.init = function () {
+    $scope.getAllAccessorys();
+    $scope.loadListLoaiPT();
+    $scope.loadListDV();
+  };
+
+  // Gọi hàm khởi tạo khi controller được load
+  $scope.init();
 });
 app.controller("BookingController", function ($scope) {
   $scope.pageTitle = "Quản lý lịch hẹn";
