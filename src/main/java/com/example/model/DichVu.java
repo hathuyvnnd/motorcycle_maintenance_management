@@ -37,6 +37,8 @@ public class DichVu {
 
     @Column(name = "MoTa")
     private String moTa;
+    @Column(name = "HinhAnh")
+    private String hinhAnh;
     @OneToMany(mappedBy = "dichVu", fetch = FetchType.LAZY)
     // @JsonManagedReference
     Set<PhieuDichVuCT> phieuDichVuList;
