@@ -1,6 +1,8 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +42,7 @@ public class PhuTung {
     private String moTa;
 
     @Column(name = "ThuongHieu")
+
     private String thuongHieu;
 
     @Column(name = "TinhTrang")

@@ -20,4 +20,9 @@ public class LoaiPhuTungServiceImpl implements LoaiPhuTungService{
         
     }
 
+    @Override
+    public LoaiPhuTung findById(String idLoaiPT){
+        return loaiPTDao.findById(idLoaiPT).orElse(null);
+    }
+
 }
