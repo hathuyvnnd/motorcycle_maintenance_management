@@ -1,42 +1,51 @@
 package com.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import java.util.Set;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="NhanVien")
+@Table(name = "NhanVien")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "idNhanVien")
 public class NhanVien {
     @Id
+    @Column(name = "IdNhanVien", unique = true)
     private String idNhanVien;
-    private String idTaiKhoan;
-    private String soDienThoai;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SoDienThoai", referencedColumnName = "IdTaiKhoan", unique = true)
+    private TaiKhoan taiKhoanNV;
+
+    @Column(name = "Ten")
     private String ten;
+
+    @Column(name = "DiaChi")
     private String diaChi;
+
+    @Column(name = "Email")
     private String email;
+
+    @Column(name = "HinhAnh")
     private String hinhAnh;
 
-    @OneToMany(mappedBy = "idNhanVienTaoPhieu")
-    List<PhieuDichVu> phieuDichVuList;
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    // cascade = CascadeType.REMOVE: dùng để xoá luôn bảng con khi xoá bảng cha
+    // @JsonManagedReference
+    Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
 
-    @OneToMany(mappedBy = "nhanVienPGN")
-    List<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
+    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    // @JsonManagedReference
+    Set<HoaDon> hoaDonList;
 
-    @OneToMany(mappedBy = "nhanVienTN")
-    List<HoaDon> hoaDonList;
+    @OneToMany(mappedBy = "nhanVienTaoPhieu", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    // @JsonManagedReference
+    Set<PhieuDichVu> phieuDichVuList;
 
-    @OneToOne
-    @JoinColumn(name="IdTaiKhoan")
-    TaiKhoan taiKhhoanNV;
 }
