@@ -60,5 +60,9 @@ public class PhuTung {
     @OneToMany(mappedBy = "phuTung", fetch = FetchType.LAZY)
     // @JsonManagedReference
     private Set<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
+    @ManyToOne
+    @JoinColumn(name = "IdDichVu")
+    // @JsonBackReference
+    private DichVu dichVu;
 
 }
