@@ -198,7 +198,22 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
     if (!$scope.newEmployee.taiKhoanNV) {
       $scope.newEmployee.taiKhoanNV = {};
     }
+    // Nếu tài khoản này không nằm trong availableAccounts,
+    // ta thêm thủ công để select box hiển thị được
+    var currentId = $scope.newEmployee.taiKhoanNV.idTaiKhoan;
+    if (
+      currentId &&
+      !$scope.availableAccounts.some(function (acc) {
+        return acc.idTaiKhoan === currentId;
+      })
+    ) {
+      $scope.availableAccounts.push({
+        idTaiKhoan: currentId,
+      });
+    }
+
     $scope.isEditMode = true;
+    // console.log($scope.newEmployee);
   };
 
   // Hàm xóa nhân viên
@@ -335,8 +350,8 @@ app.controller("AccountController", function ($scope, AccountService) {
 
   // Các biến dữ liệu từng tab
   $scope.newAccountAdmin = {};
-  $scope.newAccountEmployee = {};
-  $scope.newAccountCustomer = {};
+  $scope.newAccountEmployee = { trangThai: true };
+  $scope.newAccountCustomer = { trangThai: true };
   // Các biến trạng thái sửa
   $scope.isEditModeAdmin = false;
   $scope.isEditModeEmployee = false;
@@ -502,9 +517,174 @@ app.controller("AccountController", function ($scope, AccountService) {
   $scope.getAllAccounts();
 });
 
-app.controller("ServiceController", function ($scope) {
-  $scope.pageTitle = "Quản lý dịch vụ";
+// ============== Service cho Dịch vụ ==============
+app.factory("DichVuService", function ($http) {
+  var baseUrl = "/api/dichvu_admin";
+  return {
+    // 1. Lấy tất cả dịch vụ
+    getAllDichVu: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy dịch vụ theo ID
+    getDichVuById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+    // 3. Thêm dịch vụ (kèm file)
+    addDichVu: function (dichVu, file) {
+      var formData = new FormData();
+      formData.append("dichVu", new Blob([JSON.stringify(dichVu)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.post(baseUrl + "/upload", formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 4a. Cập nhật dịch vụ không có file
+    updateDichVu: function (id, dichVu) {
+      return $http.put(baseUrl + "/" + id, dichVu);
+    },
+    // 4b. Cập nhật dịch vụ có file
+    updateDichVuWithFile: function (id, dichVu, file) {
+      var formData = new FormData();
+      formData.append("dichVu", new Blob([JSON.stringify(dichVu)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.put(baseUrl + "/updateWithFile/" + id, formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 5. Xóa dịch vụ
+    deleteDichVu: function (id) {
+      return $http.delete(baseUrl + "/" + id);
+    },
+  };
 });
+
+// ============== Controller cho Dịch vụ ==============
+app.controller("ServiceController", function ($scope, DichVuService) {
+  $scope.pageTitle = "Quản lý dịch vụ";
+  $scope.services = [];
+  $scope.newService = { trangThai: true };
+  $scope.isEditMode = false;
+  $scope.file = null;
+
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Hàm load danh sách dịch vụ
+  $scope.getAllServices = function () {
+    DichVuService.getAllDichVu().then(
+      function (response) {
+        $scope.services = response.data;
+        $scope.totalItems = $scope.services.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách dịch vụ:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.services.slice(start, start + $scope.pageSize);
+  };
+
+  // Lưu file được chọn vào $scope.file
+  $scope.setFile = function (files) {
+    if (files && files.length > 0) {
+      $scope.file = files[0];
+      $scope.$apply();
+    }
+  };
+
+  // Hàm lưu dịch vụ (thêm mới hoặc cập nhật)
+  $scope.saveService = function () {
+    if (!$scope.isEditMode) {
+      // Thêm mới
+      if (!$scope.file) {
+        alert("Vui lòng chọn file ảnh!");
+        return;
+      }
+      DichVuService.addDichVu($scope.newService, $scope.file).then(
+        function (res) {
+          $scope.getAllServices();
+          $scope.newService = {};
+          $scope.file = null;
+          document.getElementById("profileImage").value = "";
+        },
+        function (err) {
+          console.error("Lỗi khi thêm dịch vụ:", err);
+        }
+      );
+    } else {
+      // Cập nhật
+      if ($scope.file) {
+        // Cập nhật có file
+        DichVuService.updateDichVuWithFile($scope.newService.idDichVu, $scope.newService, $scope.file).then(
+          function (res) {
+            $scope.getAllServices();
+            $scope.newService = {};
+            $scope.isEditMode = false;
+            $scope.file = null;
+            document.getElementById("profileImage").value = "";
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật dịch vụ:", err);
+          }
+        );
+      } else {
+        // Cập nhật không file
+        DichVuService.updateDichVu($scope.newService.idDichVu, $scope.newService).then(
+          function (res) {
+            $scope.getAllServices();
+            $scope.newService = {};
+            $scope.isEditMode = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật dịch vụ:", err);
+          }
+        );
+      }
+    }
+  };
+
+  // Hàm chọn dịch vụ để sửa
+  $scope.selectService = function (service) {
+    $scope.newService = angular.copy(service);
+    $scope.isEditMode = true;
+    console.log("Selected service:", $scope.newService);
+  };
+
+  // Hàm xóa dịch vụ
+  $scope.deleteDichVu = function (idDichVu) {
+    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+      DichVuService.deleteDichVu(idDichVu).then(
+        function () {
+          alert("Dịch vụ đã được xóa thành công!");
+          $scope.getAllServices();
+        },
+        function (err) {
+          console.error("Lỗi khi xóa dịch vụ:", err);
+          alert("Lỗi khi xóa dịch vụ, vui lòng thử lại.");
+        }
+      );
+    }
+  };
+
+  // Khởi tạo: load danh sách dịch vụ
+  $scope.getAllServices();
+});
+
 app.controller("AccessoryController", function ($scope) {
   $scope.pageTitle = "Quản lý phụ tùng";
 });

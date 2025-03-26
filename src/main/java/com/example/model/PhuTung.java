@@ -46,7 +46,7 @@ public class PhuTung {
     private String thuongHieu;
 
     @Column(name = "TinhTrang")
-    private String tinhTrang;
+    private Boolean tinhTrang;
 
     @Column(name = "PhuHopLoaiXe")
     private String phuHopLoaiXe;

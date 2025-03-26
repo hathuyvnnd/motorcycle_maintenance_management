@@ -6,6 +6,8 @@ import com.example.model.KhachHang;
 import com.example.model.NhanVien;
 import com.example.service.KhachHangService;
 import com.example.service.NhanVienService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +15,13 @@ import java.util.Optional;
 
 @Service
 public class KhachHangServiceImpl implements KhachHangService {
+    @Autowired
+    private KhachHangDao khachHangDao;
 
-    private final KhachHangDao khachHangDao;
-
-    // Constructor injection
-    public KhachHangServiceImpl(KhachHangDao khachHangDao) {
-        this.khachHangDao = khachHangDao;
-    }
+    // // Constructor injection
+    // public KhachHangServiceImpl(KhachHangDao khachHangDao) {
+    // this.khachHangDao = khachHangDao;
+    // }
 
     @Override
     public List<KhachHang> findAll() {

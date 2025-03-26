@@ -32,7 +32,7 @@ public class LichHen {
     private LoaiXe idLoaiXe;
 
     @Column(name = "TrangThai")
-    private String trangThai;
+    private Boolean trangThai;
 
     @Column(name = "BienSoXe")
     private String bienSoXe;
