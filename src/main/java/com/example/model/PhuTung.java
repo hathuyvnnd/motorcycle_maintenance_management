@@ -1,6 +1,8 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,14 +27,14 @@ public class PhuTung {
     @JsonBackReference
     private LoaiPhuTung loaiPT;
 
-    String moTa;
+    private String moTa;
     private String thuongHieu;
     private String tinhTrang;
     private String phuHopLoaiXe;
     private String hinhAnh;
     private Date ngayNhapKho;
     private Date hanSuDung;
-
+    @JsonIgnore 
     @OneToMany(mappedBy = "phuTung")
     private List<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
 

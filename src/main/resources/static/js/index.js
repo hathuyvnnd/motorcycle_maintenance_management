@@ -7,7 +7,7 @@ app.config(function($routeProvider){
         controller: "HomeController",
     })
     
-    .when("/phutung",{
+    .when("/phutung/:idLoaiPT",{
         templateUrl:"views/phutung.html",
         controller:"PhuTungController",
     })
@@ -79,15 +79,48 @@ app.controller("HomeController",function($scope,$http,$rootScope){
         $scope.sortOrder = order;
     };
 
-});
-
-
-
-app.controller("PhuTungController",function($scope){
-    $scope.title = "Phụ Tùng";
-
-
 })
+
+
+
+app.controller("PhuTungController",function($scope,$rootScope,$http,$routeParams){
+    $scope.title = "Phụ Tùng";
+    $rootScope.listPhuTung = [];
+    $scope.currentPage = 1;
+    $scope.itemsPerPage = 6;
+
+    // Lấy idLoaiPT từ URL
+    var idLoaiPT = $routeParams.idLoaiPT; 
+    console.log("🔍 Lấy danh sách phụ tùng cho loại: ", idLoaiPT);
+    // Gọi API để lấy danh sách phụ tùng
+    $http.get('/api/phutung?idLoaiPT=' + idLoaiPT).then(function (response) {
+        $rootScope.listPhuTung = response.data;
+        $scope.totalPages = Math.ceil($rootScope.listPhuTung.length / $scope.itemsPerPage);
+        $scope.pageNumbers = Array.from({length:$scope.totalPages},(_,i) => i+1);
+    }, function (error) {
+        console.error("Lỗi tải phụ tùng theo loại", error);
+    });
+
+    $scope.changePage = function (page) {
+        if(page >= 1 && page <= $scope.totalPages){
+            $scope.currentPage = page;
+        }
+    };
+
+    $scope.sortBy = function (order) {
+        $scope.sortOrder = order;
+    };
+    $http.get('/api/loaiphutung').then(function(response){
+        $rootScope.listLoaiPT = response.data;
+
+},
+function(error){
+    console.error("Lỗi tải dữ liệu",error);
+});
+})
+
+
+
 app.controller("GioiThieuController",function($scope){
     $scope.title = "Giới Thiệu";
 })
