@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("KhachHang")
+@DiscriminatorValue("Khách hàng")
 public class TaiKhoanKhachHang extends TaiKhoan {
     @OneToOne(mappedBy = "taiKhoanKH", fetch = FetchType.LAZY)
     private KhachHang khachHang;
