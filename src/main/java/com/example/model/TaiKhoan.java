@@ -31,9 +31,4 @@ public class TaiKhoan {
     @Column(name = "VaiTro", insertable = false, updatable = false, columnDefinition = "NVARCHAR(20)")
     private String vaiTro;
 
-    @OneToOne(mappedBy = "taiKhoanNV")
-    NhanVien nhanVien;
-
-    @OneToOne(mappedBy = "taiKhoanKH")
-    KhachHang khachHang;
 }
