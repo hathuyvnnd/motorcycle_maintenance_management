@@ -33,10 +33,11 @@ public class PhieuGhiNhanTinhTrangXe {
     @JoinColumn(name = "IdNhanVien")
     // @JsonBackReference
     private NhanVien nhanVien;
-
-    @ManyToOne
-    @JoinColumn(name = "IdKhachHang")
-    // @JsonBackReference
-    private KhachHang khachHang;
+    @OneToOne(mappedBy = "phieuGNX")
+    private HoaDon hoaDon;
+    // @ManyToOne
+    // @JoinColumn(name = "IdKhachHang")
+    // // @JsonBackReference
+    // private KhachHang khachHang;
 
 }

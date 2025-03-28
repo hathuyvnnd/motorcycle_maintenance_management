@@ -107,7 +107,7 @@
           <th scope="row">{{ $index + 1 + (currentPage - 1) * pageSize }}</th>
           <td>{{ service.idDichVu }}</td>
           <td>{{ service.tenDichVu }}</td>
-          <td>{{ service.giaDichVu }}</td>
+          <td>{{ service.giaDichVu | currency:"":0 }} VND</td>
           <td>{{ service.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
           <td>{{ service.moTa }}</td>
           <td>

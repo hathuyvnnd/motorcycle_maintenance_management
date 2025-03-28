@@ -29,6 +29,9 @@ public class HoaDon {
 
     // @JsonBackReference
     private NhanVien nhanVien;
+    @OneToOne
+    @JoinColumn(name = "IdPhieuGNX")
+    private PhieuGhiNhanTinhTrangXe phieuGNX;
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
