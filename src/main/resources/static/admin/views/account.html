@@ -1,29 +1,16 @@
-<div>
-  <h3><b>{{pageTitle}}</b></h3>
+<div ng-controller="AccountController">
+  <h3><b>{{ pageTitle }}</b></h3>
   <ul class="nav nav-tabs" id="accountTabs" role="tablist">
     <li class="nav-item" role="presentation">
       <button
         class="nav-link active"
-        id="admin-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#admin"
-        type="button"
-        role="tab"
-        aria-controls="admin"
-        aria-selected="true">
-        Tài khoản quản trị viên
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link"
         id="employee-tab"
         data-bs-toggle="tab"
         data-bs-target="#employee"
         type="button"
         role="tab"
         aria-controls="employee"
-        aria-selected="false">
+        aria-selected="true">
         Tài khoản nhân viên
       </button>
     </li>
@@ -41,113 +28,92 @@
       </button>
     </li>
   </ul>
-  <div class="tab-content" id="accountTabsContent">
-    <!-- Admin Accounts Tab -->
-    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-      <form class="mt-4">
-        <div class="row mb-3">
-          <label for="idTaiKhoanAdmin" class="col-sm-2 col-form-label">ID Tài Khoản</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="idTaiKhoanAdmin" placeholder="ID Tài Khoản" />
-          </div>
-          <label for="matKhauAdmin" class="col-sm-2 col-form-label">Mật Khẩu</label>
-          <div class="col-sm-4">
-            <input type="password" class="form-control" id="matKhauAdmin" placeholder="Mật Khẩu" />
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label for="trangThaiAdmin" class="col-sm-2 col-form-label">Trạng Thái</label>
-          <div class="col-sm-4">
-            <select class="form-select" id="trangThaiAdmin">
-              <option value="1">Hoạt động</option>
-              <option value="0">Không hoạt động</option>
-            </select>
-          </div>
-          <label for="nhapLaiMatKhauAdmin" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="nhapLaiMatKhauAdmin" placeholder="Nhập Lại Mật Khẩu" />
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label for="vaiTroAdmin" class="col-sm-2 col-form-label">Vai Trò</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="vaiTroAdmin" placeholder="Vai Trò" />
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
-        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
-      </form>
-      <div class="mt-5">
-        <h3><b>Danh sách tài khoản quản trị viên</b></h3>
-        <table class="table table-bordered mt-3">
-          <thead>
-            <tr>
-              <th scope="col">STT</th>
-              <th scope="col">ID Tài Khoản</th>
-              <th scope="col">Mật Khẩu</th>
-              <th scope="col">Vai Trò</th>
-              <th scope="col">Trạng Thái</th>
-              <th scope="col">Chức Năng</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>001</td>
-              <td>abc</td>
-              <td>Quản trị viên</td>
-              <td>Hoạt động</td>
-              <td>
-                <button class="btn btn-warning btn-sm">Sửa</button>
-                <button class="btn btn-danger btn-sm">Xóa</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center mt-3">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
 
+  <div class="tab-content mt-3" id="accountTabsContent">
     <!-- Employee Accounts Tab -->
-    <div class="tab-pane fade" id="employee" role="tabpanel" aria-labelledby="employee-tab">
-      <form class="mt-4">
+    <div class="tab-pane fade show active" id="employee" role="tabpanel" aria-labelledby="employee-tab">
+      <form class="mt-4" name="employeeForm" novalidate ng-submit="saveAccount('employee')">
         <div class="row mb-3">
-          <label for="idTaiKhoanNhanVien" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <label for="idTaiKhoanEmployee" class="col-sm-2 col-form-label">ID Tài Khoản</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="idTaiKhoanNhanVien" placeholder="ID Tài Khoản" />
+            <input
+              type="text"
+              class="form-control"
+              id="idTaiKhoanEmployee"
+              placeholder="ID Tài Khoản"
+              ng-model="newAccountEmployee.idTaiKhoan"
+              ng-disabled="isEditModeEmployee" />
           </div>
           <label for="matKhauNhanVien" class="col-sm-2 col-form-label">Mật Khẩu</label>
-          <div class="col-sm-4">
-            <input type="password" class="form-control" id="matKhauNhanVien" placeholder="Mật Khẩu" />
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showPasswordEmployee ? 'text' : 'password' }}"
+              class="form-control"
+              id="matKhauNhanVien"
+              placeholder="Mật Khẩu"
+              ng-model="newAccountEmployee.matKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showPasswordEmployee = !showPasswordEmployee">
+              <i class="fa" ng-class="{'fa-eye': !showPasswordEmployee, 'fa-eye-slash': showPasswordEmployee}"></i>
+            </span>
           </div>
         </div>
         <div class="row mb-3">
           <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
-            <select class="form-select" id="trangThaiNhanVien">
-              <option value="1">Hoạt động</option>
-              <option value="0">Không hoạt động</option>
+            <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
             </select>
           </div>
-          <label for="vaiTroNhanVien" class="col-sm-2 col-form-label">Vai Trò</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="vaiTroNhanVien" placeholder="Vai Trò" />
+          <label for="nhapLaiMatKhauNhanVien" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showRePasswordEmployee ? 'text' : 'password' }}"
+              class="form-control"
+              id="nhapLaiMatKhauNhanVien"
+              placeholder="Nhập Lại Mật Khẩu"
+              ng-model="newAccountEmployee.nhapLaiMatKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showRePasswordEmployee = !showRePasswordEmployee">
+              <i class="fa" ng-class="{'fa-eye': !showRePasswordEmployee, 'fa-eye-slash': showRePasswordEmployee}"></i>
+            </span>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
-        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+        <div class="row mb-3" ng-if="newAccountEmployee.matKhau && newAccountEmployee.nhapLaiMatKhau">
+          <div class="col-sm-12">
+            <span ng-if="newAccountEmployee.matKhau === newAccountEmployee.nhapLaiMatKhau" class="text-success">
+              Mật khẩu khớp.
+            </span>
+            <span ng-if="newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau" class="text-danger">
+              Mật khẩu và nhập lại mật khẩu không khớp.
+            </span>
+          </div>
+        </div>
+        <!-- <div class="row mb-3">
+          <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
+            </select>
+          </div>
+        </div> -->
+        <div>
+          <button
+            type="submit"
+            class="btn btn-primary me-2"
+            ng-disabled="newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau">
+            {{ isEditModeEmployee ? "Cập Nhật Tài Khoản" : "Thêm Tài Khoản" }}
+          </button>
+          <button type="button" class="btn btn-secondary" ng-click="resetEmployeeForm()">Reset</button>
+        </div>
       </form>
       <div class="mt-5">
         <h3><b>Danh sách tài khoản nhân viên</b></h3>
@@ -163,63 +129,108 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>002</td>
-              <td>xyz</td>
-              <td>Nhân viên</td>
-              <td>Hoạt động</td>
+            <tr ng-repeat="account in accountsEmployee track by $index">
+              <th scope="row">{{ $index + 1 }}</th>
+              <td>{{ account.idTaiKhoan }}</td>
+              <td>{{ account.matKhau }}</td>
+              <td>{{ account.vaiTro }}</td>
+              <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
               <td>
-                <button class="btn btn-warning btn-sm">Sửa</button>
-                <button class="btn btn-danger btn-sm">Xóa</button>
+                <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'employee')">Sửa</button>
+                <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'employee')">
+                  Xóa
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center mt-3">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
 
     <!-- Customer Accounts Tab -->
     <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-      <form class="mt-4">
+      <form class="mt-4" name="customerForm" novalidate ng-submit="saveAccount('customer')">
         <div class="row mb-3">
-          <label for="idTaiKhoanKhachHang" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <label for="idTaiKhoanCustomer" class="col-sm-2 col-form-label">ID Tài Khoản</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="idTaiKhoanKhachHang" placeholder="ID Tài Khoản" />
+            <input
+              type="text"
+              class="form-control"
+              id="idTaiKhoanCustomer"
+              placeholder="ID Tài Khoản"
+              ng-model="newAccountCustomer.idTaiKhoan"
+              ng-disabled="isEditModeCustomer" />
           </div>
           <label for="matKhauKhachHang" class="col-sm-2 col-form-label">Mật Khẩu</label>
-          <div class="col-sm-4">
-            <input type="password" class="form-control" id="matKhauKhachHang" placeholder="Mật Khẩu" />
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showPasswordCustomer ? 'text' : 'password' }}"
+              class="form-control"
+              id="matKhauKhachHang"
+              placeholder="Mật Khẩu"
+              ng-model="newAccountCustomer.matKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showPasswordCustomer = !showPasswordCustomer">
+              <i class="fa" ng-class="{'fa-eye': !showPasswordCustomer, 'fa-eye-slash': showPasswordCustomer}"></i>
+            </span>
           </div>
         </div>
         <div class="row mb-3">
           <label for="trangThaiKhachHang" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
-            <select class="form-select" id="trangThaiKhachHang">
-              <option value="1">Hoạt động</option>
-              <option value="0">Không hoạt động</option>
+            <select class="form-select" id="trangThaiKhachHang" ng-model="newAccountCustomer.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
             </select>
           </div>
-          <label for="vaiTroKhachHang" class="col-sm-2 col-form-label">Vai Trò</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="vaiTroKhachHang" placeholder="Vai Trò" />
+          <label for="nhapLaiMatKhauKhachHang" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showRePasswordCustomer ? 'text' : 'password' }}"
+              class="form-control"
+              id="nhapLaiMatKhauKhachHang"
+              placeholder="Nhập Lại Mật Khẩu"
+              ng-model="newAccountCustomer.nhapLaiMatKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showRePasswordCustomer = !showRePasswordCustomer">
+              <i class="fa" ng-class="{'fa-eye': !showRePasswordCustomer, 'fa-eye-slash': showRePasswordCustomer}"></i>
+            </span>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm Tài Khoản</button>
-        <button type="button" class="btn btn-secondary">Cập Nhật Tài Khoản</button>
+        <div class="row mb-3" ng-if="newAccountCustomer.matKhau && newAccountCustomer.nhapLaiMatKhau">
+          <div class="col-sm-12">
+            <span ng-if="newAccountCustomer.matKhau === newAccountCustomer.nhapLaiMatKhau" class="text-success">
+              Mật khẩu khớp.
+            </span>
+            <span ng-if="newAccountCustomer.matKhau !== newAccountCustomer.nhapLaiMatKhau" class="text-danger">
+              Mật khẩu và nhập lại mật khẩu không khớp.
+            </span>
+          </div>
+        </div>
+        <!-- <div class="row mb-3">
+          <label for="trangThaiKhachHang" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <select class="form-select" id="trangThaiKhachHang" ng-model="newAccountCustomer.trangThai" required>
+              <option value="true" selected>Hoạt động</option>
+              <option value="false">Không hoạt động</option>
+            </select>
+          </div>
+        </div> -->
+        <div>
+          <button
+            type="submit"
+            class="btn btn-primary me-2"
+            ng-disabled="newAccountCustomer.matKhau !== newAccountCustomer.nhapLaiMatKhau">
+            {{ isEditModeCustomer ? "Cập Nhật Tài Khoản" : "Thêm Tài Khoản" }}
+          </button>
+          <button type="button" class="btn btn-secondary" ng-click="resetCustomerForm()">Reset</button>
+        </div>
       </form>
       <div class="mt-5">
         <h3><b>Danh sách tài khoản khách hàng</b></h3>
@@ -235,32 +246,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>003</td>
-              <td>pqr</td>
-              <td>Khách hàng</td>
-              <td>Không hoạt động</td>
+            <tr ng-repeat="account in accountsCustomer track by $index">
+              <th scope="row">{{ $index + 1 }}</th>
+              <td>{{ account.idTaiKhoan }}</td>
+              <td>{{ account.matKhau }}</td>
+              <td>{{ account.vaiTro }}</td>
+              <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
               <td>
-                <button class="btn btn-warning btn-sm">Sửa</button>
-                <button class="btn btn-danger btn-sm">Xóa</button>
+                <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'customer')">Sửa</button>
+                <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'customer')">
+                  Xóa
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center mt-3">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   </div>

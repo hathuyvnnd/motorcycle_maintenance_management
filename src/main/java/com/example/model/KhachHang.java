@@ -9,20 +9,19 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "KhachHang")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idKhachHang")
 public class KhachHang {
@@ -31,11 +30,8 @@ public class KhachHang {
     private String idKhachHang;
 
     @OneToOne
-    @JoinColumn(name = "IdTaiKhoan", referencedColumnName = "IdTaiKhoan", unique = true)
+    @JoinColumn(name = "SoDienThoai", referencedColumnName = "IdTaiKhoan", unique = true)
     private TaiKhoan taiKhoanKH;
-
-    @Column(name = "SoDienThoai")
-    private String soDienThoai;
 
     @Column(name = "DiaChi")
     private String diaChi;

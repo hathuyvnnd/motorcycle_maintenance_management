@@ -1,20 +1,19 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -43,6 +42,7 @@ public class PhuTung {
     private String moTa;
 
     @Column(name = "ThuongHieu")
+
     private String thuongHieu;
 
     @Column(name = "TinhTrang")
@@ -63,5 +63,9 @@ public class PhuTung {
     @OneToMany(mappedBy = "phuTung", fetch = FetchType.LAZY)
     // @JsonManagedReference
     private Set<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
+    @ManyToOne
+    @JoinColumn(name = "IdDichVu")
+    // @JsonBackReference
+    private DichVu dichVuPT;
 
 }

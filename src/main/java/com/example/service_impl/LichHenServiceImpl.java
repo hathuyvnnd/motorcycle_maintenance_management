@@ -91,6 +91,24 @@ public class LichHenServiceImpl implements LichHenService {
         return LichHenService.super.exitsById(s);
     }
 
+    public String generateNewId() {
+        // Lấy ID cuối cùng
+        String lastId = lichHenRepository.findLastId();
+
+        // Nếu không có ID, tạo ID đầu tiên
+        if (lastId == null) {
+            return "LH001";
+        }
+
+        // Lấy phần số từ ID (bỏ phần "KH") và tăng nó lên
+        int number = Integer.parseInt(lastId.substring(2));
+        number++;
+
+        // Ghép phần số mới với "KH"
+        return String.format("LH%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
+
+    }
+
 
 //    @Override
 //    public LichHenResponse getLichHenById(String id) {

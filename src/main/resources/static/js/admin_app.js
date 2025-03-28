@@ -2,7 +2,6 @@
 
 app.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
-
   $scope.toggleSidebar = function () {
     $scope.isSidebarHidden = !$scope.isSidebarHidden;
   };
@@ -50,47 +49,61 @@ app.config(function ($routeProvider) {
     });
 });
 
-// MHÂN VIÊN ------------------------------------------------------------------------------------
-// Service cho NhanVien: gọi API của Spring Boot tại /api/nhanvien
+// ============== Service cho NhanVien ==============
 app.factory("NhanVienService", function ($http) {
   var baseUrl = "/api/nhanvien";
   return {
-    // Lấy tất cả nhân viên
+    // 1. Lấy tất cả nhân viên
     getAllNhanVien: function () {
       return $http.get(baseUrl);
     },
-    // Lấy nhân viên theo ID
+    // 2. Lấy nhân viên theo ID
     getNhanVienById: function (id) {
       return $http.get(baseUrl + "/" + id);
     },
-    // Thêm nhân viên
-    addNhanVien: function (nhanVien) {
-      return $http.post(baseUrl, nhanVien);
+    // 3. Thêm nhân viên (kèm file)
+    addNhanVien: function (nhanVien, file) {
+      var formData = new FormData();
+      formData.append("nhanVien", new Blob([JSON.stringify(nhanVien)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.post(baseUrl + "/upload", formData, {
+        headers: { "Content-Type": undefined },
+      });
     },
-    // Cập nhật nhân viên
+    // 4a. Cập nhật nhân viên không có file
     updateNhanVien: function (id, nhanVien) {
       return $http.put(baseUrl + "/" + id, nhanVien);
     },
-    // Xóa nhân viên
+    // 4b. Cập nhật nhân viên có file
+    updateNhanVienWithFile: function (id, nhanVien, file) {
+      var formData = new FormData();
+      formData.append("nhanVien", new Blob([JSON.stringify(nhanVien)], { type: "application/json" }));
+      formData.append("file", file);
+      return $http.put(baseUrl + "/updateWithFile/" + id, formData, {
+        headers: { "Content-Type": undefined },
+      });
+    },
+    // 5. Xóa nhân viên
     deleteNhanVien: function (id) {
       return $http.delete(baseUrl + "/" + id);
     },
   };
 });
 
-// Controller cho trang quản lý nhân viên
-app.controller("EmployeeController", function ($scope, NhanVienService) {
+// ============== Controller cho trang quản lý nhân viên ==============
+app.controller("EmployeeController", function ($scope, NhanVienService, AccountService) {
   $scope.pageTitle = "Quản lý nhân viên";
   $scope.employees = [];
-  $scope.newEmployee = {}; // Đối tượng dùng để thêm mới
-  $scope.selectedEmployee = {}; // Đối tượng dùng để sửa
-
-  // Biến phân trang
+  $scope.newEmployee = { taiKhoanNV: {} };
+  $scope.isEditMode = false;
+  $scope.file = null;
+  $scope.availableAccounts = []; // Mảng lưu danh sách tài khoản khả dụng
+  // Phân trang
   $scope.currentPage = 1;
-  $scope.pageSize = 10; // Số mục trên mỗi trang
+  $scope.pageSize = 5;
   $scope.totalItems = 0;
 
-  // Hàm load danh sách nhân viên
+  // Load danh sách
   $scope.getAllEmployees = function () {
     NhanVienService.getAllNhanVien().then(
       function (response) {
@@ -103,81 +116,392 @@ app.controller("EmployeeController", function ($scope, NhanVienService) {
     );
   };
 
-  // Hàm trả về số trang
   $scope.getPageCount = function () {
     return Math.ceil($scope.totalItems / $scope.pageSize);
   };
 
-  // Hàm chuyển trang
   $scope.setPage = function (page) {
     if (page >= 1 && page <= $scope.getPageCount()) {
       $scope.currentPage = page;
     }
   };
 
-  // Hàm cắt dữ liệu theo trang hiện tại
   $scope.getPaginatedData = function () {
     var start = ($scope.currentPage - 1) * $scope.pageSize;
     return $scope.employees.slice(start, start + $scope.pageSize);
   };
 
-  // Thêm nhân viên mới
-  $scope.addEmployee = function () {
-    NhanVienService.addNhanVien($scope.newEmployee).then(
-      function (response) {
-        // Sau khi thêm thành công, load lại danh sách từ server
-        $scope.getAllEmployees();
-        $scope.newEmployee = {}; // Reset form
-      },
-      function (error) {
-        console.error("Lỗi khi thêm nhân viên:", error);
-      }
-    );
+  // Lưu file chọn vào $scope.file
+  $scope.setFile = function (files) {
+    if (files && files.length > 0) {
+      $scope.file = files[0];
+      $scope.$apply();
+    }
   };
 
-  // Chọn nhân viên để chỉnh sửa
+  // Lưu nhân viên (thêm mới hoặc sửa)
+  $scope.saveEmployee = function () {
+    if (!$scope.isEditMode) {
+      // Thêm mới
+      if (!$scope.file) {
+        alert("Vui lòng chọn file ảnh!");
+        return;
+      }
+      NhanVienService.addNhanVien($scope.newEmployee, $scope.file).then(
+        function (res) {
+          $scope.getAllEmployees();
+          // Gọi lại loadAvailableAccounts() để refresh danh sách tài khoản khả dụng (chưa liên kết với nhân viên) trên client
+          $scope.loadAvailableAccounts();
+          $scope.newEmployee = { taiKhoanNV: {} };
+          $scope.file = null;
+          document.getElementById("profileImage").value = "";
+        },
+        function (err) {
+          console.error("Lỗi khi thêm nhân viên:", err);
+        }
+      );
+    } else {
+      // Cập nhật
+      if ($scope.file) {
+        // Cập nhật có file
+        NhanVienService.updateNhanVienWithFile($scope.newEmployee.idNhanVien, $scope.newEmployee, $scope.file).then(
+          function (res) {
+            $scope.getAllEmployees();
+            $scope.newEmployee = { taiKhoanNV: {} };
+            $scope.isEditMode = false;
+            $scope.file = null;
+            document.getElementById("profileImage").value = "";
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật nhân viên:", err);
+          }
+        );
+      } else {
+        // Cập nhật không file
+        NhanVienService.updateNhanVien($scope.newEmployee.idNhanVien, $scope.newEmployee).then(
+          function (res) {
+            $scope.getAllEmployees();
+            $scope.newEmployee = { taiKhoanNV: {} };
+            $scope.isEditMode = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật nhân viên:", err);
+          }
+        );
+      }
+    }
+  };
+
+  // Chọn nhân viên để sửa
   $scope.selectEmployee = function (employee) {
-    $scope.selectedEmployee = angular.copy(employee);
+    $scope.newEmployee = angular.copy(employee);
+    if (!$scope.newEmployee.taiKhoanNV) {
+      $scope.newEmployee.taiKhoanNV = {};
+    }
+    $scope.isEditMode = true;
   };
 
-  // Cập nhật nhân viên
-  $scope.updateEmployee = function () {
-    NhanVienService.updateNhanVien($scope.selectedEmployee.idNhanVien, $scope.selectedEmployee).then(
-      function (response) {
-        $scope.getAllEmployees(); // Load lại danh sách
-        $scope.selectedEmployee = {};
-      },
-      function (error) {
-        console.error("Lỗi khi cập nhật nhân viên:", error);
-      }
-    );
-  };
-
-  // Xóa nhân viên
+  // Hàm xóa nhân viên
   $scope.deleteEmployee = function (idNhanVien) {
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
       NhanVienService.deleteNhanVien(idNhanVien).then(
         function () {
+          alert("Nhân viên đã được xóa thành công!");
           $scope.getAllEmployees();
         },
-        function (error) {
-          console.error("Lỗi khi xóa nhân viên:", error);
+        function (err) {
+          console.error("Lỗi khi xóa nhân viên:", err);
+          alert("Lỗi khi xóa nhân viên, vui lòng thử lại.");
+        }
+      );
+    }
+  };
+  // Hàm load tài khoản khả dụng
+  $scope.loadAvailableAccounts = function () {
+    AccountService.getAvailableAccounts().then(
+      function (response) {
+        $scope.availableAccounts = response.data;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy tài khoản khả dụng:", error);
+      }
+    );
+  };
+
+  // Gọi hàm này khi khởi tạo
+  $scope.init = function () {
+    $scope.getAllEmployees();
+    $scope.loadAvailableAccounts();
+  };
+
+  // Khởi tạo
+  $scope.init();
+});
+
+// ============== Service cho Customer ==============
+app.factory("CustomerService", function ($http) {
+  var baseUrl = "/api/khachhang";
+  return {
+    // 1. Lấy tất cả khách hàng
+    getAllCustomers: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy khách hàng theo ID
+    getCustomerById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+  };
+});
+// ============== Controller cho Customer ==============
+app.controller("CustomerController", function ($scope, CustomerService) {
+  $scope.customers = [];
+  $scope.newCustomer = { taiKhoanKH: {} };
+  $scope.isEditMode = false;
+  $scope.file = null;
+
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Load danh sách
+  $scope.getAllCustomers = function () {
+    CustomerService.getAllCustomers().then(
+      function (response) {
+        $scope.customers = response.data;
+        $scope.totalItems = $scope.customers.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách khách hàng:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.customers.slice(start, start + $scope.pageSize);
+  };
+  $scope.getAllCustomers();
+});
+// ============== Service cho Account ==============
+app.factory("AccountService", function ($http) {
+  var baseUrl = "/api/taikhoan";
+  return {
+    // 1. Lấy tất cả tài khoản
+    getAllAccounts: function () {
+      return $http.get(baseUrl);
+    },
+    // 2. Lấy tài khoản theo ID
+    getAccountById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+    // 3. Thêm tài khoản
+    addAccount: function (account) {
+      return $http.post(baseUrl + "/add_account", account);
+    },
+    // 4. Cập nhật tài khoản
+    updateAccount: function (id, account) {
+      return $http.put(baseUrl + "/update/" + id, account);
+    },
+    // 5. Xóa tài khoản
+    deleteAccount: function (id) {
+      return $http.delete(baseUrl + "/" + id);
+    },
+    //6. Lấy danh sách tài khoản có sẵn chưa liên kết với nhân viên
+    getAvailableAccounts: function () {
+      return $http.get(baseUrl + "/available");
+    },
+  };
+});
+
+// ============== Controller cho Account ==============
+app.controller("AccountController", function ($scope, AccountService) {
+  $scope.pageTitle = "Quản lý tài khoản";
+  $scope.accounts = [];
+  // Danh sách tài khoản theo vai trò
+  $scope.accountsAdmin = [];
+  $scope.accountsEmployee = [];
+  $scope.accountsCustomer = [];
+
+  // Các biến dữ liệu từng tab
+  $scope.newAccountAdmin = {};
+  $scope.newAccountEmployee = {};
+  $scope.newAccountCustomer = {};
+  // Các biến trạng thái sửa
+  $scope.isEditModeAdmin = false;
+  $scope.isEditModeEmployee = false;
+  $scope.isEditModeCustomer = false;
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+  // Khởi tạo các biến hiển thị mật khẩu
+  $scope.showPasswordAdmin = false;
+  $scope.showRePasswordAdmin = false;
+  $scope.showPasswordEmployee = false;
+  $scope.showRePasswordEmployee = false;
+  $scope.showPasswordCustomer = false;
+  $scope.showRePasswordCustomer = false;
+  // Load danh sách tài khoản và phân loại theo vai trò
+  $scope.getAllAccounts = function () {
+    AccountService.getAllAccounts().then(
+      function (response) {
+        $scope.accounts = response.data;
+        // Phân loại theo vai trò dựa trên giá trị vaiTro
+        $scope.accountsAdmin = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Admin";
+        });
+        $scope.accountsEmployee = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Nhân viên";
+        });
+        $scope.accountsCustomer = $scope.accounts.filter(function (account) {
+          return account.vaiTro === "Khách hàng";
+        });
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách tài khoản:", error);
+      }
+    );
+  };
+
+  // Các hàm thêm/cập nhật/xóa tài khoản dựa trên vai trò
+  $scope.saveAccount = function (role) {
+    if (role === "admin") {
+      // Gán vai trò mặc định cho tài khoản quản trị viên
+      $scope.newAccountAdmin.vaiTro = "Admin";
+      if (!$scope.isEditModeAdmin) {
+        AccountService.addAccount($scope.newAccountAdmin).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountAdmin = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản quản trị viên:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountAdmin.idTaiKhoan, $scope.newAccountAdmin).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountAdmin = {};
+            $scope.isEditModeAdmin = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản quản trị viên:", err);
+          }
+        );
+      }
+    } else if (role === "employee") {
+      // Gán vai trò mặc định cho tài khoản nhân viên
+      $scope.newAccountEmployee.vaiTro = "Nhân viên";
+      if (!$scope.isEditModeEmployee) {
+        AccountService.addAccount($scope.newAccountEmployee).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountEmployee = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản nhân viên:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountEmployee.idTaiKhoan, $scope.newAccountEmployee).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountEmployee = {};
+            $scope.isEditModeEmployee = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản nhân viên:", err);
+          }
+        );
+      }
+    } else if (role === "customer") {
+      // Gán vai trò mặc định cho tài khoản khách hàng
+      $scope.newAccountCustomer.vaiTro = "Khách hàng";
+      if (!$scope.isEditModeCustomer) {
+        AccountService.addAccount($scope.newAccountCustomer).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountCustomer = {};
+          },
+          function (err) {
+            console.error("Lỗi khi thêm tài khoản khách hàng:", err);
+          }
+        );
+      } else {
+        AccountService.updateAccount($scope.newAccountCustomer.idTaiKhoan, $scope.newAccountCustomer).then(
+          function (res) {
+            $scope.getAllAccounts();
+            $scope.newAccountCustomer = {};
+            $scope.isEditModeCustomer = false;
+          },
+          function (err) {
+            console.error("Lỗi khi cập nhật tài khoản khách hàng:", err);
+          }
+        );
+      }
+    }
+  };
+
+  // Hàm chọn tài khoản để sửa
+  $scope.selectAccount = function (account, role) {
+    if (role === "admin") {
+      $scope.newAccountAdmin = angular.copy(account);
+      $scope.isEditModeAdmin = true;
+    } else if (role === "employee") {
+      $scope.newAccountEmployee = angular.copy(account);
+      $scope.isEditModeEmployee = true;
+    } else if (role === "customer") {
+      $scope.newAccountCustomer = angular.copy(account);
+      $scope.isEditModeCustomer = true;
+    }
+  };
+
+  // Hàm xóa tài khoản
+  $scope.deleteAccount = function (idTaiKhoan, role) {
+    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+      AccountService.deleteAccount(idTaiKhoan).then(
+        function () {
+          alert("Tài khoản đã được xóa thành công!");
+          $scope.getAllAccounts();
+        },
+        function (err) {
+          console.error("Lỗi khi xóa tài khoản:", err);
+          alert("Lỗi khi xóa tài khoản, vui lòng thử lại.");
         }
       );
     }
   };
 
-  // Gọi hàm load danh sách khi controller khởi tạo
-  $scope.getAllEmployees();
-});
-// MHÂN VIÊN ------------------------------------------------------------------------------------
+  // Các hàm reset form tương ứng cho từng loại
+  $scope.resetAdminForm = function () {
+    $scope.newAccountAdmin = {};
+    $scope.isEditModeAdmin = false;
+  };
+  $scope.resetEmployeeForm = function () {
+    $scope.newAccountEmployee = {};
+    $scope.isEditModeEmployee = false;
+  };
+  $scope.resetCustomerForm = function () {
+    $scope.newAccountCustomer = {};
+    $scope.isEditModeCustomer = false;
+  };
 
-app.controller("CustomerController", function ($scope) {
-  $scope.pageTitle = "Quản lý khách hàng";
+  // Khởi tạo: load danh sách tài khoản
+  $scope.getAllAccounts();
 });
-app.controller("AccountController", function ($scope) {
-  $scope.pageTitle = "Quản lý tài khoản";
-});
+
 app.controller("ServiceController", function ($scope) {
   $scope.pageTitle = "Quản lý dịch vụ";
 });

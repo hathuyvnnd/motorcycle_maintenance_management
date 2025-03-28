@@ -13,7 +13,7 @@ public class LichHenUpdateRequest {
     private Date thoiGian;
     private String idKhachHang;
     private String idLoaiXe;
-    private String trangThai;
+    private Boolean trangThai;
     private String bienSoXe;
     private String ghiChu;
     private String dichVu;

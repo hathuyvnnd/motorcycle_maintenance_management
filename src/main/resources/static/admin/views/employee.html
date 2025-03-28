@@ -1,17 +1,18 @@
 <div ng-controller="EmployeeController">
   <h3><b>{{ pageTitle }}</b></h3>
-  <form class="mt-4" novalidate>
+  <!-- Form thêm mới / sửa nhân viên -->
+  <form class="mt-4" name="employeeForm" novalidate>
     <div class="row mb-3">
-      <label for="employeeId" class="col-sm-2 col-form-label">ID Nhân Viên</label>
+      <!-- <label for="employeeId" class="col-sm-2 col-form-label">ID Nhân Viên</label>
       <div class="col-sm-4">
-        <!-- Nếu thêm mới, bạn có thể sử dụng newEmployee, nếu chỉnh sửa dùng selectedEmployee -->
         <input
           type="text"
           class="form-control"
           id="employeeId"
           placeholder="ID Nhân Viên"
-          ng-model="newEmployee.idNhanVien" />
-      </div>
+          ng-model="newEmployee.idNhanVien"
+          ng-disabled="isEditMode" />
+      </div> -->
       <label for="employeeName" class="col-sm-2 col-form-label">Tên Nhân Viên</label>
       <div class="col-sm-4">
         <input
@@ -21,67 +22,70 @@
           placeholder="Tên Nhân Viên"
           ng-model="newEmployee.ten" />
       </div>
-    </div>
-    <div class="row mb-3">
-      <label for="phoneNumber" class="col-sm-2 col-form-label">Số Điện Thoại</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="phoneNumber"
-          placeholder="Số Điện Thoại"
-          ng-model="newEmployee.soDienThoai"
-          pattern="\d*" />
-      </div>
       <label for="email" class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-4">
         <input type="email" class="form-control" id="email" placeholder="Email" ng-model="newEmployee.email" />
       </div>
     </div>
     <div class="row mb-3">
-      <!-- <label for="gender" class="col-sm-2 col-form-label">Giới Tính</label>
+      <label for="accountId" class="col-sm-2 col-form-label">Số Điện Thoại</label>
       <div class="col-sm-4">
-        <select class="form-select" id="gender" ng-model="newEmployee.gioiTinh">
-          <option value="">Chọn giới tính</option>
-          <option value="male">Nam</option>
-          <option value="female">Nữ</option>
-          <option value="other">Khác</option>
+        <!-- Select box hiển thị các ID tài khoản (số điện thoại) chưa liên kết -->
+        <select
+          class="form-select"
+          id="accountId"
+          ng-model="newEmployee.taiKhoanNV.idTaiKhoan"
+          ng-options="acc.idTaiKhoan as acc.idTaiKhoan for acc in availableAccounts">
+          <option value="">-- Chọn Số Điện Thoại --</option>
         </select>
-      </div> -->
+      </div>
       <label for="address" class="col-sm-2 col-form-label">Địa Chỉ</label>
       <div class="col-sm-4">
         <input type="text" class="form-control" id="address" placeholder="Địa Chỉ" ng-model="newEmployee.diaChi" />
       </div>
-
-      <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
+    </div>
+    <!-- <div class="row mb-3"> -->
+    <!-- <label for="phoneNumber" class="col-sm-2 col-form-label">Số Điện Thoại</label>
       <div class="col-sm-4">
-        <!-- Với file input, bạn có thể xử lý riêng qua directive nếu cần upload -->
+        <input
+          type="text"
+          name="phoneNumber"
+          class="form-control"
+          id="phoneNumber"
+          placeholder="Số Điện Thoại"
+          ng-model="newEmployee.soDienThoai" />
+      </div> -->
+
+    <!-- <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
+      <div class="col-sm-4">
         <input
           type="file"
           class="form-control"
           id="profileImage"
-          ngf-select
-          ng-model="newEmployee.hinhAnh"
           accept="image/*"
-          ngf-max-size="5MB" />
-      </div>
-    </div>
-    <!-- <div class="row mb-3">
+          onchange="angular.element(this).scope().setFile(this.files)" />
+      </div> -->
+    <!-- </div> -->
+    <div class="row mb-3">
       <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-10">
         <input
           type="file"
           class="form-control"
           id="profileImage"
-          ngf-select
-          ng-model="newEmployee.hinhAnh"
           accept="image/*"
-          ngf-max-size="5MB" />
+          onchange="angular.element(this).scope().setFile(this.files)" />
       </div>
-    </div> -->
+    </div>
     <div>
-      <button type="button" class="btn btn-primary me-2" ng-click="addEmployee()">Thêm Nhân Viên</button>
-      <button type="button" class="btn btn-secondary" ng-click="updateEmployee()">Cập Nhật Nhân Viên</button>
+      <!-- Đã cập nhật: Sử dụng cùng một nút gọi hàm saveEmployee() -->
+      <button type="button" class="btn btn-primary me-2" ng-click="saveEmployee()">
+        {{ isEditMode ? "Cập Nhật Nhân Viên" : "Thêm Nhân Viên" }}
+      </button>
+      <!-- Nút Reset form nếu cần -->
+      <button type="button" class="btn btn-secondary" ng-click="newEmployee = { taiKhoanNV: {} }; isEditMode = false;">
+        Reset
+      </button>
     </div>
   </form>
 
@@ -92,10 +96,10 @@
         <tr>
           <th scope="col">STT</th>
           <th scope="col">ID Nhân Viên</th>
-          <th scope="col">Tên Nhân Viên</th>
           <th scope="col">Số Điện Thoại</th>
+          <th scope="col">Tên Nhân Viên</th>
+          <!-- <th scope="col">Số Điện Thoại</th> -->
           <th scope="col">Email</th>
-          <!-- <th scope="col">Giới Tính</th> -->
           <th scope="col">Địa Chỉ</th>
           <th scope="col">Hình Ảnh</th>
           <th scope="col">Chức Năng</th>
@@ -105,10 +109,10 @@
         <tr ng-repeat="employee in getPaginatedData()">
           <th scope="row">{{ $index + 1 + (currentPage - 1) * pageSize }}</th>
           <td>{{ employee.idNhanVien }}</td>
+          <td>{{ employee.taiKhoanNV.idTaiKhoan }}</td>
           <td>{{ employee.ten }}</td>
-          <td>{{ employee.soDienThoai }}</td>
+          <!-- <td>{{ employee.soDienThoai }}</td> -->
           <td>{{ employee.email }}</td>
-          <!-- <td>{{ employee.gioiTinh }}</td> -->
           <td>{{ employee.diaChi }}</td>
           <td>
             <img
@@ -125,7 +129,6 @@
       </tbody>
     </table>
 
-    <!-- Điều hướng trang -->
     <nav aria-label="Page navigation">
       <ul class="pagination justify-content-center mt-3">
         <li class="page-item" ng-class="{ disabled: currentPage === 1 }">

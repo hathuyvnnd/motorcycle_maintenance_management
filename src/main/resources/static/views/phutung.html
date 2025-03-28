@@ -1,0 +1,81 @@
+<div class="container mt-5" id="trangDichVu">
+    <div class="row">
+        <!-- Cột bên trái: Bộ lọc -->
+        <div class="col-md-3">
+            <div class="filter-section">
+                <h5>Lọc theo giá</h5>
+                <ul class="list-unstyled" ng-init="selectedAll=true; selectedPriceRanges=[false, false, false, false]">
+                    <li>
+                        <input type="checkbox" ng-model="selectedAll" ng-change="selectedPriceRanges=[false, false, false, false]"> 
+                        All Price
+                    </li>
+                    <li>
+                        <input type="checkbox" ng-model="selectedPriceRanges[0]" ng-change="selectedAll=false"> 
+                        0 - 200.000 VNĐ
+                    </li>
+                    <li>
+                        <input type="checkbox" ng-model="selectedPriceRanges[1]" ng-change="selectedAll=false"> 
+                        200.001 - 500.000 VNĐ
+                    </li>
+                    <li>
+                        <input type="checkbox" ng-model="selectedPriceRanges[2]" ng-change="selectedAll=false"> 
+                        500.001 - 1.000.000 VNĐ
+                    </li>
+                    <li>
+                        <input type="checkbox" ng-model="selectedPriceRanges[3]" ng-change="selectedAll=false"> 
+                        > 1.000.000 VNĐ
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Cột bên phải: Danh sách dịch vụ -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between mb-3">
+                <h4>DANH SÁCH PHỤ TÙNG</h4>
+                <div>
+                    <button class="btn btn-outline-primary" ng-click="sortBy('tenPhuTung')">A->Z</button>
+                    <button class="btn btn-outline-primary" ng-click="sortBy('-tenPhuTung')">Z->A</button>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <!-- Sản phẩm 1 -->
+                <div class="col-md-4 mb-4" ng-repeat="pt in listPhuTung |orderBy:sortOrder|limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage"
+                ng-if="selectedAll || 
+        (selectedPriceRanges[0] && (pt.giaPhuTung >= 0 && pt.giaPhuTung <= 200000) ) || 
+        (selectedPriceRanges[1] && pt.giaPhuTung > 200000 && pt.giaPhuTung <= 500000) || 
+        (selectedPriceRanges[2] && pt.giaPhuTung > 500000 && pt.giaPhuTung <= 1000000) || 
+        (selectedPriceRanges[3] && pt.giaPhuTung > 1000000)">
+                    <div class="product-card">
+                        <img ng-src="/images/phu_tung/{{pt.hinhAnh}}" alt="Product 1">
+                        <h5>{{pt.tenPhuTung}}</h5>
+                        <strong>{{pt.giaPhuTung | number:0}} VNĐ</strong>
+                        <p>Thương Hiệu: {{pt.thuongHieu}}</p>
+                        <p>Phù Hợp: <strong>{{pt.phuHopLoaiXe}}</strong></p>
+                    </div>
+                </div>
+
+                
+            
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item" ng-class="{disabled: currentPage === 1}">
+                        <a class="page-link" href="" ng-click="changePage(currentPage - 1)">Previous</a>
+                      </li>
+              
+                      <li class="page-item" ng-repeat="trang in pageNumbers" ng-class="{active: trang === currentPage}">
+                        <a class="page-link" href="" ng-click="changePage(trang)">{{ trang }}</a>
+                      </li>
+              
+                      <li class="page-item" ng-class="{disabled: currentPage === totalPages}">
+                        <a class="page-link" href="" ng-click="changePage(currentPage + 1)">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
+            
+            
+        </div>
+    </div>
+</div>

@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
+
+@SpringBootApplication(scanBasePackages = "com.example")
 @ComponentScan(basePackages = { "com.example.config", "com.example.controller", "com.example.controller.admin",
         "com.example.service",
         "com.example.service_impl",

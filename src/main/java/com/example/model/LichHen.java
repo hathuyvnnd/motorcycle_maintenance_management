@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -34,7 +32,7 @@ public class LichHen {
     private LoaiXe idLoaiXe;
 
     @Column(name = "TrangThai")
-    private String trangThai;
+    private Boolean trangThai;
 
     @Column(name = "BienSoXe")
     private String bienSoXe;

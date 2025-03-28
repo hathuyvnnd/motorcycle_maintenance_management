@@ -1,4 +1,7 @@
 <!-- Banner -->
+ <div class="banner">
+  <img src="/images/banner.jpeg"  class="img-fluid" >
+ </div>
   <!-- Logo các hãng xe -->
   <div class="container text-center my-4">
     <div class="row justify-content-center align-items-center g-3">
@@ -59,57 +62,41 @@
   <h2 class="text-center mt-5 fw-bold">TRUNG TÂM DỊCH VỤ</h2>
   <div class="container">
     <div class="d-flex justify-content-between mb-3">
-        <div>
-            <button class="btn btn-outline-primary">A->Z</button>
-            <button class="btn btn-outline-primary">Z->A</button>
-        </div>
+      <div>
+        <button class="btn btn-outline-primary" ng-click="sortBy('tenDichVu')">A->Z</button>
+        <button class="btn btn-outline-primary" ng-click="sortBy('-tenDichVu')">Z->A</button>
+    </div>
         
     </div>
 
     <div class="row">
         <!-- Sản phẩm 1 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4" ng-repeat="dv in list |orderBy:sortOrder|limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
             <div class="product-card">
                 <img src="https://via.placeholder.com/300x400" alt="Product 1">
-                <h5>Colorful Stylish Shirt</h5>
-                <p><strong>$123.00</strong> <span class="old-price">$150.00</span></p>
+                <h5>{{dv.tenDichVu}}</h5>
+                <p><strong>{{dv.giaDichVu |number:0}} VNĐ</strong>
+                    <p>{{dv.moTa}}</p>
                 <button class="btn btn-outline-secondary btn-sm">📅 Đặt lịch</button>
-                <button class="btn btn-cart btn-sm"> Chi Tiết</button>
-            </div>
-        </div>
-
-        <!-- Sản phẩm 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x400" alt="Product 2">
-                <h5>Casual Denim Jacket</h5>
-                <p><strong>$99.00</strong> <span class="old-price">$120.00</span></p>
-                <button class="btn btn-outline-secondary btn-sm">📅 Đặt lịch</button>
-                <button class="btn btn-cart btn-sm"> Chi Tiết</button>
-            </div>
-        </div>
-
-        <!-- Sản phẩm 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x400" alt="Product 3">
-                <h5>Winter Fashion Outfit</h5>
-                <p><strong>$150.00</strong> <span class="old-price">$180.00</span></p>
-                <button class="btn btn-outline-secondary btn-sm">📅 Đặt lịch</button>
-                <button class="btn btn-cart btn-sm"> Chi Tiết</button>
             </div>
         </div>
     </div>
 
-    <nav aria-label="Page navigation example" style="background-color: white;">
-        <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" ng-class="{disabled: currentPage === 1}">
+          <a class="page-link" href="" ng-click="changePage(currentPage - 1)">Previous</a>
+        </li>
+
+        <li class="page-item" ng-repeat="trang in pageNumbers" ng-class="{active: trang === currentPage}">
+          <a class="page-link" href="" ng-click="changePage(trang)">{{ trang }}</a>
+        </li>
+
+        <li class="page-item" ng-class="{disabled: currentPage === totalPages}">
+          <a class="page-link" href="" ng-click="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
 
 </div>
   

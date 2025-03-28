@@ -12,7 +12,10 @@ import com.example.mapper.LichHenMapper;
 import com.example.model.KhachHang;
 import com.example.model.LichHen;
 import com.example.model.TaiKhoan;
+import com.example.model.TaiKhoanKhachHang;
+import com.example.service_impl.KhachHangServiceImpl;
 import com.example.service_impl.LichHenServiceImpl;
+import com.example.service_impl.TaiKhoanServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +36,11 @@ import java.util.UUID;
 public class LichHenController {
 
      LichHenServiceImpl lichHenService;
-    TaiKhoanDao taiKhoanDAO;
-    KhachHangDao khachHangDAO;
+    TaiKhoanServiceImpl taiKhoanDAO;
+    KhachHangServiceImpl khachHangDAO;
+
+    TaiKhoanDao taiKhoanDAO1;
+    KhachHangDao khachHangDAO1;
 
      LichHenMapper mapper;
     // Lấy tất cả lịch hẹn
@@ -79,60 +85,117 @@ public class LichHenController {
             return apiReponse;
         }
 
-
-
-
-    @GetMapping("/check-phone")
-    public ApiReponse<?> checkPhone(@RequestParam String phone) {
+    @GetMapping("/checkPhone")
+    public ApiReponse<?> checkSoDienThoai(@RequestParam String phone) {
         ApiReponse<Object> response = new ApiReponse<>();
 
-        // Kiểm tra nếu phone là null hoặc rỗng
-        if (phone == null || phone.trim().isEmpty()) {
-            response.setMessage("Số điện thoại không hợp lệ.");
-            response.setResult(null);
-            return response;
+        // Kiểm tra số điện thoại có trong hệ thống không
+        TaiKhoan taiKhoan = taiKhoanDAO1.findById(phone).orElse(null);
+        if (taiKhoan != null) {
+            // Nếu có tài khoản, lấy thông tin khách hàng
+            KhachHang khachHang = khachHangDAO.findByTaiKhoanKH(taiKhoan);
+            if (khachHang != null) {
+                response.setResult(Map.of("exists", true, "tenKhachHang", khachHang.getHoTen()));
+                return response;
+            }
         }
 
-        // Tìm tài khoản theo số điện thoại
-        TaiKhoan taiKhoan = taiKhoanDAO.findById(phone).orElse(null);
-
-        if (taiKhoan == null) {
-            // Nếu tài khoản không tồn tại, tạo mới
-            taiKhoan = new TaiKhoan();
-            taiKhoan.setIdTaiKhoan(phone);
-            taiKhoan.setMatKhau("123");  // Mật khẩu mặc định
-            taiKhoan.setVaiTro("Khách hàng");
-            taiKhoan.setTrangThai(true);
-            taiKhoanDAO.save(taiKhoan);
-
-            // Tạo khách hàng mới
-            KhachHang newKhachHang = new KhachHang();
-            newKhachHang.setIdKhachHang("KH" + phone);
-            newKhachHang.setTaiKhoanKH(taiKhoan);
-            newKhachHang.setSoDienThoai(phone);
-            khachHangDAO.save(newKhachHang);
-
-            response.setMessage("Tạo mới tài khoản và khách hàng thành công.");
-            response.setResult(Map.of("exists", false, "newAccount", newKhachHang));
-            return response;
-        }
-
-        // Nếu tài khoản đã tồn tại, tìm khách hàng liên kết
-        KhachHang khachHang = khachHangDAO.findByTaiKhoanKH(taiKhoan);
-
-        // Check nếu khách hàng NULL
-        if (khachHang == null) {
-            response.setMessage("Không tìm thấy khách hàng liên kết với tài khoản này.");
-            response.setResult(null);
-            return response;
-        }
-
-        // Nếu tìm thấy khách hàng, trả về tên
-        response.setMessage("Tìm thấy khách hàng.");
-        response.setResult(Map.of("exists", true, "tenKhachHang", khachHang.getHoTen()));
-
+        // Nếu không có tài khoản, trả về null để tạo mới
+        response.setResult(null);
+        response.setMessage("Chưa có tài khoản");
         return response;
     }
+    @PostMapping("/tao-lich-hen")
+    public ApiReponse<?> taoLichHen(@RequestBody LichHenCreateRequest request) {
+        ApiReponse<Object> response = new ApiReponse<>();
+        // Kiểm tra khách hàng dựa vào số điện thoại
+        TaiKhoan taiKhoan = taiKhoanDAO1.findById(request.getIdKhachHang()).orElseGet(() -> {
+            // Nếu không tìm thấy, tạo mới tài khoản
+            TaiKhoanKhachHang newTaiKhoan = TaiKhoanKhachHang.builder()
+                    .idTaiKhoan(request.getIdKhachHang())
+                    .matKhau("123")
+                    .trangThai(true)
+                    .build();
+            taiKhoanDAO1.save(newTaiKhoan);
+            System.out.println("ab: "+ newTaiKhoan.getVaiTro());
+            KhachHang newKhachHang = KhachHang.builder()
+                    .idKhachHang(khachHangDAO.generateNewId())
+                    .taiKhoanKH(newTaiKhoan)
+                    .hoTen(request.getTenKhachHang())
+                    .build();
+            khachHangDAO1.save(newKhachHang);
+            response.setResult(khachHangDAO1.save(newKhachHang));
+            return newTaiKhoan;
+        });
+
+        LichHenCreateRequest lhrp = LichHenCreateRequest.builder()
+                .idLichHen(lichHenService.generateNewId())
+                .idKhachHang(khachHangDAO.findIdKhachHangByTaiKhoanKH_IdTaiKhoan(request.getIdKhachHang()))
+                .thoiGian(request.getThoiGian())
+                .trangThai(true)
+                .ghiChu(request.getGhiChu())
+                .dichVu(request.getDichVu())
+                .bienSoXe(request.getBienSoXe())
+                .build();
+        System.out.println("aa "+ lhrp);
+        response.setResult(lichHenService.createLichHenRequest(lhrp));
+        System.out.println("Ten:  " + request.getTenKhachHang());
+        return response;
+    }
+
+//
+//    @GetMapping("/check-phone")
+//    public ApiReponse<?> checkPhone(@RequestParam String phone,@RequestParam(required = false) String tenKhachHang) {
+//        ApiReponse<Object> response = new ApiReponse<>();
+//
+//        // Kiểm tra nếu phone là null hoặc rỗng
+//        if (phone == null || phone.trim().isEmpty()) {
+//            response.setMessage("Số điện thoại không hợp lệ.");
+//            response.setResult(null);
+//            return response;
+//        }
+//
+//        TaiKhoan taiKhoan = taiKhoanDAO1.findById(phone).orElseGet(() -> {
+//                    // Nếu không tìm thấy, tạo mới tài khoản
+//            TaiKhoanKhachHang newTaiKhoan = TaiKhoanKhachHang.builder()
+//                            .idTaiKhoan(phone)
+//                            .matKhau("123")
+//                            .trangThai(true)
+//                            .build();
+//                    taiKhoanDAO1.save(newTaiKhoan);
+//            System.out.println("ab: "+ newTaiKhoan.getVaiTro());
+//                KhachHang newKhachHang = KhachHang.builder()
+//                        .idKhachHang(khachHangDAO.generateNewId())
+//                        .hoTen(tenKhachHang) // Lấy họ tên từ giao diện
+//                        .taiKhoanKH(newTaiKhoan)
+//                        .build();
+//                khachHangDAO1.save(newKhachHang);
+//                response.setResult(khachHangDAO1.save(newKhachHang));
+//                return newTaiKhoan;
+//                });
+//        KhachHang khachHang = khachHangDAO1.findByTaiKhoanKH(taiKhoan).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        response.setMessage("Tìm thấy khách hàng.");
+//        if(khachHang.getHoTen() != null){
+//        response.setResult(Map.of("exists", true, "tenKhachHang", khachHang.getHoTen()));
+//        }
+//        return response;
+//    }
+
+    @GetMapping("/checkk")
+    ApiReponse<KhachHang>  checkFindKH(@RequestParam String phone) {
+            KhachHang kh = khachHangDAO.findByTaiKhoanKH(taiKhoanDAO.findById(phone));
+            ApiReponse<KhachHang> rp = new ApiReponse<>();
+            rp.setResult(kh);
+            return rp;
+    }
+    @GetMapping("/checkk1")
+    ApiReponse<KhachHang>  checkFindKH1(@RequestParam String phone) {
+        KhachHang kh = khachHangDAO.findById(phone);
+        ApiReponse<KhachHang> rp = new ApiReponse<>();
+        rp.setResult(kh);
+        return rp;
+    }
+
 
 
 

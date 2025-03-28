@@ -1,8 +1,8 @@
-<div>
-  <h3><b>{{pageTitle}}</b></h3>
+<div ng-controller="CustomerController">
+  <!-- <h3><b>{{pageTitle}}</b></h3> -->
 
   <!-- Form for adding/editing customer -->
-  <form class="mb-4">
+  <!-- <form class="mb-4">
     <div class="row mb-3">
       <label for="customerId" class="col-sm-2 col-form-label">ID Khách Hàng</label>
       <div class="col-sm-4">
@@ -24,13 +24,6 @@
       </div>
     </div>
     <div class="row mb-3">
-      <!-- <label for="customerGender" class="col-sm-2 col-form-label">Giới Tính</label>
-      <div class="col-sm-4">
-        <select class="form-control" id="customerGender">
-          <option value="Nam">Nam</option>
-          <option value="Nữ">Nữ</option>
-        </select>
-      </div> -->
       <label for="customerAddress" class="col-sm-2 col-form-label">Địa Chỉ</label>
       <div class="col-sm-4">
         <input type="text" class="form-control" id="customerAddress" placeholder="Địa Chỉ" />
@@ -43,10 +36,6 @@
     </div>
 
     <div class="row mb-3">
-      <!-- <label for="customerRegistrationDate" class="col-sm-2 col-form-label">Ngày Đăng Kí</label>
-      <div class="col-sm-4">
-        <input type="date" class="form-control" id="customerRegistrationDate" placeholder="Ngày Đăng Kí" />
-      </div> -->
       <label for="customerImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-10">
         <input type="file" class="form-control" id="customerImage" />
@@ -54,7 +43,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
     <button type="button" class="btn btn-secondary">Cập nhật khách hàng</button>
-  </form>
+  </form> -->
 
   <div class="mt-5">
     <h3><b>Danh sách khách hàng</b></h3>
@@ -63,8 +52,9 @@
         <tr>
           <th scope="col">STT</th>
           <th scope="col">ID Khách Hàng</th>
-          <th scope="col">Tên Khách Hàng</th>
           <th scope="col">Số Điện Thoại</th>
+          <th scope="col">Tên Khách Hàng</th>
+
           <th scope="col">Email</th>
           <!-- <th scope="col">Giới Tính</th> -->
           <th scope="col">Địa Chỉ</th>
@@ -75,36 +65,42 @@
       </thead>
       <tbody>
         <!-- Example row -->
-        <tr>
-          <th scope="row">1</th>
-          <td>001</td>
-          <td>Nguyễn Văn A</td>
-          <td>0123456789</td>
-          <td>a@gmail.com</td>
-          <!-- <td>Nam</td> -->
-          <td>Hà Nội</td>
-          <td>20-5-2025</td>
+        <tr ng-repeat="customer in getPaginatedData() track by $index">
+          <th scope="row">{{ $index + 1 + (currentPage - 1) * pageSize }}</th>
+          <td>{{ customer.idKhachHang }}</td>
+          <td>{{ customer.taiKhoanKH.idTaiKhoan }}</td>
+          <td>{{ customer.hoTen }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.diaChi }}</td>
+          <td>{{ customer.ngayDangKi }}</td>
           <td>
-            <img src="path/to/image.jpg" alt="Profile Image" class="img-thumbnail" style="width: 50px; height: 50px" />
+            <img
+              ng-src="/images/{{ customer.hinhAnh }}"
+              alt="Profile Image"
+              class="img-thumbnail"
+              style="width: 50px; height: 50px" />
           </td>
           <td>
-            <button class="btn btn-warning btn-sm">Sửa</button>
-            <button class="btn btn-danger btn-sm">Xóa</button>
+            <!-- <button class="btn btn-warning btn-sm" ng-click="selectEmployee(customer)">Sửa</button> -->
+            <button class="btn btn-danger btn-sm" ng-click="deleteEmployee(customer.idKhachHang)">Xóa</button>
           </td>
         </tr>
         <!-- Add more rows as needed -->
       </tbody>
     </table>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation">
       <ul class="pagination justify-content-center mt-3">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage - 1)">Previous</a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+        <li
+          class="page-item"
+          ng-repeat="page in [].constructor(getPageCount()) track by $index"
+          ng-class="{ active: currentPage === ($index + 1) }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        <li class="page-item" ng-class="{ disabled: currentPage === getPageCount() }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage + 1)">Next</a>
         </li>
       </ul>
     </nav>

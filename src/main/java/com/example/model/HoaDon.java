@@ -2,9 +2,7 @@ package com.example.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -22,9 +20,13 @@ public class HoaDon {
     @Id
     @Column(name = "IdHoaDon")
     private String idHoaDon;
+    @ManyToOne
+    @JoinColumn(name = "IdKhachHang")
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTN")
+
     // @JsonBackReference
     private NhanVien nhanVien;
 
@@ -36,16 +38,11 @@ public class HoaDon {
     @Column(name = "NgayTao")
     private Date ngayTao;
 
-    @ManyToOne
-    @JoinColumn(name = "IdKhachHang")
-    // @JsonBackReference
-    private KhachHang khachHang;
-
     @Column(name = "PhuongThucThanhToan")
     private String phuongThucThanhToan;
 
     @Column(name = "TrangThaiThanhToan") // Ensure this matches the actual column name in the database
-    private String trangThai;
+    private String trangThaiThanhToan;
 
     @Column(name = "TongTien")
     private float tongTien;
