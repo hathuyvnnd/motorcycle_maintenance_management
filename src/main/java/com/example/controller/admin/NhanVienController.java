@@ -18,7 +18,7 @@ public class NhanVienController {
     private final NhanVienService nhanVienService;
 
     // Đường dẫn lưu file ảnh
-    private final String uploadDir = "C:/TN/Workspace/MotorBike/motorcycle_maintenance_management/src/main/resources/static/images/";
+    private final String uploadDir = "D:/maintenece_motorcycle_management/src/main/resources/static/images";
 
     public NhanVienController(NhanVienService nhanVienService) {
         this.nhanVienService = nhanVienService;

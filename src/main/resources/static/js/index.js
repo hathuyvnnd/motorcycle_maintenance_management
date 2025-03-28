@@ -30,6 +30,18 @@ app.config(function ($routeProvider) {
     .when("/quenmatkhau", {
       templateUrl: "views/quenmatkhau.html",
       controller: "QuenMatKhauController",
+    })
+    .when("/hoadon", {
+      templateUrl: "views/hoadon.html",
+      controller: "HoaDonController",
+    })
+    .when("/hoadonct",{
+      templateUrl: "views/hoadon.html",
+      controller: "HoaDonController",
+    })
+    .when("/lichsusuachua", {
+      templateUrl: "views/lichsusuachua.html",
+      controller: "LichSuSuaChuaController",
     });
 });
 
@@ -88,7 +100,7 @@ app.controller("PhuTungController", function ($scope, $rootScope, $http, $routeP
 
   // Lấy idLoaiPT từ URL
   var idLoaiPT = $routeParams.idLoaiPT;
-  console.log("🔍 Lấy danh sách phụ tùng cho loại: ", idLoaiPT);
+  console.log(" Lấy danh sách phụ tùng cho loại: ", idLoaiPT);
   // Gọi API để lấy danh sách phụ tùng
   $http.get("/api/phutung?idLoaiPT=" + idLoaiPT).then(
     function (response) {
@@ -135,3 +147,50 @@ app.controller("DangNhapController", function ($scope) {
 app.controller("QuenMatKhauController", function ($scope) {
   $scope.title = "Quên Mật Khẩu";
 });
+
+app.controller("HoaDonController", function($scope, $http) {
+  // Khởi tạo biến
+  $scope.listHoaDon = []; // Danh sách hóa đơn
+  $scope.listPDV = []; // Danh sách dịch vụ của hóa đơn
+  $scope.idHoaDonChon = null; // ID hóa đơn đang chọn
+
+  // Gọi API lấy danh sách hóa đơn
+  $http.get("/api/hoadon")
+      .then(function(response) {
+          console.log("Danh sách hóa đơn:", response.data);
+          $scope.listHoaDon = response.data;
+      })
+      .catch(function(error) {
+          console.error("Lỗi khi tải danh sách hóa đơn:", error);
+      });
+
+  // Hàm xem chi tiết hóa đơn
+  $scope.xemChiTiet = function(idHoaDon) {
+      console.log("Xem chi tiết hóa đơn:", idHoaDon);
+      $scope.idHoaDonChon = idHoaDon; // Lưu ID hóa đơn đang chọn
+
+      // Gọi API lấy chi tiết dịch vụ của hóa đơn
+      $http.get("/api/hoadonct", { params: { idHoaDon: idHoaDon } })
+          .then(function(response) {
+              console.log("Dữ liệu trả về:", response.data);
+              if (Array.isArray(response.data)) {
+                  $scope.listPDV = response.data; // Gán dữ liệu dịch vụ vào listPDV
+              } else {
+                  console.error("Dữ liệu không hợp lệ:", response.data);
+                  $scope.listPDV = []; // Tránh lỗi khi dữ liệu sai định dạng
+              }
+          })
+          .catch(function(error) {
+              console.error("Lỗi khi tải chi tiết hóa đơn:", error);
+              $scope.listPDV = [];
+          });
+  };
+
+  // Hàm đóng chi tiết hóa đơn
+  $scope.dongChiTiet = function() {
+      $scope.idHoaDonChon = null;
+      $scope.listPDV = [];
+  };
+});
+
+

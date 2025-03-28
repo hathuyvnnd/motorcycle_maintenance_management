@@ -1,0 +1,58 @@
+<div class="mt-5">
+  <h3><b>Danh sách hóa đơn</b></h3>
+  <table class="table table-bordered mt-3 text-center">
+      <thead>
+          <tr>
+              <th scope="col">Mã Hóa Đơn</th>
+              <th scope="col">Mã Phiếu Dịch Vụ</th>
+              <th scope="col">Biển Số Xe</th>
+              <th scope="col">Ngày Lập Phiếu</th>
+              <th scope="col">Tổng Tiền</th>
+              <th scope="col">Trạng Thái TT</th>
+              <th scope="col">Phương Thức TT</th>
+              <th scope="col">Hành động</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr ng-repeat="hd in listHoaDon">
+              <td>{{hd.idHoaDon}}</td>
+              <td>{{hd.phieuDichVuHD.idPhieuDichVu}}</td>
+              <td>{{hd.phieuDichVuHD.idPhieuDichVu}}</td>
+              <td>{{hd.ngayTao | date:'dd/MM/yyyy'}}</td>
+              <td>{{hd.tongTien | number:0}} VNĐ</td>
+              <td>{{hd.trangThaiThanhToan == 1 ? 'Đã Thanh Toán' : 'Chưa Thanh Toán' }}</td>
+              <td>{{hd.phuongThucThanhToan == 1 ? 'Chuyển Khoản' : 'Tiền Mặt' }}</td>
+              <td>
+                  <button class="btn btn-warning btn-sm" ng-click="xemChiTiet(hd.idHoaDon)">Chi Tiết</button>
+                  <button class="btn btn-info btn-sm">Tình Trạng Xe</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+<!-- Hiển thị chi tiết hóa đơn khi có idHoaDon -->
+<div ng-show="idHoaDonChon">
+  <h3 class="mt-4"><b>Chi tiết hóa đơn {{idHoaDonChon}}</b></h3>
+  <table class="table table-bordered mt-3 text-center">
+      <thead>
+          <tr>
+              <th>Mã Dịch Vụ</th>
+              <th>Tên Dịch Vụ</th>
+              <th>Giá</th>
+              <th>Số Lượng</th>
+              <th>Thành Tiền</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr ng-repeat="pdv in listPDV">
+              <td>{{pdv.idPhieuDichVu}}</td>
+              <td>{{pdv.tenDichVu}}</td>
+              <td>{{pdv.gia | number:0}} VNĐ</td>
+              <td>{{pdv.soLuong}}</td>
+              <td>{{pdv.gia * pdv.soLuong | number:0}} VNĐ</td>
+          </tr>
+      </tbody>
+  </table>
+  <button class="btn btn-danger mt-2" ng-click="dongChiTiet()">Đóng</button>
+</div>

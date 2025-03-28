@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller.customer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,10 @@ public class PhuTungKHRest {
 
     @GetMapping("/api/phutung")
 public List<PhuTung> getPhuTungTheoLoai(@RequestParam("idLoaiPT") String idLoaiPT) {
-    System.out.println("🔍 Lấy danh sách phụ tùng cho loại: " + idLoaiPT);
+    System.out.println(" Lấy danh sách phụ tùng cho loại: " + idLoaiPT);
     LoaiPhuTung loaiPT = loaiPTService.findById(idLoaiPT);
     if (loaiPT == null) {
-        System.out.println("⚠ Không tìm thấy loại phụ tùng với ID: " + idLoaiPT);
+        System.out.println(" Không tìm thấy loại phụ tùng với ID: " + idLoaiPT);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loại phụ tùng không tồn tại");
     }
     return pTungService.findByLoaiPT(loaiPT);
