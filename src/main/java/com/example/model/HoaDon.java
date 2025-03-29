@@ -29,6 +29,9 @@ public class HoaDon {
 
     // @JsonBackReference
     private NhanVien nhanVien;
+    @OneToOne
+    @JoinColumn(name = "IdPhieuGNX")
+    private PhieuGhiNhanTinhTrangXe phieuGNX;
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
@@ -39,10 +42,10 @@ public class HoaDon {
     private Date ngayTao;
 
     @Column(name = "PhuongThucThanhToan")
-    private String phuongThucThanhToan;
+    private Boolean phuongThucThanhToan;
 
     @Column(name = "TrangThaiThanhToan") // Ensure this matches the actual column name in the database
-    private String trangThaiThanhToan;
+    private Boolean trangThaiThanhToan;
 
     @Column(name = "TongTien")
     private float tongTien;

@@ -3,6 +3,8 @@ package com.example.service_impl;
 import com.example.dao.NhanVienDao;
 import com.example.model.NhanVien;
 import com.example.service.NhanVienService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +12,13 @@ import java.util.Optional;
 
 @Service
 public class NhanVienServiceImpl implements NhanVienService {
+    @Autowired
+    private NhanVienDao nhanVienDao;
 
-    private final NhanVienDao nhanVienDao;
-
-    // Constructor injection
-    public NhanVienServiceImpl(NhanVienDao nhanVienDao) {
-        this.nhanVienDao = nhanVienDao;
-    }
+    // // Constructor injection
+    // public NhanVienServiceImpl(NhanVienDao nhanVienDao) {
+    // this.nhanVienDao = nhanVienDao;
+    // }
 
     @Override
     public List<NhanVien> findAll() {

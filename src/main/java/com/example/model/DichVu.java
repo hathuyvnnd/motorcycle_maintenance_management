@@ -33,7 +33,7 @@ public class DichVu {
     private float giaDichVu;
 
     @Column(name = "TrangThai")
-    private String trangThai;
+    private Boolean trangThai;
 
     @Column(name = "MoTa")
     private String moTa;
