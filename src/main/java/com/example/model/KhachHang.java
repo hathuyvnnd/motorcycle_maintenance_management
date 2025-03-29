@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "KhachHang")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idKhachHang")
 public class KhachHang {
@@ -46,7 +48,7 @@ public class KhachHang {
     @Column(name = "NgayDangKi")
     private Date ngayDangKi;
 
-    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idKhachHang", fetch = FetchType.LAZY)
     // @JsonManagedReference
     Set<LichHen> lichHenList;
 

@@ -1,4 +1,4 @@
-var app = angular.module("megaviaApp", ["ngRoute"]);
+                    var app = angular.module("megaviaApp", ["ngRoute"]);
 
 app.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;

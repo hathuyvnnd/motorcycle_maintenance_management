@@ -24,7 +24,7 @@ public class LichHen {
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
     // @JsonBackReference
-    private KhachHang khachHang;
+    private KhachHang idKhachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiXe")
@@ -32,7 +32,7 @@ public class LichHen {
     private LoaiXe idLoaiXe;
 
     @Column(name = "TrangThai")
-    private Boolean trangThai;
+    private String trangThai;
 
     @Column(name = "BienSoXe")
     private String bienSoXe;
@@ -42,4 +42,6 @@ public class LichHen {
 
     @Column(name = "DichVu")
     private String dichVu;
+
+
 }
