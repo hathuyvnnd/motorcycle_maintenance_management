@@ -17,7 +17,7 @@ public class LichHenCreateRequest {
     private Date thoiGian;
     private String idKhachHang;
     private String idLoaiXe;
-    private Boolean trangThai;
+    private String trangThai;
     private String bienSoXe;
     private String ghiChu;
     private String dichVu;

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @RequiredArgsConstructor
@@ -53,16 +54,32 @@ public class LichHenController {
             apiReponse.setResult(lhrp);
             return apiReponse;
         }
-        @GetMapping("/today")
-        ApiReponse<List<LichHenResponse>> getLichHenToday() {
-            List<LichHen> lslh = lichHenService.getLichHenToday();
-            List<LichHenResponse> lhrp = mapper.toLichHenReponse(lslh);
-            ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
-            apiReponse.setResult(lhrp);
-            return apiReponse;
-        }
+    @GetMapping("/testallnorp")
+    ApiReponse<List<LichHen>> getAllLichHen1() {
+        List<LichHen> lslh = lichHenService.findAll();
+        ApiReponse<List<LichHen>> apiReponse = new ApiReponse<>();
+        apiReponse.setResult(lslh);
+        return apiReponse;
+    }
 
-        @GetMapping("/search")
+    @GetMapping("/today")
+    ApiReponse<List<LichHenResponse>> getLichHenToday() {
+        List<LichHen> lslh = lichHenService.getLichHenToday();
+
+        // Lọc danh sách, loại bỏ những lịch hẹn có trạng thái "Chờ xác nhận"
+        List<LichHen> filteredLichHen = lslh.stream()
+                .filter(lichHen -> !"Chờ xác nhận".equals(lichHen.getTrangThai()))
+                .collect(Collectors.toList());
+
+        List<LichHenResponse> lhrp = mapper.toLichHenReponse(filteredLichHen);
+
+        ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
+        apiReponse.setResult(lhrp);
+        return apiReponse;
+    }
+
+
+    @GetMapping("/search")
         public ApiReponse<List<LichHenResponse>> searchLichHen(@RequestParam String bienSoXe) {
             List<LichHen> result = lichHenService.searchLichHenByBienSo(bienSoXe);
             System.out.println("testt: "+result);
@@ -132,7 +149,7 @@ public class LichHenController {
                 .idLichHen(lichHenService.generateNewId())
                 .idKhachHang(khachHangDAO.findIdKhachHangByTaiKhoanKH_IdTaiKhoan(request.getIdKhachHang()))
                 .thoiGian(request.getThoiGian())
-                .trangThai(true)
+                .trangThai("Đã xác nhận")
                 .ghiChu(request.getGhiChu())
                 .dichVu(request.getDichVu())
                 .bienSoXe(request.getBienSoXe())

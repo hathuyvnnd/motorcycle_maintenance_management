@@ -13,8 +13,9 @@ public class LichHenResponse {
     Date thoiGian;
     String idKhachHang;
     String idLoaiXe;
-    Boolean trangThai;
+    String trangThai;
     String bienSoXe;
     String ghiChu;
     String dichVu;
+    String tenKhachHang;
 }

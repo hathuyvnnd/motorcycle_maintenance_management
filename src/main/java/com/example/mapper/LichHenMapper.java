@@ -18,10 +18,12 @@ import java.util.List;
 public interface LichHenMapper {
     @Mapping(source = "idLoaiXe.idLoaiXe", target = "idLoaiXe")
     @Mapping(source = "idKhachHang.idKhachHang", target = "idKhachHang")
+    @Mapping(source = "idKhachHang.hoTen", target = "tenKhachHang")
     LichHenResponse toLichHenResponse(LichHen lichHen);
 
     @Mapping(source = "idLoaiXe.idLoaiXe", target = "idLoaiXe")
     @Mapping(source = "idKhachHang.idKhachHang", target = "idKhachHang")
+    @Mapping(source = "idKhachHang.hoTen", target = "tenKhachHang")
     List<LichHenResponse> toLichHenReponse(List<LichHen> lichHen);
 
     @Mapping(source = "idLoaiXe", target = "idLoaiXe", qualifiedByName = "mapLoaiXe")

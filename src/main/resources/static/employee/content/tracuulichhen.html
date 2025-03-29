@@ -23,10 +23,30 @@
             <td>{{ appointment.idLichHen }}</td>
             <td>{{ appointment.thoiGian | date:'dd/MM/yyyy' }}</td>
             <td>{{ appointment.bienSoXe }}</td>
-            <td>{{ appointment.idKhachHang }}</td>
+            <td>{{ appointment.tenKhachHang }}</td>
             <td>{{ appointment.trangThai }}</td>
-            <td><a ng-href="{{ getActionLink(appointment) }}">{{ getActionText(appointment.trangThai) }}</a></td>
+            <td>
+               <span ng-click="openModal(appointment)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                {{ getActionText(appointment.trangThai) }}
+            </span>
+            </td>
         </tr>
         </tbody>
     </table>
+    <div class="modal fade" id="lichHenModal" tabindex="-1" aria-labelledby="lichHenModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lichHenModalLabel">Chi tiết lịch hẹn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div ng-include="panelTemplate"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -8,6 +8,7 @@ public enum ErrorCode {
     USER_EXISTED(1001,"User existed."),
     LICHHEN_TONTAI(1002,"Lich hen da ton tai."),
     USER_NOTFOUND(3001,"User not found."),
+    PHIEUTINHTRANG_NOTFOUND(3003,"Khong tim thay phieu"),
     USERNAME_NOTFOUND(3002,"Username not found"),
     UNCATEGORIZED_EXCEPTION(1,"Uncategorized exception."),
     UNAUTHENTICATED(2,"Authentication fail"),
