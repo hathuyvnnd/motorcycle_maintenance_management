@@ -20,7 +20,7 @@ public class NhanVienController {
     private NhanVienService nhanVienService;
 
     // Đường dẫn lưu file ảnh
-    private final String uploadDir = "D:/Duan_TN/src/main/resources/static/images/";
+    private final String uploadDir = "C:/TN/Workspace/MotorBike/motorcycle_maintenance_management/src/main/resources/static/images/";
 
     // 1. Lấy tất cả NhanVien
     @GetMapping
