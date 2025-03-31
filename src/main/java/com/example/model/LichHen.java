@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class LichHen {
     @Id
     @Column(name = "IdLichHen")
     private String idLichHen;
+    @Temporal(value = TemporalType.DATE)
     private Date thoiGian;
 
     @ManyToOne

@@ -1,8 +1,11 @@
 package com.example.service_impl;
 
 import com.example.dao.PhieuGhiNhanTinhTrangXeDao;
+import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
+import com.example.mapper.PhieuTinhTrangMapper;
+import com.example.model.LichHen;
 import com.example.model.PhieuGhiNhanTinhTrangXe;
 import com.example.service.PhieuGhiNhanTinhTrangXeService;
 import lombok.AccessLevel;
@@ -17,7 +20,7 @@ import java.util.List;
 @Service
 public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService {
     PhieuGhiNhanTinhTrangXeDao dao;
-
+    PhieuTinhTrangMapper mapper;
     @Override
     public List<PhieuGhiNhanTinhTrangXe> findAll() {
         return dao.findAll();
@@ -55,15 +58,21 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
 
         // Nếu không có ID, tạo ID đầu tiên
         if (lastId == null) {
-            return "PHNX001";
+            return "PGNX001";
         }
 
         // Lấy phần số từ ID (bỏ phần "KH") và tăng nó lên
-        int number = Integer.parseInt(lastId.substring(2));
+        int number = Integer.parseInt(lastId.substring(4));
         number++;
 
         // Ghép phần số mới với "KH"
         return String.format("PGNX%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
+    }
+
+    @Override
+    public PhieuGhiNhanTinhTrangXe createPhieuGhiNhanTinhTrangXeRequest(CreateTinhTrangXeRequest request) {
+        PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
+        return dao.save(pttx);
     }
 }

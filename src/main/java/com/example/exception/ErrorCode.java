@@ -7,6 +7,7 @@ public enum ErrorCode {
     INVALID_KEY(2,"Invalid key enum."),
     USER_EXISTED(1001,"User existed."),
     LICHHEN_TONTAI(1002,"Lich hen da ton tai."),
+    PHIEUTINHTRANG_TONTAI(1003,"Phieu da ton tai."),
     USER_NOTFOUND(3001,"User not found."),
     PHIEUTINHTRANG_NOTFOUND(3003,"Khong tim thay phieu"),
     USERNAME_NOTFOUND(3002,"Username not found"),

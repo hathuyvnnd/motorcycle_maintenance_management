@@ -8,6 +8,7 @@ import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
 import com.example.model.LichHen;
 import com.example.service.LichHenService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +24,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class LichHenServiceImpl implements LichHenService {
 
-    LichHenDao lichHenRepository;
+    LichHenDao dao;
     LichHenMapper mapper;
 
     @Override
@@ -30,18 +32,18 @@ public class LichHenServiceImpl implements LichHenService {
         if (exitsById(request.getIdLichHen()))
             throw new AppException(ErrorCode.LICHHEN_TONTAI);
         LichHen lh = mapper.toLichHen(request);
-        return lichHenRepository.save(lh);
+        return dao.save(lh);
     }
 
     @Override
     public LichHen updateLichHenRequest(String id, LichHenUpdateRequest request){
-        LichHen user = lichHenRepository.getReferenceById(id);
+        LichHen user = dao.getReferenceById(id);
         mapper.updateUser(user,request);
 //        user.setName(request.getName());
 //        user.setEmail(request.getEmail());
 //        user.setPhone(request.getPhone());
 //        user.setAddress(request.getAddress());
-        return lichHenRepository.save(user);
+        return dao.save(user);
     }
 
     @Override
@@ -51,19 +53,17 @@ public class LichHenServiceImpl implements LichHenService {
 
     @Override
     public List<LichHen> findAll() {
-        return lichHenRepository.findAll();
+        return dao.findAll();
     }
 
     public List<LichHen> getLichHenToday() {
-        LocalDate today = LocalDate.now();
-        LocalDateTime startOfDay = today.atStartOfDay();
-        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+        Date today = new Date();
 
-        return lichHenRepository.findLichHenToday(startOfDay, endOfDay);
+        return dao.findLichHenToday(today);
     }
 
     public List<LichHen> searchLichHenByBienSo(String bienSoXe) {
-        return lichHenRepository.findByBienSoXeContaining(bienSoXe);
+        return dao.findByBienSoXeContaining(bienSoXe);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class LichHenServiceImpl implements LichHenService {
 
     public String generateNewId() {
         // Lấy ID cuối cùng
-        String lastId = lichHenRepository.findLastId();
+        String lastId = dao.findLastId();
 
         // Nếu không có ID, tạo ID đầu tiên
         if (lastId == null) {
@@ -107,6 +107,31 @@ public class LichHenServiceImpl implements LichHenService {
         // Ghép phần số mới với "KH"
         return String.format("LH%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
+    }
+
+    public void updateLichHenTrangThai(String bienSoXe) {
+        Date today = new Date();
+        LichHen lh = dao.findByBienSoXeAndThoiGian(bienSoXe, today);
+        if (lh != null) {
+            switch (lh.getTrangThai()) {
+                case "Đã xác nhận":
+                    lh.setTrangThai("Đang kiểm tra");
+                    break;
+                case "Đang kiểm tra":
+                    lh.setTrangThai("Đang sửa chữa");
+                    break;
+                case "Đang sửa chữa":
+                    lh.setTrangThai("Đã hoàn thành");
+                    break;
+                default:
+                    System.out.println("Trạng thái không cần cập nhật.");
+                    return;
+            }
+            dao.save(lh);
+            System.out.println("🔄 Đã cập nhật trạng thái lịch hẹn: " + lh.getTrangThai());
+        }else{
+            System.out.println("Không tìm thấy lịch hẹn để cập nhật!");
+        }
     }
 
 

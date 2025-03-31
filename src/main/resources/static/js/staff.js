@@ -145,7 +145,7 @@ app.controller("lichHenController", function ($scope, $http) {
         .catch(function (error) {
             console.error("Lỗi khi lấy dữ liệu:", error);
         });
-$scope.getActionText = function (status) {
+    $scope.getActionText = function (status) {
     switch (status) {
         case "Đã xác nhận":
             return "Lập phiếu tình trạng xe";
@@ -182,6 +182,50 @@ $scope.getActionText = function (status) {
         // Mở modal Bootstrap
         var myModal = new bootstrap.Modal(document.getElementById("lichHenModal"));
         myModal.show();
+    };
+    $scope.taoPhieuTinhTrang = function (appointment) {
+      console.log("Selected Appointment:", $scope.selectedAppointment); // Kiểm tra dữ liệu
+
+        if (!$scope.selectedAppointment || !$scope.selectedAppointment.bienSoXe) {
+            alert("Lỗi: Không có thông tin xe để tạo phiếu!");
+            return;
+        }
+
+        const data = {
+            bienSoXe: $scope.selectedAppointment.bienSoXe,
+            moTaTinhTrangXe: $scope.selectedAppointment.moTaTinhTrangXe || ""
+        };
+
+        $http.post("http://localhost:8081/api/staff/phieu-tinh-trang", data)
+            .then(function (response) {
+                if (response.data && response.data.result) {
+                    alert("Tạo phiếu ghi nhận thành công!");
+                    console.log(response.data.result);
+                     $scope.loadAppointments();
+                } else {
+                    alert("Không thể tạo phiếu ghi nhận.");
+                }
+            })
+            .catch(function (error) {
+                console.error("Lỗi khi tạo phiếu:", error);
+                alert("Lỗi khi tạo phiếu.");
+            });
+      var myModalEl = document.getElementById("lichHenModal");
+                    var modal = bootstrap.Modal.getInstance(myModalEl);
+                    if (modal) {
+                        modal.hide();
+                    }
+    };
+    $scope.loadAppointments = function () {
+        $http.get("http://localhost:8081/api/lich-hen/today")
+            .then(function (response) {
+                if (response.data && response.data.result) {
+                    $scope.appointments = response.data.result;
+                }
+            })
+            .catch(function (error) {
+                console.error("Lỗi khi lấy dữ liệu:", error);
+            });
     };
 });
 
