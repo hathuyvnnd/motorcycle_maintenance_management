@@ -1,0 +1,159 @@
+<!-- Banner -->
+ <div class="banner">
+  <img src="/images/banner.jpeg"  class="img-fluid" >
+ </div>
+  <!-- Logo các hãng xe -->
+  <div class="container text-center my-4">
+    <div class="row justify-content-center align-items-center g-3">
+      <div class="col-3 col-md-3 logo-section">
+        <img
+          src="/images/honda-Photoroom.png"
+          class="brand-logo img-fluid"
+          alt="Honda"
+        />
+      </div>
+      <div class="col-3 col-md-3 logo-section">
+        <img
+          src="/images/Piaggio-Logo-Photoroom.png"
+          class="brand-logo img-fluid"
+          alt="Piaggio"
+        />
+      </div>
+      <div class="col-3 col-md-3 logo-section">
+        <img
+          src="/images/yamaha-logo2-Photoroom.png"
+          class="brand-logo img-fluid"
+          alt="Yamaha" style="width: 90%;"
+        />
+      </div>
+    </div>
+  </div>
+
+<!--Slider chạy quảng cáo-->
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/images/banner.jpg" class="d-block w-100 " alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/banner1.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/banner2.jpg" class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+  <!-- Dịch vụ -->
+  <h2 class="text-center mt-5 fw-bold">TRUNG TÂM DỊCH VỤ</h2>
+  <div class="container">
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <button class="btn btn-outline-primary" ng-click="sortBy('tenDichVu')">A->Z</button>
+        <button class="btn btn-outline-primary" ng-click="sortBy('-tenDichVu')">Z->A</button>
+    </div>
+        
+    </div>
+
+    <div class="row">
+        <!-- Sản phẩm 1 -->
+        <div class="col-md-4 mb-4" ng-repeat="dv in list |orderBy:sortOrder|limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x400" alt="Product 1">
+                <h5>{{dv.tenDichVu}}</h5>
+                <p><strong>{{dv.giaDichVu |number:0}} VNĐ</strong>
+                    <p>{{dv.moTa}}</p>
+                <button class="btn btn-outline-secondary btn-sm">📅 Đặt lịch</button>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" ng-class="{disabled: currentPage === 1}">
+          <a class="page-link" href="" ng-click="changePage(currentPage - 1)">Previous</a>
+        </li>
+
+        <li class="page-item" ng-repeat="trang in pageNumbers" ng-class="{active: trang === currentPage}">
+          <a class="page-link" href="" ng-click="changePage(trang)">{{ trang }}</a>
+        </li>
+
+        <li class="page-item" ng-class="{disabled: currentPage === totalPages}">
+          <a class="page-link" href="" ng-click="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+
+</div>
+  
+  <!-- Đội ngũ thợ sửa chữa -->
+  <div class="container my-5">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-6">
+        <h2 class="fw-bold">ĐỘI NGŨ THỢ SỬA CHỮA CHUYÊN MÔN CAO</h2>
+        <hr />
+        <p>
+          Đội ngũ thợ sửa chữa xe máy chuyên sâu thường xuyên được đào tạo,
+          cùng với trang thiết bị tiêu chuẩn đã tạo nên nền tảng kỹ thuật
+          trong suốt nhiều năm qua. Chất lượng kỹ thuật sửa chữa được các câu
+          lạc bộ xe, các doanh nghiệp đối tác và Quý Khách hàng ghi nhận.
+        </p>
+        <p>
+          Là Hội sở kỹ thuật và sửa xe chính thức của Cộng Đồng Sh Việt Nam.
+          Là một trung tâm chuyên sửa chữa bảo dưỡng xe máy Sh và các dòng xe
+          tay ga cao cấp lớn nhất tại HCM.
+        </p>
+      </div>
+
+      <div class="col-12 col-md-6 text-center">
+        <img
+          src="/images/sua-xe-mototech.png"
+          style="max-width: 350px; max-height: 350px; width: 100%"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Trang thiết bị sửa chữa -->
+  <div class="container my-5">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-6 text-center">
+        <img
+          src="/images/May-ra-vao-lop-Romar-RM-827-400x400.jpg"
+          style="max-width: 350px; max-height: 350px; width: 100%"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <h2 class="fw-bold">TRANG THIẾT BỊ SỬA CHỮA HIỆN ĐẠI</h2>
+        <hr />
+        <p>
+          Cửa hàng có đủ các loại máy móc thiết bị hiện đại thế hệ mới phục vụ
+          tốt quá trình sửa xe. Máy đọc sửa lỗi Fi, phục vụ sửa chữa nâng cấp
+          phần mềm các xe phun xăng điện tử đời mới.
+        </p>
+        <p>
+          Máy nắn khung càng, phục vụ quá trình sửa xe bị va quệt, phục hồi
+          các xe máy bị tai nạn. Hiện tại tất cả các chi nhánh đều có loại máy
+          chuyên dụng này.
+        </p>
+        <p>
+          Máy ra lốp và làm lốp xe ga, phục vụ sửa chữa những xe bị thủng lốp
+          cần vá lại
+        </p>
+      </div>
+    </div>
+  </div>

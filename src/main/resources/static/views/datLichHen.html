@@ -1,0 +1,88 @@
+<div class="container mt-5" style="width: 100%"  ng-app="scheduleApp" ng-controller="ScheduleController">
+    <h2 class="text-center" style="font-weight: bold">Đặt Lịch Hẹn</h2>
+    <form ng-submit="submitForm()" style="width: 40%;margin: 0 auto">
+
+        <div class="mb-3">
+            <label for="idLichHen" class="form-label">ID</label>
+            <input type="text" class="form-control" id="idLichHen" ng-model="formData.idLichHen" required>
+        </div>
+        <div class="mb-3">
+            <label for="idLoaiXe" class="form-label">Loại Xe</label>
+            <select class="form-control" id="idLoaiXe" ng-model="formData.idLoaiXe" required>
+                <option value="">Chọn loại xe</option>
+                <option ng-repeat="vehicle in vehicles" value="{{vehicle.idLoaiXe}}">{{vehicle.tenLoaiXe}}</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="thoiGian" class="form-label">Thời Gian</label>
+            <input type="datetime-local" class="form-control" id="thoiGian" ng-model="formData.thoiGian" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="bienSoXe" class="form-label">Biển Số Xe</label>
+            <input type="text" class="form-control" id="bienSoXe" ng-model="formData.bienSoXe" placeholder="Nhập biển số xe" required>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="dichVu" class="form-label">Dịch Vụ</label>
+            <textarea  class="form-control" id="dichVu" ng-model="formData.dichVu" placeholder="Nhập dịch vụ" required ></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="ghiChu" class="form-label">Ghi Chú</label>
+            <textarea class="form-control" id="ghiChu" ng-model="formData.ghiChu" placeholder="Nhập ghi chú"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 50px">Đặt Lịch</button>
+    </form>
+    <div class="container mt-5" style="width: 80%;margin: 0 auto">
+        <h3 class="text-center mb-4 fw-bold">Danh Sách Lịch Hẹn</h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-dark">
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Khách Hàng</th>
+                    <th class="text-center">Loại Xe</th>
+                    <th class="text-center">Biển Số</th>
+                    <th class="text-center">Thời Gian</th>
+                    <th class="text-center">Dịch Vụ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in getPageData()">
+                    <td class="text-center align-middle">{{ item.idLichHen }}</td>
+                    <td class="align-middle">{{ item.khachHang.hoTen }}</td>
+                    <td class="align-middle">{{ item.idLoaiXe.tenLoaiXe }}</td>
+                    <td class="align-middle">{{ item.bienSoXe }}</td>
+                    <td class="align-middle">{{ item.thoiGian | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="align-middle">{{ item.dichVu }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4" style="width: 30%;margin: 5px auto">
+            <button class="btn btn-primary btn-sm "
+                    ng-click="prevPage()"
+                    ng-disabled="currentPage === 1">
+                <i class="bi bi-arrow-left me-2"></i>Trang trước
+            </button>
+
+            <div class="pagination-info">
+            <span style="font-weight: bold">
+                {{ currentPage }}
+            </span>
+            </div>
+
+            <button class="btn btn-primary btn-sm"
+                    ng-click="nextPage()"
+                    ng-disabled="currentPage >= Math.ceil(schedules.length / itemsPerPage)">
+                Trang sau<i class="bi bi-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </div>
+</div>

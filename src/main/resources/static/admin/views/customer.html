@@ -1,0 +1,108 @@
+<div ng-controller="CustomerController">
+  <!-- <h3><b>{{pageTitle}}</b></h3> -->
+
+  <!-- Form for adding/editing customer -->
+  <!-- <form class="mb-4">
+    <div class="row mb-3">
+      <label for="customerId" class="col-sm-2 col-form-label">ID Khách Hàng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="customerId" placeholder="ID Khách Hàng" />
+      </div>
+      <label for="customerName" class="col-sm-2 col-form-label">Tên Khách Hàng</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="customerName" placeholder="Tên Khách Hàng" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="customerPhone" class="col-sm-2 col-form-label">Số Điện Thoại</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="customerPhone" placeholder="Số Điện Thoại" />
+      </div>
+      <label for="customerEmail" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-4">
+        <input type="email" class="form-control" id="customerEmail" placeholder="Email" />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="customerAddress" class="col-sm-2 col-form-label">Địa Chỉ</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="customerAddress" placeholder="Địa Chỉ" />
+      </div>
+
+      <label for="customerRegistrationDate" class="col-sm-2 col-form-label">Ngày Đăng Kí</label>
+      <div class="col-sm-4">
+        <input type="date" class="form-control" id="customerRegistrationDate" placeholder="Ngày Đăng Kí" />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <label for="customerImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
+      <div class="col-sm-10">
+        <input type="file" class="form-control" id="customerImage" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
+    <button type="button" class="btn btn-secondary">Cập nhật khách hàng</button>
+  </form> -->
+
+  <div class="mt-5">
+    <h3><b>Danh sách khách hàng</b></h3>
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">ID Khách Hàng</th>
+          <th scope="col">Số Điện Thoại</th>
+          <th scope="col">Tên Khách Hàng</th>
+
+          <th scope="col">Email</th>
+          <!-- <th scope="col">Giới Tính</th> -->
+          <th scope="col">Địa Chỉ</th>
+          <th scope="col">Ngày Đăng Kí</th>
+          <th scope="col">Hình Ảnh</th>
+          <th scope="col">Chức Năng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example row -->
+        <tr ng-repeat="customer in getPaginatedData() track by $index">
+          <th scope="row">{{ $index + 1 + (currentPage - 1) * pageSize }}</th>
+          <td>{{ customer.idKhachHang }}</td>
+          <td>{{ customer.taiKhoanKH.idTaiKhoan }}</td>
+          <td>{{ customer.hoTen }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.diaChi }}</td>
+          <td>{{ customer.ngayDangKi }}</td>
+          <td>
+            <img
+              ng-src="/images/{{ customer.hinhAnh }}"
+              alt="Profile Image"
+              class="img-thumbnail"
+              style="width: 50px; height: 50px" />
+          </td>
+          <td>
+            <!-- <button class="btn btn-warning btn-sm" ng-click="selectEmployee(customer)">Sửa</button> -->
+            <button class="btn btn-danger btn-sm" ng-click="deleteEmployee(customer.idKhachHang)">Xóa</button>
+          </td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage - 1)">Previous</a>
+        </li>
+        <li
+          class="page-item"
+          ng-repeat="page in [].constructor(getPageCount()) track by $index"
+          ng-class="{ active: currentPage === ($index + 1) }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        <li class="page-item" ng-class="{ disabled: currentPage === getPageCount() }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
