@@ -35,7 +35,7 @@ public class PhieuDichVu {
     private Date ngayHoanThanh;
 
     @Column(name = "TrangThaiSuaChua")
-    private String trangThaiSuaChua;
+    private Boolean trangThaiSuaChua;
 
     @Column(name = "TenNhanVienSuaChua")
     private String tenNhanVienSuaChua;
