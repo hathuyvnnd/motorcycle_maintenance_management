@@ -73,7 +73,7 @@
         <!-- Sản phẩm 1 -->
         <div class="col-md-4 mb-4" ng-repeat="dv in list |orderBy:sortOrder|limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
             <div class="product-card">
-                <img src="https://via.placeholder.com/300x400" alt="Product 1">
+                <img ng-src="/images/dich_vu/{{dv.hinhAnh}}" alt="Product 1">
                 <h5>{{dv.tenDichVu}}</h5>
                 <p><strong>{{dv.giaDichVu |number:0}} VNĐ</strong>
                     <p>{{dv.moTa}}</p>

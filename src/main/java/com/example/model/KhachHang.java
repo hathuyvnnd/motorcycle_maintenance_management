@@ -50,9 +50,11 @@ public class KhachHang {
     // @JsonManagedReference
     Set<LichHen> lichHenList;
 
-    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
-    // @JsonManagedReference
-    Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
+    /*
+     * @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+     * // @JsonManagedReference
+     * Set<PhieuGhiNhanTinhTrangXe> phieuGhiNhanTinhTrangXeList;
+     **/
 
     @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
     // @JsonManagedReference

@@ -1,0 +1,23 @@
+<div class="container mt-4">
+    <h2>Kết quả tìm kiếm cho "{{ keyword }}"</h2>
+
+    <div class="row">
+        <div class="col-md-3 align-items-center " ng-repeat="item in kqTimKiem">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <img ng-src="{{ item.idDichVu ? '/images/dich_vu/' + item.hinhAnh : '/images/phu_tung/' + item.hinhAnh }}" 
+     alt="{{ item.tenDichVu || item.tenPhuTung }}" 
+     class="img-fluid">
+                    <h5 class="card-title">{{ item.tenDichVu || item.tenPhuTung }}</h5>
+                    <p class="card-text">
+                        <strong>Giá:</strong> {{ item.giaDichVu || item.giaPhuTung | number : 0 }} VNĐ
+                    </p>
+                    <!-- <a ng-href="{{ item.idDichVu ? '#!/dichvuchitiet/' + item.idDichVu : '#!/phutung/' + item.idPhuTung }}"
+                       class="btn btn-primary">
+                        Xem chi tiết
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
