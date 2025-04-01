@@ -1,0 +1,90 @@
+<div ng-controller="TypeAccessoryController">
+  <h3><b>{{ pageTitle }}</b></h3>
+
+  <!-- Form thêm mới / sửa loại phụ tùng -->
+  <form class="mt-4" name="loaiPhuTungForm" novalidate ng-submit="saveTypeAccessory()">
+    <div class="row mb-3">
+      <!-- Tên Loại Phụ Tùng -->
+      <label for="tenLoaiPT" class="col-sm-2 col-form-label">Tên Loại Phụ Tùng</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="tenLoaiPT"
+          placeholder="Tên Loại Phụ Tùng"
+          ng-model="newTypeAccessory.tenLoaiPT"
+          required />
+      </div>
+      <!-- Mô Tả -->
+      <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
+      <div class="col-sm-4">
+        <textarea class="form-control" id="moTa" placeholder="Mô Tả" ng-model="newTypeAccessory.moTa"></textarea>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Ghi Chú -->
+      <label for="ghiChu" class="col-sm-2 col-form-label">Ghi Chú</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="ghiChu" placeholder="Ghi Chú" ng-model="newTypeAccessory.ghiChu" />
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary me-2" ng-disabled="loaiPhuTungForm.$invalid">
+        {{ isEditMode ? "Cập Nhật Loại Phụ Tùng" : "Thêm Loại Phụ Tùng" }}
+      </button>
+      <button type="button" class="btn btn-secondary" ng-click="newTypeAccessory = {}; isEditMode = false;">
+        Reset
+      </button>
+    </div>
+  </form>
+
+  <!-- Danh sách loại phụ tùng -->
+  <div class="mt-5">
+    <h3><b>Danh sách loại phụ tùng</b></h3>
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>ID Loại Phụ Tùng</th>
+          <th>Tên Loại Phụ Tùng</th>
+          <th>Mô Tả</th>
+          <th>Ghi Chú</th>
+          <th>Chức Năng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="type_accessory in getPaginatedData() track by $index">
+          <td>{{ $index + 1 + (currentPage - 1) * pageSize }}</td>
+          <td>{{ type_accessory.idLoaiPT }}</td>
+          <td>{{ type_accessory.tenLoaiPT }}</td>
+          <td>{{ type_accessory.moTa }}</td>
+          <td>{{ type_accessory.ghiChu }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" ng-click="selectTypeAccessory(type_accessory)">Sửa</button>
+            <button class="btn btn-danger btn-sm" ng-click="deleteLoaiPhuTung(type_accessory.idLoaiPT)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage - 1)">Previous</a>
+        </li>
+        <li
+          class="page-item"
+          ng-repeat="page in [].constructor(getPageCount()) track by $index"
+          ng-class="{ active: currentPage === ($index + 1) }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        <li class="page-item" ng-class="{ disabled: currentPage === getPageCount() }">
+          <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

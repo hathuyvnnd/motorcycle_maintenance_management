@@ -25,7 +25,7 @@ import com.example.service.NhanVienService;
 
 @RestController
 @RequestMapping("/api/admin/dichvu")
-public class DichVuController {
+public class DichVuAdminController {
     @Autowired
     private DichVuService dichVuService;
 

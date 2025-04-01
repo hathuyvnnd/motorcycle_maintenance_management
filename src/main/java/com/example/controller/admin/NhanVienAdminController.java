@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/nhanvien")
-public class NhanVienController {
+@RequestMapping("/api/admin/nhanvien")
+public class NhanVienAdminController {
     @Autowired
     private NhanVienService nhanVienService;
 
