@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import com.example.model.DichVu;
 import com.example.model.LoaiPhuTung;
 import com.example.model.PhuTung;
 
@@ -13,4 +14,9 @@ public interface PhuTungDao extends JpaRepository<PhuTung, String> {
 
    @Query(value = "SELECT TOP 1 IdPhuTung FROM PhuTung ORDER BY IdPhuTung DESC ", nativeQuery = true)
    String findLastId();
+
+   List<PhuTung> findByTinhTrang(Boolean tinhTrang);
+
+   // Tìm phụ tùng theo dịch vụ
+   List<PhuTung> findByDichVuPT(DichVu dichVu);
 }
