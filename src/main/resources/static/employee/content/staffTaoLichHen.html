@@ -1,31 +1,116 @@
-<div>
+<!--<div>-->
+<!--    <h2 class="mb-4">Tạo Lịch Hẹn Mới</h2>-->
+<!--    <form>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Tên khách hàng</label>-->
+<!--            <input type="text" class="form-control" placeholder="Nhập tên khách hàng" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Số điện thoại</label>-->
+<!--            <input type="tel" class="form-control" placeholder="Nhập số điện thoại" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Biển số xe</label>-->
+<!--            <input type="text" class="form-control" placeholder="Nhập biển số xe" required>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; <div class="mb-3">-->
+<!--            <label class="form-label">Ngày hẹn</label>-->
+<!--            <input type="date" class="form-control" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Giờ hẹn</label>-->
+<!--            <input type="time" class="form-control" required>-->
+<!--        </div> &ndash;&gt;-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Mô tả vấn đề</label>-->
+<!--            <textarea class="form-control" rows="3" placeholder="Mô tả sơ bộ tình trạng xe..."></textarea>-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Lưu Lịch Hẹn</button>-->
+<!--        <button type="reset" class="btn btn-secondary">Làm Mới</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+
+
+
+
+<!--<div ng-controller="TaoLichHenController">-->
+<!--    <h2 class="mb-4">Tạo Lịch Hẹn Mới</h2>-->
+<!--    <form ng-submit="luuLichHen()">-->
+<!--        &lt;!&ndash; Nhập số điện thoại trước &ndash;&gt;-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Số điện thoại</label>-->
+<!--            <div class="input-group">-->
+<!--                <input type="tel" class="form-control" ng-model="lichHen.phone" placeholder="Nhập số điện thoại" required>-->
+<!--                <button type="button" class="btn btn-info" ng-click="checkPhone()">Kiểm tra</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Tên khách hàng (Hiện khi kiểm tra xong) &ndash;&gt;-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Tên khách hàng</label>-->
+<!--            <input type="text" class="form-control" ng-model="lichHen.hoTen" placeholder="Nhập tên khách hàng" ng-disabled="daCoTaiKhoan" required>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Biển số xe &ndash;&gt;-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Biển số xe</label>-->
+<!--            <input type="text" class="form-control" ng-model="lichHen.bienSo" placeholder="Nhập biển số xe" ng-disabled="!choPhepNhap" required>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Mô tả vấn đề &ndash;&gt;-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Mô tả vấn đề</label>-->
+<!--            <textarea class="form-control" ng-model="lichHen.moTa" rows="3" placeholder="Mô tả sơ bộ tình trạng xe..." ng-disabled="!choPhepNhap"></textarea>-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn btn-primary" ng-disabled="!choPhepNhap">Lưu Lịch Hẹn</button>-->
+<!--        <button type="reset" class="btn btn-secondary">Làm Mới</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<div ng-controller="TaoLichHenController">
     <h2 class="mb-4">Tạo Lịch Hẹn Mới</h2>
-    <form>
-        <div class="mb-3">
-            <label class="form-label">Tên khách hàng</label>
-            <input type="text" class="form-control" placeholder="Nhập tên khách hàng" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Số điện thoại</label>
-            <input type="tel" class="form-control" placeholder="Nhập số điện thoại" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Biển số xe</label>
-            <input type="text" class="form-control" placeholder="Nhập biển số xe" required>
-        </div>
-        <!-- <div class="mb-3">
-            <label class="form-label">Ngày hẹn</label>
-            <input type="date" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Giờ hẹn</label>
-            <input type="time" class="form-control" required>
-        </div> -->
-        <div class="mb-3">
-            <label class="form-label">Mô tả vấn đề</label>
-            <textarea class="form-control" rows="3" placeholder="Mô tả sơ bộ tình trạng xe..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Lưu Lịch Hẹn</button>
-        <button type="reset" class="btn btn-secondary">Làm Mới</button>
-    </form>
+
+    <!-- Nhập số điện thoại -->
+    <div class="mb-3">
+        <label class="form-label">Số điện thoại</label>
+        <input type="tel" class="form-control" ng-model="phone" placeholder="Nhập số điện thoại" required>
+        <button class="btn btn-primary mt-2" ng-click="checkPhone()">Kiểm tra</button>
+    </div>
+
+    <!-- Nhập tên khách hàng (Tự động điền nếu có tài khoản) -->
+    <div class="mb-3">
+        <label class="form-label">Tên khách hàng</label>
+        <input type="text" class="form-control" ng-model="tenKhachHang" placeholder="Nhập tên khách hàng"
+               ng-disabled="customerExists"> <!-- Nếu có tài khoản thì khóa -->
+    </div>
+
+    <!-- Chọn loại xe -->
+    <div class="mb-3">
+        <label class="form-label">Loại xe</label>
+        <select class="form-control" ng-model="idLoaiXe" ng-options="xe.id as xe.ten for xe in danhSachLoaiXe">
+            <option value="">-- Chọn loại xe --</option>
+        </select>
+    </div>
+
+    <!-- Chọn ngày hẹn -->
+    <div class="mb-3">
+        <label class="form-label">Ngày hẹn</label>
+        <input type="date" class="form-control" ng-model="thoiGian" required>
+    </div>
+
+    <!-- Nhập biển số xe -->
+    <div class="mb-3">
+        <label class="form-label">Biển số xe</label>
+        <input type="text" class="form-control" ng-model="bienSoXe" placeholder="Nhập biển số xe" required>
+    </div>
+
+    <!-- Nhập mô tả vấn đề -->
+    <div class="mb-3">
+        <label class="form-label">Mô tả vấn đề</label>
+        <textarea class="form-control" ng-model="moTa" rows="3" placeholder="Mô tả sơ bộ tình trạng xe..."></textarea>
+    </div>
+
+    <button class="btn btn-success" ng-click="taoLichHen()">Lưu Lịch Hẹn</button>
 </div>

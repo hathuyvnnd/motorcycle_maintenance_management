@@ -2,8 +2,11 @@ package com.example.service_impl;
 
 import com.example.dao.KhachHangDao;
 import com.example.dao.NhanVienDao;
+import com.example.exception.AppException;
+import com.example.exception.ErrorCode;
 import com.example.model.KhachHang;
 import com.example.model.NhanVien;
+import com.example.model.TaiKhoan;
 import com.example.service.KhachHangService;
 import com.example.service.NhanVienService;
 
@@ -35,6 +38,11 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
     @Override
+    public String findIdKhachHangByTaiKhoanKH_IdTaiKhoan(String sdt) {
+        return khachHangDao.findIdKhachHangBySoDienThoai(sdt).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+    }
+
+    @Override
     public KhachHang create(KhachHang khachHang) {
 
         // Sinh ID tự động
@@ -45,7 +53,7 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
     // Hàm sinh ID mới
-    private String generateNewId() {
+    public String generateNewId() {
         // Lấy ID cuối cùng
         String lastId = khachHangDao.findLastId();
 
@@ -84,5 +92,10 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Override
     public boolean exitsById(String id) {
         return khachHangDao.existsById(id);
+    }
+
+    public KhachHang findByTaiKhoanKH(TaiKhoan byId) {
+        return khachHangDao.findByTaiKhoanKH(byId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
     }
 }
