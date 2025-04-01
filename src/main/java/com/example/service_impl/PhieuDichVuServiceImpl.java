@@ -19,5 +19,21 @@ PhieuDichVuDAO pdvDao;
         // TODO Auto-generated method stub
         return pdvDao.findByHoaDon(hoaDon);
     }
+
+    @Override
+    public List<PhieuDichVu> getAllDichVus(){
+        return pdvDao.findAll();
+    }
+
+    @Override
+    public PhieuDichVu getByIdPDV(String idPhieuDichVu){
+        return pdvDao.findByIdPhieuDichVu(idPhieuDichVu);
+    }
+
+    @Override
+    public List<PhieuDichVu> getListPDVByKh(String idKhachHang){
+        return pdvDao.findPhieuDichVuByKhachHangId(idKhachHang);
+    }
+
     
 }

@@ -1,12 +1,12 @@
 package com.example.controller.customer;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,7 @@ public class PhuTungKHRest {
     LoaiPhuTungService loaiPTService;
 
     @GetMapping("/api/phutung")
-public List<PhuTung> getPhuTungTheoLoai(@RequestParam("idLoaiPT") String idLoaiPT) {
+    public List<PhuTung> getPhuTungTheoLoai(@RequestParam("idLoaiPT") String idLoaiPT) {
     System.out.println(" Lấy danh sách phụ tùng cho loại: " + idLoaiPT);
     LoaiPhuTung loaiPT = loaiPTService.findById(idLoaiPT);
     if (loaiPT == null) {

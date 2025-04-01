@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6">
+      <table class="table text-center">
+    <tr>
+        <th>ID</th>
+        <th>Tên Dịch Vụ</th>
+        <th>Giá</th>
+        <th>Ngày Thực Hiện</th>
+    </tr>
+    <tr ng-repeat="dv in chiTietPhieuDichVu.dichVuChiTiet">
+        <td>{{ dv.idPhieuDichVuCT }}</td>
+        <td>{{ dv.dichVu.tenDichVu }}</td>
+        <td>{{ dv.giaDichVu | number:0 }} VNĐ</td>
+        <td>{{ dv.ngayThucHien | date:'dd/MM/yyyy' }}</td>
+    </tr>
+</table>
+
+<h4>Phụ Tùng</h4>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Tên Phụ Tùng</th>
+        <th>Số Lượng</th>
+    </tr>
+    <tr ng-repeat="pt in chiTietPhieuDichVu.phuTungChiTiet">
+        <td>{{ pt.idPhieuSuDungPhuTungCT }}</td>
+        <td>{{ pt.phuTung.tenPhuTung }}</td>
+        <td>{{ pt.soLuong }}</td>
+    </tr>
+</table>
+<div class="text-center">
+    <button class="btn btn-secondary" onclick="window.history.back()">Quay Lại</button>
+  </div>
+</div>
+</div>

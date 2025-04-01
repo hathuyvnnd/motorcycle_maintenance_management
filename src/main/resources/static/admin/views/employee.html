@@ -68,13 +68,17 @@
     <!-- </div> -->
     <div class="row mb-3">
       <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
-      <div class="col-sm-10">
+      <div class="col-sm-4">
         <input
           type="file"
           class="form-control"
           id="profileImage"
           accept="image/*"
           onchange="angular.element(this).scope().setFile(this.files)" />
+      </div>
+      <div class="col-sm-2">
+        <!-- Hiển thị tên file hiện tại nếu có -->
+        <p ng-if="newEmployee.hinhAnh">File hiện tại: {{ newEmployee.hinhAnh }}</p>
       </div>
     </div>
     <div>

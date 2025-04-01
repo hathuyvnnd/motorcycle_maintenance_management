@@ -34,10 +34,38 @@
 
             </ul>
             <!-- Thanh tìm kiếm -->
-            <form class="d-flex me-md-5 flex-grow-1 justify-content-lg-end">
-                <input class="form-control me-1 w-50 " type="search" placeholder="Tìm kiếm..." aria-label="Search" >
-                <button class="btn btn-outline-light" type="submit">🔍</button>
-            </form>
+            <!-- <form class="d-flex me-md-5 flex-grow-1 justify-content-lg-end">
+                <input type="text" 
+                       class="form-control me-1 w-50" 
+                       placeholder="Tìm kiếm..." 
+                       ng-model="keyword" 
+                       ng-keyup="search()" 
+                       aria-label="Search">
+                <button class="btn btn-outline-light" type="submit">🔍</button> -->
+            
+                <!-- Hiển thị danh sách gợi nhớ -->
+                <!-- <ul class="list-group position-absolute w-50 bg-white" ng-show="searchResults.length > 0">
+                    <li class="list-group-item" ng-repeat="item in kqTimKiem">
+                        <a ng-href="{{item.idDichVu ? '#!/dichvuchitiet/' + item.idDichVu : '#!/phutung/' + item.idPhuTung}}">
+                            {{ item.tenDichVu || item.tenPhuTung }}
+                        </a>
+                    </li>
+                </ul>
+            </form> -->
+
+            <form class="d-flex me-md-5 flex-grow-1 justify-content-lg-end" 
+            ng-submit="$root.submitSearch($event)">
+          <input type="text" 
+                 class="form-control me-1 w-50" 
+                 placeholder="Tìm kiếm..." 
+                 ng-model="$root.keyword"
+                 aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">🔍</button>
+      </form>
+      
+
+            
+            
            
             <!--Icon user-->
             <div class="dropdown">
@@ -50,8 +78,7 @@
                     <li><a class="dropdown-item" href="#!/dangnhap">Đăng nhập</a></li>
                     <li><a class="dropdown-item" href="#!/dangki">Đăng kí</a></li>
                     <li><a class="dropdown-item" href="#!/quenmatkhau">Quên mật khẩu</a></li>
-                    <li><a class="dropdown-item" href="#!/hoadon">Hóa đơn</a></li>
-                    <li><a class="dropdown-item" href="#!/trangthaisuachua">Trạng thái sửa xe</a></li>
+                    <li><a class="dropdown-item" href="#!/lichsusuachua">Lich Sử sửa chữa</a></li>
                 </ul>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-start">
                     <li><a class="dropdown-item" href="#!/dangnhap">Đăng nhập</a></li>

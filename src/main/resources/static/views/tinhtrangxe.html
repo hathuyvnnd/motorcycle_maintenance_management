@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8">
+      <table class="table text-center">
+        <tr>
+            <th>ID Phiếu</th>
+            <th>Ngày Nhận</th>
+            <th>Mô Tả Tình Trạng</th>
+            <th>Biển Số Xe</th>
+            <th>Nhân Viên</th>
+        </tr>
+        <tr ng-if="phieuGhiNhanXe">
+            <td>{{ phieuGhiNhanXe.idPhieuGNX }}</td>
+            <td>{{ phieuGhiNhanXe.ngayNhan | date:'dd/MM/yyyy' }}</td>
+            <td>{{ phieuGhiNhanXe.moTaTinhTrangXe }}</td>
+            <td>{{ phieuGhiNhanXe.bienSoXe }}</td>
+            <td>{{ phieuGhiNhanXe.nhanVien.idNhanVien }}</td>
+        </tr>
+        <tr ng-if="!phieuGhiNhanXe">
+            <td colspan="5" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+      </table>
+      <div class="text-center">
+        <button class="btn btn-secondary" onclick="window.history.back()">Quay Lại</button>
+      </div>
+    </div>
+</div>

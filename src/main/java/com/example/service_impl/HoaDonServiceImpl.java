@@ -28,6 +28,10 @@ public class HoaDonServiceImpl implements HoaDonService {
     public List<HoaDon>findAll(){
         return hdDao.findAll();
     }
+    @Override
+    public HoaDon getHoaDonById(String idHoaDon){
+        return hdDao.getReferenceById(idHoaDon);
+    }
 
     
 }

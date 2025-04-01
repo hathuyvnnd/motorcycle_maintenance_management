@@ -65,8 +65,8 @@
           <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
             <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
-              <option value="true" selected>Hoạt động</option>
-              <option value="false">Không hoạt động</option>
+              <option ng-value="true">Hoạt động</option>
+              <option ng-value="false">Không hoạt động</option>
             </select>
           </div>
           <label for="nhapLaiMatKhauNhanVien" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>

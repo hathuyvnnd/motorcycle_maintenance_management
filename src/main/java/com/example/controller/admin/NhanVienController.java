@@ -2,6 +2,8 @@ package com.example.controller.admin;
 
 import com.example.model.NhanVien;
 import com.example.service.NhanVienService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +16,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/nhanvien")
 public class NhanVienController {
-
-    private final NhanVienService nhanVienService;
+    @Autowired
+    private NhanVienService nhanVienService;
 
     // Đường dẫn lưu file ảnh
     private final String uploadDir = "D:/maintenece_motorcycle_management/src/main/resources/static/images";
 
-    public NhanVienController(NhanVienService nhanVienService) {
-        this.nhanVienService = nhanVienService;
-    }
+    // public NhanVienController(NhanVienService nhanVienService) {
+    // this.nhanVienService = nhanVienService;
+    // }
 
     // 1. Lấy tất cả NhanVien
     @GetMapping

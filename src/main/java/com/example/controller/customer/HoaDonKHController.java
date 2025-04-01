@@ -34,10 +34,10 @@ public class HoaDonKHController {
     PhieuDichVuCTService pdvctService;
 
     // API lấy tất cả hóa đơn
-    @GetMapping("/api/hoadon")
-    public List<HoaDon> getAll() {
-        return hdService.findAll();
-    }
+    // @GetMapping("/api/hoadon")
+    // public List<HoaDon> getAll() {
+    //     return hdService.findAll();
+    // }
 
     // API lấy hóa đơn theo ID khách hàng
     @GetMapping("/api/hoadonOne")
@@ -67,4 +67,8 @@ public class HoaDonKHController {
     return null;
 
 }
+@GetMapping("api/hoadon")
+    public HoaDon getHDByID(@RequestParam("idHoaDon") String idHoaDon){
+        return hdService.getHoaDonById(idHoaDon);
+    }
 }

@@ -1,16 +1,10 @@
 package com.example.model;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Date;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Getter
 @Setter
@@ -18,7 +12,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @NoArgsConstructor
 @Entity
 @Table(name = "PhuTung")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPhuTung")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "idPhuTung")
 public class PhuTung {
     @Id
     @Column(name = "IdPhuTung")
@@ -35,7 +30,7 @@ public class PhuTung {
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiPT")
-    // @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private LoaiPhuTung loaiPT;
 
     @Column(name = "MoTa")
@@ -46,7 +41,7 @@ public class PhuTung {
     private String thuongHieu;
 
     @Column(name = "TinhTrang")
-    private String tinhTrang;
+    private Boolean tinhTrang;
 
     @Column(name = "PhuHopLoaiXe")
     private String phuHopLoaiXe;
@@ -60,12 +55,12 @@ public class PhuTung {
     @Column(name = "HanSuDung")
     private Date hanSuDung;
 
+    @ManyToOne
+    @JoinColumn(name = "IdDichVu")
+    @JsonIdentityReference(alwaysAsId = true)
+    private DichVu dichVuPT;
     @OneToMany(mappedBy = "phuTung", fetch = FetchType.LAZY)
     // @JsonManagedReference
     private Set<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
-    @ManyToOne
-    @JoinColumn(name = "IdDichVu")
-    // @JsonBackReference
-    private DichVu dichVuPT;
 
 }
