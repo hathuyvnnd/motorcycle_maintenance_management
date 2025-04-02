@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -43,10 +46,7 @@ public class LichHen {
     @Column(name = "BienSoXe")
     private String bienSoXe;
 
-    @Column(name = "GhiChu")
-    private String ghiChu;
-
-    @Column(name = "DichVu")
-    private String dichVu;
+    @OneToMany(mappedBy = "idLichHen")
+    Set<LichHenCT> lichHenCTList;
 
 }
