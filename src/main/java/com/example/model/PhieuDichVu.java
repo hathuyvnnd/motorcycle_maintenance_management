@@ -51,4 +51,7 @@ public class PhieuDichVu {
     @OneToOne(mappedBy = "phieuDichVuHD")
     private HoaDon hoaDon;
 
+    @OneToOne
+    @JoinColumn(name = "IdPhieuGNX")
+    private PhieuGhiNhanTinhTrangXe phieuGNX;
 }

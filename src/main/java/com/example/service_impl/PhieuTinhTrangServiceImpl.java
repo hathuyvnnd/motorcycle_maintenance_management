@@ -67,13 +67,7 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
         return String.format("PGNX%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
     }
-////////////////Cái này của hathuy đừng có xóa 
-    @Override
-    public
-    PhieuGhiNhanTinhTrangXe getPGNByHoaDon(HoaDon hoaDon){
-        return dao.findByHoaDon(hoaDon);
-        
-    }
+////////////////Cái này của hathuy đừng có xóa
     @Override
     public
     PhieuGhiNhanTinhTrangXe getPGNById(String idPhieuGNX){

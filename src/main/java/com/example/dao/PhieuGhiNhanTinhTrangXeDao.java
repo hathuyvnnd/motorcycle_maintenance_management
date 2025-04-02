@@ -11,7 +11,6 @@ public interface PhieuGhiNhanTinhTrangXeDao extends JpaRepository<PhieuGhiNhanTi
     @Query(value = "SELECT TOP 1 IdPhieuGNX FROM PhieuGhiNhanTinhTrangXe ORDER BY IdPhieuGNX DESC ", nativeQuery = true)
     String findLastId();
 ///////////Cái này của Hathuy đừng có xóa////////////////////////
-    PhieuGhiNhanTinhTrangXe findByHoaDon(HoaDon hoaDon);
     PhieuGhiNhanTinhTrangXe findByIdPhieuGNX(String idPhieuGNX);
 //////////////////////////////////////////////////////////////////
 }
