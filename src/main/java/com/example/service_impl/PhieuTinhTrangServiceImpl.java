@@ -1,9 +1,13 @@
 package com.example.service_impl;
 
 import com.example.dao.PhieuGhiNhanTinhTrangXeDao;
+import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.model.HoaDon;
+import com.example.mapper.PhieuTinhTrangMapper;
+import com.example.model.LichHen;
+
 import com.example.model.PhieuGhiNhanTinhTrangXe;
 import com.example.service.PhieuGhiNhanTinhTrangXeService;
 import lombok.AccessLevel;
@@ -14,10 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService {
     PhieuGhiNhanTinhTrangXeDao dao;
+    PhieuTinhTrangMapper mapper;
 
     @Override
     public List<PhieuGhiNhanTinhTrangXe> findAll() {
@@ -56,22 +61,29 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
 
         // Nếu không có ID, tạo ID đầu tiên
         if (lastId == null) {
-            return "PHNX001";
+            return "PGNX001";
         }
 
         // Lấy phần số từ ID (bỏ phần "KH") và tăng nó lên
-        int number = Integer.parseInt(lastId.substring(2));
+        int number = Integer.parseInt(lastId.substring(4));
         number++;
 
         // Ghép phần số mới với "KH"
         return String.format("PGNX%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
     }
-////////////////Cái này của hathuy đừng có xóa
+
+    //////////////// Cái này của hathuy đừng có xóa
     @Override
-    public
-    PhieuGhiNhanTinhTrangXe getPGNById(String idPhieuGNX){
+    public PhieuGhiNhanTinhTrangXe getPGNById(String idPhieuGNX) {
         return dao.findByIdPhieuGNX(idPhieuGNX);
     }
- //////////////////////////////////////////////////////   
+
+    //////////////////////////////////////////////////////
+    @Override
+    public PhieuGhiNhanTinhTrangXe createPhieuGhiNhanTinhTrangXeRequest(CreateTinhTrangXeRequest request) {
+        PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
+        return dao.save(pttx);
+    }
+
 }

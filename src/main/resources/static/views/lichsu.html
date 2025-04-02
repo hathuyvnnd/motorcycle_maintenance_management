@@ -3,49 +3,51 @@
 
   <!-- Bộ lọc ngày -->
   <div class="row mb-3">
-      <div class="col-md-3">
-          <label for="startDate">Từ ngày:</label>
-          <input type="date" class="form-control" id="batDau" ng-model="batDau">
-      </div>
-      <div class="col-md-3">
-          <label for="endDate">Đến ngày:</label>
-          <input type="date" class="form-control" id="ketThuc" ng-model="ketThuc">
-      </div>
+    <div class="col-md-3">
+      <label for="startDate">Từ ngày:</label>
+      <input type="date" class="form-control" id="batDau" ng-model="batDau" />
+    </div>
+    <div class="col-md-3">
+      <label for="endDate">Đến ngày:</label>
+      <input type="date" class="form-control" id="ketThuc" ng-model="ketThuc" />
+    </div>
   </div>
 
   <table class="table table-bordered mt-3 text-center">
-      <thead>
-          <tr>
-              <th scope="col">Mã Phiếu Dịch Vụ</th>
-              <th scope="col">Biển Số Xe</th>
-              <th scope="col">Nhân Viên Tạo Phiếu</th>
-              <th scope="col">Mã Hóa Đơn</th>
-              <th scope="col">Trạng Thái</th>
-              <th scope="col">Ngày Thực Hiện</th>
-              <th scope="col">Hành động</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr ng-repeat="hd in listPDV | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
-              <td>{{hd.idPhieuDichVu}}</td>
-              <td>{{hd.hoaDon.phieuGNX.bienSoXe}}</td>
-              <td>{{hd.nhanVienTaoPhieu.idNhanVien}}</td>
-              <td>{{ hd.hoaDon && hd.hoaDon.idHoaDon ? hd.hoaDon.idHoaDon : 'Không có hóa đơn' }}</td>
-              <td>{{hd.trangThaiSuaChua == 1 ? "Đã hoàn thành" : "Đang thực hiện"}}</td>
-              <td>{{hd.ngayThucHien | date:'dd/MM/yyyy'}}</td>
-              <td>
-                  <button class="btn btn-outline-warning btn-sm text-black" ng-show="hd.hoaDon != null">
-                      <a class="text-black text-decoration-none " ng-href="#!/hoadon/{{hd.hoaDon.idHoaDon}}">Hóa Đơn</a>
-                  </button>
-                  <button class="btn btn-outline-info btn-sm text-black">
-                      <a class="text-black text-decoration-none" ng-href="#!/dichvuchitiet/{{hd.idPhieuDichVu}}">Chi Tiết</a>
-                  </button>
-                  <button class="btn btn-outline-success btn-sm text-black">
-                      <a class="text-black text-decoration-none" ng-href="#!/tinhtrangxe/{{hd.phieuGNX.idPhieuGNX}}">Tình Trạng Xe</a>
-                  </button>
-              </td>
-          </tr>
-      </tbody>
+    <thead>
+      <tr>
+        <th scope="col">Mã Phiếu Dịch Vụ</th>
+        <th scope="col">Biển Số Xe</th>
+        <th scope="col">Nhân Viên Tạo Phiếu</th>
+        <th scope="col">Mã Hóa Đơn</th>
+        <th scope="col">Trạng Thái</th>
+        <th scope="col">Ngày Thực Hiện</th>
+        <th scope="col">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="hd in listPDV | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
+        <td>{{hd.idPhieuDichVu}}</td>
+        <td>{{hd.phieuGNX.bienSoXe}}</td>
+        <td>{{hd.nhanVienTaoPhieu.idNhanVien}}</td>
+        <td>{{ hd.hoaDon && hd.hoaDon.idHoaDon ? hd.hoaDon.idHoaDon : 'Không có hóa đơn' }}</td>
+        <td>{{hd.trangThaiSuaChua == 1 ? "Đã hoàn thành" : "Đang thực hiện"}}</td>
+        <td>{{hd.ngayThucHien | date:'dd/MM/yyyy'}}</td>
+        <td>
+          <button class="btn btn-outline-warning btn-sm text-black" ng-show="hd.hoaDon != null">
+            <a class="text-black text-decoration-none" ng-href="#!/hoadon/{{hd.hoaDon.idHoaDon}}">Hóa Đơn</a>
+          </button>
+          <button class="btn btn-outline-info btn-sm text-black">
+            <a class="text-black text-decoration-none" ng-href="#!/dichvuchitiet/{{hd.idPhieuDichVu}}">Chi Tiết</a>
+          </button>
+          <button class="btn btn-outline-success btn-sm text-black">
+            <a class="text-black text-decoration-none" ng-href="#!/tinhtrangxe/{{hd.phieuGNX.idPhieuGNX}}">
+              Tình Trạng Xe
+            </a>
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">

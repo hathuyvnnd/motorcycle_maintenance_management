@@ -1,4 +1,4 @@
-                    var app = angular.module("megaviaApp", ["ngRoute"]);
+var app = angular.module("megaviaApp", ["ngRoute"]);
 
 app.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
@@ -41,6 +41,10 @@ app.config(function ($routeProvider) {
       templateUrl: "admin/views/invoice.html",
       controller: "InvoiceController",
     })
+    .when("/type_accessory", {
+      templateUrl: "admin/views/type_accessory.html",
+      controller: "TypeAccessoryController",
+    })
     .when("/", {
       redirectTo: "/statistics",
     })
@@ -51,7 +55,7 @@ app.config(function ($routeProvider) {
 
 // ============== Service cho NhanVien ==============
 app.factory("NhanVienService", function ($http) {
-  var baseUrl = "/api/nhanvien";
+  var baseUrl = "/api/admin/nhanvien";
   return {
     // 1. Lấy tất cả nhân viên
     getAllNhanVien: function () {
@@ -155,6 +159,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
           $scope.newEmployee = { taiKhoanNV: {} };
           $scope.file = null;
           document.getElementById("profileImage").value = "";
+          // Reload trang sau khi thêm mới thành công
+          // window.location.reload();
         },
         function (err) {
           console.error("Lỗi khi thêm nhân viên:", err);
@@ -171,6 +177,7 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
             $scope.isEditMode = false;
             $scope.file = null;
             document.getElementById("profileImage").value = "";
+            // window.location.reload();
           },
           function (err) {
             console.error("Lỗi khi cập nhật nhân viên:", err);
@@ -221,8 +228,16 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
       NhanVienService.deleteNhanVien(idNhanVien).then(
         function () {
-          alert("Nhân viên đã được xóa thành công!");
+          // Kiểm tra nếu phần tử bị xóa là phần tử cuối cùng trong trang
+          if ($scope.getPaginatedData().length === 1 && $scope.currentPage > 1) {
+            // Nếu trang còn lại có ít nhất 1 phần tử và trang hiện tại không phải trang đầu tiên
+            $scope.setPage($scope.currentPage - 1); // Chuyển về trang liền trước
+          }
           $scope.getAllEmployees();
+          alert("Nhân viên đã được xóa thành công!");
+
+          // Reload trang sau khi xóa thành công
+          // window.location.reload();
         },
         function (err) {
           console.error("Lỗi khi xóa nhân viên:", err);
@@ -255,7 +270,7 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
 
 // ============== Service cho Customer ==============
 app.factory("CustomerService", function ($http) {
-  var baseUrl = "/api/khachhang";
+  var baseUrl = "/api/admin/khachhang";
   return {
     // 1. Lấy tất cả khách hàng
     getAllCustomers: function () {
@@ -310,7 +325,7 @@ app.controller("CustomerController", function ($scope, CustomerService) {
 });
 // ============== Service cho Account ==============
 app.factory("AccountService", function ($http) {
-  var baseUrl = "/api/taikhoan";
+  var baseUrl = "/api/admin/taikhoan";
   return {
     // 1. Lấy tất cả tài khoản
     getAllAccounts: function () {
@@ -348,6 +363,14 @@ app.controller("AccountController", function ($scope, AccountService) {
   $scope.accountsEmployee = [];
   $scope.accountsCustomer = [];
 
+  // Các biến phân trang cho từng tab
+  $scope.currentPageEmployee = 1;
+  $scope.pageSizeEmployee = 5;
+  $scope.totalItemsEmployee = 0;
+
+  $scope.currentPageCustomer = 1;
+  $scope.pageSizeCustomer = 5;
+  $scope.totalItemsCustomer = 0;
   // Các biến dữ liệu từng tab
   $scope.newAccountAdmin = {};
   $scope.newAccountEmployee = { trangThai: true };
@@ -356,10 +379,7 @@ app.controller("AccountController", function ($scope, AccountService) {
   $scope.isEditModeAdmin = false;
   $scope.isEditModeEmployee = false;
   $scope.isEditModeCustomer = false;
-  // Phân trang
-  $scope.currentPage = 1;
-  $scope.pageSize = 5;
-  $scope.totalItems = 0;
+
   // Khởi tạo các biến hiển thị mật khẩu
   $scope.showPasswordAdmin = false;
   $scope.showRePasswordAdmin = false;
@@ -382,11 +402,45 @@ app.controller("AccountController", function ($scope, AccountService) {
         $scope.accountsCustomer = $scope.accounts.filter(function (account) {
           return account.vaiTro === "Khách hàng";
         });
+        // Cập nhật tổng số phần tử
+        $scope.totalItemsEmployee = $scope.accountsEmployee.length;
+        $scope.totalItemsCustomer = $scope.accountsCustomer.length;
       },
       function (error) {
         console.error("Lỗi khi lấy danh sách tài khoản:", error);
       }
     );
+  };
+  // Hàm set page cho tab nhân viên
+  $scope.setPageEmployee = function (page) {
+    $scope.currentPageEmployee = page;
+  };
+
+  // Hàm set page cho tab khách hàng
+  $scope.setPageCustomer = function (page) {
+    $scope.currentPageCustomer = page;
+  };
+
+  // Hàm tính toán số trang
+  $scope.getPageCountEmployee = function () {
+    return Math.ceil($scope.totalItemsEmployee / $scope.pageSizeEmployee);
+  };
+
+  $scope.getPageCountCustomer = function () {
+    return Math.ceil($scope.totalItemsCustomer / $scope.pageSizeCustomer);
+  };
+
+  // Hàm lấy các tài khoản phân trang
+  $scope.getPaginatedEmployeeAccounts = function () {
+    let start = ($scope.currentPageEmployee - 1) * $scope.pageSizeEmployee;
+    let end = start + $scope.pageSizeEmployee;
+    return $scope.accountsEmployee.slice(start, end);
+  };
+
+  $scope.getPaginatedCustomerAccounts = function () {
+    let start = ($scope.currentPageCustomer - 1) * $scope.pageSizeCustomer;
+    let end = start + $scope.pageSizeCustomer;
+    return $scope.accountsCustomer.slice(start, end);
   };
 
   // Các hàm thêm/cập nhật/xóa tài khoản dựa trên vai trò
@@ -670,8 +724,13 @@ app.controller("ServiceController", function ($scope, DichVuService) {
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
       DichVuService.deleteDichVu(idDichVu).then(
         function () {
-          alert("Dịch vụ đã được xóa thành công!");
+          // Kiểm tra nếu phần tử bị xóa là phần tử cuối cùng trong trang
+          if ($scope.getPaginatedData().length === 1 && $scope.currentPage > 1) {
+            // Nếu trang còn lại có ít nhất 1 phần tử và trang hiện tại không phải trang đầu tiên
+            $scope.setPage($scope.currentPage - 1); // Chuyển về trang liền trước
+          }
           $scope.getAllServices();
+          alert("Dịch vụ đã được xóa thành công!");
         },
         function (err) {
           console.error("Lỗi khi xóa dịch vụ:", err);
@@ -691,9 +750,124 @@ app.factory("LoaiPhuTungService", function ($http) {
     getAllLoaiPT: function () {
       return $http.get(baseUrl);
     },
+    // 2. Lấy loại phụ tùng theo ID
+    getLoaiPhuTungById: function (id) {
+      return $http.get(baseUrl + "/" + id);
+    },
+    // 3. Thêm loại phụ tùng
+    addLoaiPhuTung: function (loaiPhuTung) {
+      return $http.post(baseUrl + "/add", loaiPhuTung);
+    },
+    // 4. Cập nhật loại phụ tùng
+    updateLoaiPhuTung: function (id, loaiPhuTung) {
+      return $http.put(baseUrl + "/" + id, loaiPhuTung);
+    },
+
+    // 5. Xóa loại phụ tùng
+    deleteLoaiPhuTung: function (id) {
+      return $http.delete(baseUrl + "/" + id);
+    },
   };
 });
+// ============== Controller cho Loại Phụ tùng ==============
+app.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) {
+  $scope.pageTitle = "Quản lý loại phụ tùng";
+  $scope.type_accessorys = [];
+  $scope.newTypeAccessory = {};
+  $scope.isEditMode = false;
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
 
+  // Hàm load danh sách loại phụ tùng
+  $scope.getAllTypeAccessorys = function () {
+    LoaiPhuTungService.getAllLoaiPT().then(
+      function (response) {
+        $scope.type_accessorys = response.data;
+        $scope.totalItems = $scope.type_accessorys.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách loại phụ tùng:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.type_accessorys.slice(start, start + $scope.pageSize);
+  };
+
+  // Hàm thêm mới hoặc cập nhật
+  $scope.saveTypeAccessory = function () {
+    if (!$scope.isEditMode) {
+      // console.log($scope.newTypeAccessory);
+      LoaiPhuTungService.addLoaiPhuTung($scope.newTypeAccessory).then(
+        function (res) {
+          $scope.getAllTypeAccessorys();
+          $scope.newTypeAccessory = {};
+        },
+        function (err) {
+          console.error("Lỗi khi thêm loại phụ tùng:", err);
+        }
+      );
+    } else {
+      // Cập nhật
+      LoaiPhuTungService.updateLoaiPhuTung($scope.newTypeAccessory.idLoaiPT, $scope.newTypeAccessory).then(
+        function (res) {
+          $scope.getAllTypeAccessorys();
+          $scope.newTypeAccessory = {};
+          $scope.isEditMode = false;
+        },
+        function (err) {
+          console.error("Lỗi khi cập nhật loại phụ tùng:", err);
+        }
+      );
+    }
+  };
+
+  // Hàm chọn loại phụ tùng để sửa
+  $scope.selectTypeAccessory = function (typeAccessory) {
+    $scope.newTypeAccessory = angular.copy(typeAccessory);
+    $scope.isEditMode = true;
+    console.log("Selected service:", $scope.newTypeAccessory);
+  };
+
+  // Hàm xóa phụ tùng
+  $scope.deleteLoaiPhuTung = function (idLoaiPT) {
+    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+      LoaiPhuTungService.deleteLoaiPhuTung(idLoaiPT).then(
+        function () {
+          // Kiểm tra nếu phần tử bị xóa là phần tử cuối cùng trong trang
+          if ($scope.getPaginatedData().length === 1 && $scope.currentPage > 1) {
+            // Nếu trang còn lại có ít nhất 1 phần tử và trang hiện tại không phải trang đầu tiên
+            $scope.setPage($scope.currentPage - 1); // Chuyển về trang liền trước
+          }
+
+          // Sau khi xóa, tải lại danh sách loại phụ tùng
+          $scope.getAllTypeAccessorys();
+          alert("Loại phụ tùng đã được xóa thành công!");
+        },
+        function (err) {
+          console.error("Lỗi khi xóa loại phụ tùng:", err);
+          alert("Lỗi khi xóa loại phụ tùng, vui lòng thử lại.");
+        }
+      );
+    }
+  };
+
+  $scope.getAllTypeAccessorys();
+});
 // ============== Service cho Phụ tùng ==============
 app.factory("PhuTungService", function ($http) {
   var baseUrl = "/api/admin/phutung";
@@ -728,7 +902,7 @@ app.factory("PhuTungService", function ($http) {
         headers: { "Content-Type": undefined },
       });
     },
-    // 5. Xóa dịch vụ
+    // 5. Xóa phụ tùng
     deletePhuTung: function (id) {
       return $http.delete(baseUrl + "/" + id);
     },
@@ -888,8 +1062,13 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
       PhuTungService.deletePhuTung(idPhuTung).then(
         function () {
-          alert("Phụ tùng đã được xóa thành công!");
+          // Kiểm tra nếu phần tử bị xóa là phần tử cuối cùng trong trang
+          if ($scope.getPaginatedData().length === 1 && $scope.currentPage > 1) {
+            // Nếu trang còn lại có ít nhất 1 phần tử và trang hiện tại không phải trang đầu tiên
+            $scope.setPage($scope.currentPage - 1); // Chuyển về trang liền trước
+          }
           $scope.getAllAccessorys();
+          alert("Phụ tùng đã được xóa thành công!");
         },
         function (err) {
           console.error("Lỗi khi xóa phụ tùng:", err);
@@ -933,11 +1112,108 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
   // Gọi hàm khởi tạo khi controller được load
   $scope.init();
 });
-app.controller("BookingController", function ($scope) {
-  $scope.pageTitle = "Quản lý lịch hẹn";
+
+// ============== Service cho Booking ==============
+app.factory("LichHenService", function ($http) {
+  var baseUrl = "/api/admin/lich_hen";
+  return {
+    // Lấy tất cả lịch hẹn
+    getAllLichHen: function () {
+      return $http.get(baseUrl);
+    },
+  };
 });
-app.controller("InvoiceController", function ($scope) {
-  $scope.pageTitle = "Quản lý hoá đơn";
+// ============== Controller cho Booking ==============
+app.controller("BookingController", function ($scope, LichHenService) {
+  $scope.bookings = [];
+  $scope.newBooking = {};
+  // $scope.isEditMode = false;
+  // $scope.file = null;
+
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Load danh sách
+  $scope.getAllLichHen = function () {
+    LichHenService.getAllLichHen().then(
+      function (response) {
+        $scope.bookings = response.data;
+        $scope.totalItems = $scope.bookings.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách lich hẹn:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.bookings.slice(start, start + $scope.pageSize);
+  };
+  $scope.getAllLichHen();
+});
+// ============== Service cho hoá đơn ==============
+app.factory("HoaDonService", function ($http) {
+  var baseUrl = "/api/admin/hoa_don";
+  return {
+    // Lấy tất cả hoá đơn
+    getAllHoaDon: function () {
+      return $http.get(baseUrl);
+    },
+  };
+});
+// ============== Controller cho hoá đơn ==============
+app.controller("InvoiceController", function ($scope, HoaDonService) {
+  $scope.invoices = [];
+  $scope.newInvoice = {};
+  // $scope.isEditMode = false;
+  // $scope.file = null;
+
+  // Phân trang
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalItems = 0;
+
+  // Load danh sách
+  $scope.getAllHoaDon = function () {
+    HoaDonService.getAllHoaDon().then(
+      function (response) {
+        $scope.invoices = response.data;
+        $scope.totalItems = $scope.invoices.length;
+      },
+      function (error) {
+        console.error("Lỗi khi lấy danh sách hoá đơn:", error);
+      }
+    );
+  };
+
+  $scope.getPageCount = function () {
+    return Math.ceil($scope.totalItems / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+    if (page >= 1 && page <= $scope.getPageCount()) {
+      $scope.currentPage = page;
+    }
+  };
+
+  $scope.getPaginatedData = function () {
+    var start = ($scope.currentPage - 1) * $scope.pageSize;
+    return $scope.invoices.slice(start, start + $scope.pageSize);
+  };
+  $scope.getAllHoaDon();
 });
 app.controller("StatisticsController", function ($scope) {
   $scope.pageTitle = "Thống kê";

@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import com.example.model.DichVu;
 import com.example.model.LoaiPhuTung;
 import com.example.model.PhuTung;
 
@@ -15,4 +16,10 @@ public interface PhuTungDao extends JpaRepository<PhuTung, String> {
    String findLastId();
 
    List<PhuTung> findByTenPhuTungContainingIgnoreCase(String key);
+
+   List<PhuTung> findByTinhTrang(Boolean tinhTrang);
+
+   // Tìm phụ tùng theo dịch vụ
+   List<PhuTung> findByDichVuPT(DichVu dichVu);
+
 }

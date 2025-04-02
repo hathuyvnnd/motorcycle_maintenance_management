@@ -21,17 +21,17 @@ public class HoaDonServiceImpl implements HoaDonService {
     KhachHangDao khDao;
 
     @Override
-    public List<HoaDon>hoaDonByKh(KhachHang kh){
+    public List<HoaDon> hoaDonByKh(KhachHang kh) {
         return hdDao.findByKhachHang(kh);
     }
+
     @Override
-    public List<HoaDon>findAll(){
+    public List<HoaDon> findAll() {
         return hdDao.findAll();
     }
+
     @Override
-    public HoaDon getHoaDonById(String idHoaDon){
+    public HoaDon getHoaDonById(String idHoaDon) {
         return hdDao.getReferenceById(idHoaDon);
     }
-
-    
 }

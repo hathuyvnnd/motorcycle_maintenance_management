@@ -45,4 +45,7 @@ public class DichVu {
     @OneToMany(mappedBy = "dichVuPT", fetch = FetchType.LAZY)
     // @JsonManagedReference
     private Set<PhuTung> phuTungList;
+
+    @OneToMany(mappedBy = "idDichVu")
+    Set<LichHenCT> lichHenCTList;
 }

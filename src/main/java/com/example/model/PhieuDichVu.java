@@ -54,4 +54,5 @@ public class PhieuDichVu {
     @OneToOne
     @JoinColumn(name = "IdPhieuGNX")
     private PhieuGhiNhanTinhTrangXe phieuGNX;
+
 }

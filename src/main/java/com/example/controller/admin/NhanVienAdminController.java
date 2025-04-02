@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/nhanvien")
-public class NhanVienController {
+@RequestMapping("/api/admin/nhanvien")
+public class NhanVienAdminController {
     @Autowired
     private NhanVienService nhanVienService;
 
     // Đường dẫn lưu file ảnh
-    private final String uploadDir = "D:/maintenece_motorcycle_management/src/main/resources/static/images";
+    private final String uploadDir = "C:/TN/Workspace/MotorBike/motorcycle_maintenance_management/src/main/resources/static/images";
 
     // 1. Lấy tất cả NhanVien
     @GetMapping
