@@ -23,7 +23,7 @@ import com.example.service.PhuTungService;
 
 @RestController
 @RequestMapping("/api/admin/phutung")
-public class PhuTungController {
+public class PhuTungAdminController {
     @Autowired
     private PhuTungService phuTungService;
 
@@ -32,7 +32,7 @@ public class PhuTungController {
 
     // 1. Lấy tất cả PhuTung
     @GetMapping
-    public List<PhuTung> getAllDichVu() {
+    public List<PhuTung> getAllPhuTung() {
         return phuTungService.findAll();
     }
 

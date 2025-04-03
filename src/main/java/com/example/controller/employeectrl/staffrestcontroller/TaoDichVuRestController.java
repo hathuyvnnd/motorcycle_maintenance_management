@@ -37,9 +37,9 @@ public class TaoDichVuRestController {
    System.out.println("a:  "+ ph);
    System.out.println("Phieu dich vu mới: " + ph);
 
-   PhieuGhiNhanTinhTrangXe newPhieu = service.createPhieuGhiNhanTinhTrangXeRequest(ph);
-   lichHenService.updateLichHenTrangThai(request.getBienSoXe());
-   response.setResult(newPhieu);
+//   PhieuGhiNhanTinhTrangXe newPhieu = service.createPhieuGhiNhanTinhTrangXeRequest(ph);
+//   lichHenService.updateLichHenTrangThai(request.getBienSoXe());
+//   response.setResult(newPhieu);
 
    return response;
   } catch (Exception e) {

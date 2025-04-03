@@ -3,6 +3,7 @@ package com.example.model;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -22,16 +23,17 @@ public class HoaDon {
     private String idHoaDon;
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
+    @JsonIdentityReference(alwaysAsId = true)
     private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTN")
-
-    // @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private NhanVien nhanVien;
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
+    @JsonIdentityReference(alwaysAsId = true)
     // @JsonManagedReference
     private PhieuDichVu phieuDichVuHD;
 

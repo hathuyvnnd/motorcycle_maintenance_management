@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
@@ -15,7 +19,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @NoArgsConstructor
 @Entity
 @Table(name = "LichHen")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idLichHen")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "idLichHen")
 public class LichHen {
     @Id
     @Column(name = "IdLichHen")
@@ -26,11 +31,13 @@ public class LichHen {
     @ManyToOne
     @JoinColumn(name = "IdKhachHang")
     // @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private KhachHang idKhachHang;
 
     @ManyToOne
     @JoinColumn(name = "IdLoaiXe")
     // @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private LoaiXe idLoaiXe;
 
     @Column(name = "TrangThai")
@@ -39,11 +46,7 @@ public class LichHen {
     @Column(name = "BienSoXe")
     private String bienSoXe;
 
-    @Column(name = "GhiChu")
-    private String ghiChu;
-
-    @Column(name = "DichVu")
-    private String dichVu;
-
+    @OneToMany(mappedBy = "idLichHen")
+    Set<LichHenCT> lichHenCTList;
 
 }

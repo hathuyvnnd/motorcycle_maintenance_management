@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping("/api/taikhoan")
-public class TaiKhoanController {
+@RequestMapping("/api/admin/taikhoan")
+public class TaiKhoanAdminController {
     @Autowired
     private TaiKhoanService taiKhoanService;
 
