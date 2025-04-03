@@ -2,6 +2,8 @@ package com.example.service_impl;
 
 import com.example.dao.KhachHangDao;
 import com.example.dao.NhanVienDao;
+import com.example.dao.TaiKhoanDao;
+import com.example.dto.request.khachhang.KhachHangDTO;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.model.KhachHang;
@@ -12,7 +14,9 @@ import com.example.service.NhanVienService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,8 @@ import java.util.Optional;
 public class KhachHangServiceImpl implements KhachHangService {
     @Autowired
     private KhachHangDao khachHangDao;
+    @Autowired
+    TaiKhoanDao tkDao;
 
     // // Constructor injection
     // public KhachHangServiceImpl(KhachHangDao khachHangDao) {
@@ -97,5 +103,32 @@ public class KhachHangServiceImpl implements KhachHangService {
     public KhachHang findByTaiKhoanKH(TaiKhoan byId) {
         return khachHangDao.findByTaiKhoanKH(byId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+    }
+
+    @Override
+    @Transactional
+    public KhachHang dangKyKhachHang(String soDienThoai, String matKhau, String hoTen, String diaChi, String email, String hinhAnh) {
+        // 1. Tạo tài khoản mới
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setIdTaiKhoan(soDienThoai);  // Sử dụng số điện thoại làm ID khách hàng
+        taiKhoan.setMatKhau(matKhau);
+        taiKhoan.setTrangThai(true);  // Có thể tùy chỉnh trạng thái
+        taiKhoan.setVaiTro("khachHang");  // Vai trò là "KH" (Khách hàng)
+
+        tkDao.save(taiKhoan);  // Lưu tài khoản
+
+        // 2. Tạo khách hàng mới và liên kết với tài khoản
+        KhachHang khachHang = new KhachHang();
+        khachHang.setIdKhachHang(generateNewId()); // Lấy ID tự tăng dạng chuỗi KH + số tự tăng
+        khachHang.setTaiKhoanKH(taiKhoan);
+        khachHang.setHoTen(hoTen);
+        khachHang.setDiaChi(diaChi);
+        khachHang.setEmail(email);
+        khachHang.setHinhAnh(hinhAnh);
+        khachHang.setNgayDangKi(new Date());  // Ghi lại thời gian đăng ký
+
+        khachHangDao.save(khachHang);  // Lưu khách hàng
+
+        return khachHang;  // Trả về đối tượng khách hàng vừa tạo
     }
 }
