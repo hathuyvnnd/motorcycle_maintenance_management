@@ -174,9 +174,51 @@ app.controller("GioiThieuController", function ($scope) {
 app.controller("DatLichController", function ($scope) {
   $scope.title = "Đặt Lịch Hẹn";
 });
-app.controller("DangKiController", function ($scope) {
+app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) {
   $scope.title = "Đăng Kí";
-});
+
+  $scope.message = '';
+  $scope.success = false;
+
+  // Hàm đăng ký khách hàng
+  $scope.dangKyKhachHang = function() {
+    // Kiểm tra nếu form hợp lệ trước khi gửi yêu cầu
+    if ($scope.dangKyForm.$valid) {
+      const khachHangDTO = {
+        soDienThoai: $scope.khachHang.soDienThoai,
+        matKhau: $scope.khachHang.matKhau,
+        hoTen: $scope.khachHang.hoTen,
+        diaChi: $scope.khachHang.diaChi,
+        email: $scope.khachHang.email,
+        hinhAnh: $scope.khachHang.hinhAnh
+      };
+
+      // Gửi yêu cầu đăng ký
+      $http.post('/api/khachhang/dangky', khachHangDTO)
+          .then(function(response) {
+            $scope.success = true;
+            $scope.message = 'Đăng ký thành công!';
+          }, function(error) {
+            $scope.success = false;
+            // Kiểm tra lỗi trả về từ server
+            if (error.data) {
+              // Kiểm tra lỗi trùng ID
+              if (error.data === 'Số điện thoại đã được sử dụng.') {
+                $scope.message = 'Số điện thoại đã được đăng ký! Vui lòng chọn số khác.';
+              } else {
+                $scope.message = 'Lỗi: ' + error.data;
+              }
+            } else {
+              $scope.message = 'Đã xảy ra lỗi. Vui lòng thử lại!';
+            }
+          });
+    } else {
+      $scope.message = 'Vui lòng điền đầy đủ thông tin hợp lệ.';
+      $scope.success = false;
+    }
+  };
+}]);
+
 app.controller("DangNhapController", function ($scope) {
   $scope.title = "Đăng Nhập";
 });
