@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "PhieuDichVuCT")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPhieuDichVuCT")
 public class PhieuDichVuCT {

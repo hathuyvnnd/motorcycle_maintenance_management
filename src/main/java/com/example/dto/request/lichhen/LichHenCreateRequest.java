@@ -1,11 +1,13 @@
 package com.example.dto.request.lichhen;
 
+import com.example.model.LichHenCT;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +22,5 @@ public class LichHenCreateRequest {
     private String trangThai;
     private String bienSoXe;
     private String ghiChu;
-    private String dichVu;
+    private List<String> listIdDichVu;
 }

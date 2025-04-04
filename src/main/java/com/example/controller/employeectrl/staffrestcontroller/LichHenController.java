@@ -9,13 +9,8 @@ import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
-import com.example.model.KhachHang;
-import com.example.model.LichHen;
-import com.example.model.TaiKhoan;
-import com.example.model.TaiKhoanKhachHang;
-import com.example.service_impl.KhachHangServiceImpl;
-import com.example.service_impl.LichHenServiceImpl;
-import com.example.service_impl.TaiKhoanServiceImpl;
+import com.example.model.*;
+import com.example.service_impl.*;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +18,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
@@ -39,6 +31,8 @@ public class LichHenController {
      LichHenServiceImpl lichHenService;
     TaiKhoanServiceImpl taiKhoanDAO;
     KhachHangServiceImpl khachHangDAO;
+    DichVuServiceImpl dichVuService;
+    LichHenCTServiceImpl lichHenCTService;
 
     TaiKhoanDao taiKhoanDAO1;
     KhachHangDao khachHangDAO1;
@@ -58,6 +52,14 @@ public class LichHenController {
     ApiReponse<List<LichHen>> getAllLichHen1() {
         List<LichHen> lslh = lichHenService.findAll();
         ApiReponse<List<LichHen>> apiReponse = new ApiReponse<>();
+        apiReponse.setResult(lslh);
+        return apiReponse;
+    }
+
+    @GetMapping("/testallnorp1")
+    ApiReponse<List<KhachHang>> getAllKhachHang1() {
+        List<KhachHang> lslh = khachHangDAO1.findAll();
+        ApiReponse<List<KhachHang>> apiReponse = new ApiReponse<>();
         apiReponse.setResult(lslh);
         return apiReponse;
     }
@@ -134,7 +136,7 @@ public class LichHenController {
                     .trangThai(true)
                     .build();
             taiKhoanDAO1.save(newTaiKhoan);
-            System.out.println("ab: "+ newTaiKhoan.getVaiTro());
+            System.out.println("ab: " + newTaiKhoan.getVaiTro());
             KhachHang newKhachHang = KhachHang.builder()
                     .idKhachHang(khachHangDAO.generateNewId())
                     .taiKhoanKH(newTaiKhoan)
@@ -144,19 +146,32 @@ public class LichHenController {
             response.setResult(khachHangDAO1.save(newKhachHang));
             return newTaiKhoan;
         });
-
+        String newidLH = lichHenService.generateNewId();
         LichHenCreateRequest lhrp = LichHenCreateRequest.builder()
-                .idLichHen(lichHenService.generateNewId())
+                .idLichHen(newidLH)
                 .idKhachHang(khachHangDAO.findIdKhachHangByTaiKhoanKH_IdTaiKhoan(request.getIdKhachHang()))
                 .thoiGian(request.getThoiGian())
                 .trangThai("Đã xác nhận")
-                .ghiChu(request.getGhiChu())
-                .dichVu(request.getDichVu())
                 .bienSoXe(request.getBienSoXe())
                 .build();
-        System.out.println("aa "+ lhrp);
-        response.setResult(lichHenService.createLichHenRequest(lhrp));
+        System.out.println("aa " + lhrp);
+        lichHenService.createLichHenRequest(lhrp);
         System.out.println("Ten:  " + request.getTenKhachHang());
+        System.out.println("id tu sinh:  " + newidLH);
+        LichHen lhdv = lichHenService.findById(newidLH);
+        System.out.println("lhdv: " + lhdv);
+        System.out.println("id tu sinh:  " + newidLH);
+        for (String idDichVu : request.getListIdDichVu()) {
+            DichVu dichVu = dichVuService.findById(idDichVu);
+            LichHenCT lichHenCT = LichHenCT.builder()
+                    .idLichHenCT(lichHenCTService.generateNewId())
+                    .idLichHen(lhdv)
+                    .ghiChu(request.getGhiChu())
+                    .idDichVu(dichVuService.findById(idDichVu))
+                    .build();
+            // Lưu vào DB
+            lichHenCTService.create(lichHenCT);
+        }
         return response;
     }
 

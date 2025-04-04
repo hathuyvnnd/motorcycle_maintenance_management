@@ -1,23 +1,32 @@
 package com.example.mapper;
 
+import com.example.dto.request.dichvu.PhieuDichVuCreateRequest;
+import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.phieudichvu.PhieuDichVuRequest;
-import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
-import com.example.model.NhanVien;
-import com.example.model.PhieuDichVu;
-import com.example.model.PhieuGhiNhanTinhTrangXe;
+import com.example.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface PhieuDichVuMapper {
-    @Mapping(source = "idNhanVien", target = "nhanVien", qualifiedByName = "mapNhanVien")
-    PhieuDichVu toPhieuDichVu(PhieuDichVuRequest request);
+    @Mapping(source = "idNhanVienTaoPhieu", target = "idNhanVienTaoPhieu", qualifiedByName = "mapNhanVien")
+    @Mapping(source = "idPhieuGNX", target = "phieuGNX", qualifiedByName = "mapPhieuGNX")
+    PhieuDichVu toPhieuDichVu(PhieuDichVuCreateRequest request);
+
     @Named("mapNhanVien")
-    default NhanVien mapNhanVien(String idNhanVien) {
-        if (idNhanVien == null) return null;
-        NhanVien nv = new NhanVien();
-        nv.setIdNhanVien(idNhanVien);
-        return nv;
+    default NhanVien mapNhanVien(String idNhanVienTaoPhieu) {
+        if (idNhanVienTaoPhieu == null) return null;
+        NhanVien nhanVien = new NhanVien();
+        nhanVien.setIdNhanVien(idNhanVienTaoPhieu);
+        return nhanVien;
+    }
+
+    @Named("mapPhieuGNX")
+    default PhieuGhiNhanTinhTrangXe mapKhachHang(String idPhieuGNX) {
+        if (idPhieuGNX == null) return null;
+        PhieuGhiNhanTinhTrangXe phieuGhiNhanTinhTrangXe = new PhieuGhiNhanTinhTrangXe();
+        phieuGhiNhanTinhTrangXe.setIdPhieuGNX(idPhieuGNX);
+        return phieuGhiNhanTinhTrangXe;
     }
 }

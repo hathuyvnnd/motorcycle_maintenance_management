@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -74,5 +75,8 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
     public PhieuGhiNhanTinhTrangXe createPhieuGhiNhanTinhTrangXeRequest(CreateTinhTrangXeRequest request) {
         PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
         return dao.save(pttx);
+    }
+    public PhieuGhiNhanTinhTrangXe findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian) {
+        return dao.findByBienSoXeAndNgayNhan(bienSoXe, thoiGian);
     }
 }

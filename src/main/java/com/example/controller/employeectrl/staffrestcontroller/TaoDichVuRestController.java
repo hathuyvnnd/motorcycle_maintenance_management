@@ -1,10 +1,14 @@
 package com.example.controller.employeectrl.staffrestcontroller;
 
+import com.example.dao.PhieuDichVuDAO;
 import com.example.dto.reponse.ApiReponse;
+import com.example.dto.request.dichvu.PhieuDichVuCreateRequest;
+import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.phieudichvu.PhieuDichVuRequest;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
-import com.example.model.PhieuGhiNhanTinhTrangXe;
+import com.example.model.*;
 import com.example.service_impl.DichVuServiceImpl;
+import com.example.service_impl.PhieuDichVuCTServiceImpl;
 import com.example.service_impl.PhieuDichVuServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,33 +24,40 @@ import java.util.Date;
 @RestController
 public class TaoDichVuRestController {
  PhieuDichVuServiceImpl service;
- @PostMapping
- public ApiReponse<PhieuGhiNhanTinhTrangXe> taoPhieuTinhTrang(@RequestBody PhieuDichVuRequest request) {
-  ApiReponse<PhieuGhiNhanTinhTrangXe> response = new ApiReponse<>();
-  try {
-   System.out.println("Dữ liệu nhận từ client: " + request);
-   System.out.println("id tu sinh: "+ service.generateNewId());
-    PhieuDichVuRequest ph = PhieuDichVuRequest.builder()
-           .idPhieuDichVu(service.generateNewId())
-           .idPhieuGNX(request.getIdPhieuGNX())
-           .ngayThucHien(new Date())
-           .idNhanVienTaoPhieu("NV010")
-           .tenNhanVienSuaChua(request.getTenNhanVienSuaChua())
-            .trangThaiSuaChua(false)
+ DichVuServiceImpl dichVuService;
+ PhieuDichVuDAO dao;
+ PhieuDichVuCTServiceImpl phieuDichVuCTService;
+ @PostMapping("/tao-phieu")
+ public ApiReponse<?> taoPhieu(@RequestBody PhieuDichVuCreateRequest request) {
+  ApiReponse<Object> response = new ApiReponse<>();
+  System.out.println("Kiem tra requse:" + request);
+  String newidPDV = service.generateNewId();
+  PhieuDichVuCreateRequest cpdv = PhieuDichVuCreateRequest.builder()
+          .idPhieuDichVu(newidPDV)
+          .idNhanVienTaoPhieu("NV001")
+          .ngayThucHien(new Date())
+          .trangThai(false)
+          .tenNhanVienSuaChua(request.getTenNhanVienSuaChua())
+          .idPhieuGNX(request.getIdPhieuGNX())
+          .build();
+  System.out.println("aa " + cpdv);
+  service.createPhieuDichVuRequest(cpdv);
+  System.out.println("id tu sinh:  " + newidPDV);
+  PhieuDichVu pdv = service.findById(newidPDV);
+  System.out.println("lhdv: " + pdv);
+  System.out.println("id tu sinh:  " + newidPDV);
+  for (String idDichVu : request.getListIdDichVu()) {
+   DichVu dichVu = dichVuService.findById(idDichVu);
+   PhieuDichVuCT phieuDichVuCT = PhieuDichVuCT.builder()
+           .idPhieuDichVuCT(phieuDichVuCTService.generateNewId())
+           .phieuDichVu(pdv)
+           .giaDichVu(dichVu.getGiaDichVu())
+           .dichVu(dichVu)
            .build();
-   System.out.println("a:  "+ ph);
-   System.out.println("Phieu dich vu mới: " + ph);
-
-//   PhieuGhiNhanTinhTrangXe newPhieu = service.createPhieuGhiNhanTinhTrangXeRequest(ph);
-//   lichHenService.updateLichHenTrangThai(request.getBienSoXe());
-//   response.setResult(newPhieu);
-
-   return response;
-  } catch (Exception e) {
-   response.setMessage("Khong the luu phieu tinh trang");
-   System.out.println("Khong the luu phieu tinh trang");
-   return response;
+   // Lưu vào DB
+   phieuDichVuCTService.create(phieuDichVuCT);
   }
+  return response;
  }
 
 }

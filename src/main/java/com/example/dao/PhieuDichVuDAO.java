@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface PhieuDichVuDAO extends JpaRepository<PhieuDichVu, String> {
     @Query(value = "SELECT TOP 1 IdPhieuDichVu FROM PhieuDichVu ORDER BY IdPhieuDichVu DESC ", nativeQuery = true)
     String findLastId();
+
 }

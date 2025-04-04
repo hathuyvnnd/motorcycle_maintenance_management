@@ -23,6 +23,7 @@ public class PhieuGhiNhanTinhTrangXe {
     private String idPhieuGNX;
 
     @Column(name = "NgayNhan")
+    @Temporal(value = TemporalType.DATE)
     private Date ngayNhan;
 
     @Column(name = "MoTaTinhTrangXe")

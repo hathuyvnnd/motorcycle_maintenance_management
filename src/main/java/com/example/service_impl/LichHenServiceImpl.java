@@ -32,8 +32,9 @@ public class LichHenServiceImpl implements LichHenService {
         if (exitsById(request.getIdLichHen()))
             throw new AppException(ErrorCode.LICHHEN_TONTAI);
         LichHen lh = mapper.toLichHen(request);
-        return dao.save(lh);
-    }
+        LichHen savedLichHen = dao.save(lh);
+        System.out.println("LichHen saved with id: " + savedLichHen.getIdLichHen());  // Log the saved ID
+        return savedLichHen;    }
 
     @Override
     public LichHen updateLichHenRequest(String id, LichHenUpdateRequest request){
@@ -68,27 +69,27 @@ public class LichHenServiceImpl implements LichHenService {
 
     @Override
     public LichHen findById(String s) {
-        return LichHenService.super.findById(s);
+        return dao.findById(s).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
     }
 
     @Override
     public LichHen create(LichHen entity) {
-        return LichHenService.super.create(entity);
+        return dao.save(entity);
     }
 
     @Override
     public void update(LichHen entity) {
-        LichHenService.super.update(entity);
+        dao.save(entity);
     }
 
     @Override
     public void deleteById(String s) {
-        LichHenService.super.deleteById(s);
+        dao.deleteById(s);
     }
 
     @Override
     public boolean exitsById(String s) {
-        return LichHenService.super.exitsById(s);
+        return dao.existsById(s);
     }
 
     public String generateNewId() {

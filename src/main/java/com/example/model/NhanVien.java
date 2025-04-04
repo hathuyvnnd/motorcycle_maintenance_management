@@ -2,6 +2,8 @@ package com.example.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,8 +46,8 @@ public class NhanVien {
     // @JsonManagedReference
     Set<HoaDon> hoaDonList;
 
-    @OneToMany(mappedBy = "nhanVienTaoPhieu", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    // @JsonManagedReference
+    @OneToMany(mappedBy = "idNhanVienTaoPhieu", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     Set<PhieuDichVu> phieuDichVuList;
 
 }

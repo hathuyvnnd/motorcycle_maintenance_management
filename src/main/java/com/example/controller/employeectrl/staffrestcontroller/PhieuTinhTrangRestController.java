@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +67,13 @@ public class PhieuTinhTrangRestController {
        }
 
        return response;
+    }
+    @GetMapping("/phieu-gnx/find")
+    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuGNXByBienSoVaThoiGian(@RequestParam String bienSoXe, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date thoiGian) {
+        PhieuGhiNhanTinhTrangXe pgn = service.findByBienSoXeAndThoiGian(bienSoXe, thoiGian);
+        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
     }
 
 

@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Set;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@Builder
 @Table(name = "DichVu")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDichVu")
 public class DichVu {
