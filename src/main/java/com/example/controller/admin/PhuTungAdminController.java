@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.model.DichVu;
+
 import com.example.model.PhuTung;
-import com.example.service.DichVuService;
+
 import com.example.service.PhuTungService;
 
 @RestController

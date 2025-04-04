@@ -1,5 +1,12 @@
 package com.example.service_impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.dao.PhieuDichVuDAO;
+import com.example.model.HoaDon;
 import com.example.dao.*;
 import com.example.dto.request.dichvu.PhieuDichVuCreateRequest;
 import com.example.dto.request.lichhen.LichHenCreateRequest;
@@ -54,6 +61,15 @@ public class PhieuDichVuServiceImpl implements PhieuDichVuService {
         return savedpdv;
     }
 
+public class PhieuDichVuServiceImpl implements PhieuDichVuService{
+@Autowired
+PhieuDichVuDAO pdvDao;
+    @Override
+    public List<PhieuDichVu> findByHoaDon(HoaDon hoaDon) {
+        // TODO Auto-generated method stub
+        return pdvDao.findByHoaDon(hoaDon);
+    }
+
     @Override
     public PhieuDichVu findById(String s) {
 //        return phieuDichVuDAO.findById(s).orElseThrow(() ->
@@ -65,4 +81,19 @@ public class PhieuDichVuServiceImpl implements PhieuDichVuService {
 //        PhieuDichVu pttx = mapper.toPhieuTinhTrangXe(request);
 //        return dao.save(pttx);
 //    }
+    public List<PhieuDichVu> getAllDichVus(){
+        return pdvDao.findAll();
+    }
+
+    @Override
+    public PhieuDichVu getByIdPDV(String idPhieuDichVu){
+        return pdvDao.findByIdPhieuDichVu(idPhieuDichVu);
+    }
+
+    @Override
+    public List<PhieuDichVu> getListPDVByKh(String idKhachHang){
+        return pdvDao.findPhieuDichVuByKhachHangId(idKhachHang);
+    }
+
+
 }

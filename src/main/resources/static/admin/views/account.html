@@ -32,96 +32,177 @@
   <div class="tab-content mt-3" id="accountTabsContent">
     <!-- Employee Accounts Tab -->
     <div class="tab-pane fade show active" id="employee" role="tabpanel" aria-labelledby="employee-tab">
-      <h3><b>Danh sách tài khoản nhân viên</b></h3>
-      <table class="table table-bordered mt-3">
-        <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">ID Tài Khoản</th>
-            <th scope="col">Mật Khẩu</th>
-            <th scope="col">Vai Trò</th>
-            <th scope="col">Trạng Thái</th>
-            <th scope="col">Chức Năng</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="account in getPaginatedEmployeeAccounts() track by $index">
-            <th scope="row">{{ $index + 1 + (currentPageEmployee - 1) * pageSizeEmployee }}</th>
-            <td>{{ account.idTaiKhoan }}</td>
-            <td>{{ account.matKhau }}</td>
-            <td>{{ account.vaiTro }}</td>
-            <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
-            <td>
-              <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'employee')">Sửa</button>
-              <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'employee')">
-                Xóa
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-3">
-          <li class="page-item" ng-class="{ disabled: currentPageEmployee === 1 }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee(currentPageEmployee - 1)">
-              Previous
-            </a>
-          </li>
-          <li
-            class="page-item"
-            ng-repeat="page in [].constructor(getPageCountEmployee()) track by $index"
-            ng-class="{ active: currentPageEmployee === ($index + 1) }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee($index + 1)">{{ $index + 1 }}</a>
-          </li>
-          <li class="page-item" ng-class="{ disabled: currentPageEmployee === getPageCountEmployee() }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee(currentPageEmployee + 1)">Next</a>
-          </li>
-        </ul>
-      </nav>
+      <form class="mt-4" name="employeeForm" novalidate ng-submit="saveAccount('employee')">
+        <div class="row mb-3">
+          <label for="idTaiKhoanEmployee" class="col-sm-2 col-form-label">ID Tài Khoản</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="idTaiKhoanEmployee"
+              placeholder="ID Tài Khoản"
+              ng-model="newAccountEmployee.idTaiKhoan"
+              ng-disabled="isEditModeEmployee" />
+          </div>
+          <label for="matKhauNhanVien" class="col-sm-2 col-form-label">Mật Khẩu</label>
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showPasswordEmployee ? 'text' : 'password' }}"
+              class="form-control"
+              id="matKhauNhanVien"
+              placeholder="Mật Khẩu"
+              ng-model="newAccountEmployee.matKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showPasswordEmployee = !showPasswordEmployee">
+              <i class="fa" ng-class="{'fa-eye': !showPasswordEmployee, 'fa-eye-slash': showPasswordEmployee}"></i>
+            </span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
+          <div class="col-sm-4">
+            <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
+              <option ng-value="true">Hoạt động</option>
+              <option ng-value="false">Không hoạt động</option>
+            </select>
+          </div>
+          <label for="nhapLaiMatKhauNhanVien" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
+          <div class="col-sm-4 position-relative">
+            <input
+              ng-attr-type="{{ showRePasswordEmployee ? 'text' : 'password' }}"
+              class="form-control"
+              id="nhapLaiMatKhauNhanVien"
+              placeholder="Nhập Lại Mật Khẩu"
+              ng-model="newAccountEmployee.nhapLaiMatKhau"
+              required />
+            <span
+              class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              style="cursor: pointer"
+              ng-click="showRePasswordEmployee = !showRePasswordEmployee">
+              <i class="fa" ng-class="{'fa-eye': !showRePasswordEmployee, 'fa-eye-slash': showRePasswordEmployee}"></i>
+            </span>
+          </div>
+        </div>
+        <div class="row mb-3" ng-if="newAccountEmployee.matKhau && newAccountEmployee.nhapLaiMatKhau">
+          <div class="col-sm-12">
+            <span ng-if="newAccountEmployee.matKhau === newAccountEmployee.nhapLaiMatKhau" class="text-success">
+              Mật khẩu khớp.
+            </span>
+            <span ng-if="newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau" class="text-danger">
+              Mật khẩu và nhập lại mật khẩu không khớp.
+            </span>
+          </div>
+        </div>
+        <div>
+          <button
+            type="submit"
+            class="btn btn-primary me-2"
+            ng-disabled="newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau">
+            {{ isEditModeEmployee ? "Cập Nhật Tài Khoản" : "Thêm Tài Khoản" }}
+          </button>
+          <button type="button" class="btn btn-secondary" ng-click="resetEmployeeForm()">Reset</button>
+        </div>
+      </form>
+      <div class="mt-5">
+        <h3><b>Danh sách tài khoản nhân viên</b></h3>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID Tài Khoản</th>
+              <th scope="col">Mật Khẩu</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Trạng Thái</th>
+              <th scope="col">Chức Năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="account in getPaginatedEmployeeAccounts() track by $index">
+              <th scope="row">{{ $index + 1 + (currentPageEmployee - 1) * pageSizeEmployee }}</th>
+              <td>{{ account.idTaiKhoan }}</td>
+              <td>{{ account.matKhau }}</td>
+              <td>{{ account.vaiTro }}</td>
+              <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'employee')">Sửa</button>
+                <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'employee')">
+                  Xóa
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center mt-3">
+            <li class="page-item" ng-class="{ disabled: currentPageEmployee === 1 }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee(currentPageEmployee - 1)">
+                Previous
+              </a>
+            </li>
+            <li
+              class="page-item"
+              ng-repeat="page in [].constructor(getPageCountEmployee()) track by $index"
+              ng-class="{ active: currentPageEmployee === ($index + 1) }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee($index + 1)">{{ $index + 1 }}</a>
+            </li>
+            <li class="page-item" ng-class="{ disabled: currentPageEmployee === getPageCountEmployee() }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageEmployee(currentPageEmployee + 1)">
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
 
     <!-- Customer Accounts Tab -->
     <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-      <h3><b>Danh sách tài khoản khách hàng</b></h3>
-      <table class="table table-bordered mt-3">
-        <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">ID Tài Khoản</th>
-            <th scope="col">Mật Khẩu</th>
-            <th scope="col">Vai Trò</th>
-            <th scope="col">Trạng Thái</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="account in getPaginatedCustomerAccounts() track by $index">
-            <th scope="row">{{ $index + 1 + (currentPageCustomer - 1) * pageSizeCustomer }}</th>
-            <td>{{ account.idTaiKhoan }}</td>
-            <td>{{ account.matKhau }}</td>
-            <td>{{ account.vaiTro }}</td>
-            <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-3">
-          <li class="page-item" ng-class="{ disabled: currentPageCustomer === 1 }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer(currentPageCustomer - 1)">
-              Previous
-            </a>
-          </li>
-          <li
-            class="page-item"
-            ng-repeat="page in [].constructor(getPageCountCustomer()) track by $index"
-            ng-class="{ active: currentPageCustomer === ($index + 1) }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer($index + 1)">{{ $index + 1 }}</a>
-          </li>
-
-          <li class="page-item" ng-class="{ disabled: currentPageCustomer === getPageCountCustomer() }">
-            <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer(currentPageCustomer + 1)">Next</a>
-          </li>
-        </ul>
-      </nav>
+      <div class="mt-5">
+        <h3><b>Danh sách tài khoản khách hàng</b></h3>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID Tài Khoản</th>
+              <th scope="col">Mật Khẩu</th>
+              <th scope="col">Vai Trò</th>
+              <th scope="col">Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="account in getPaginatedCustomerAccounts() track by $index">
+              <th scope="row">{{ $index + 1 + (currentPageCustomer - 1) * pageSizeCustomer }}</th>
+              <td>{{ account.idTaiKhoan }}</td>
+              <td>{{ account.matKhau }}</td>
+              <td>{{ account.vaiTro }}</td>
+              <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center mt-3">
+            <li class="page-item" ng-class="{ disabled: currentPageCustomer === 1 }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer(currentPageCustomer - 1)">
+                Previous
+              </a>
+            </li>
+            <li
+              class="page-item"
+              ng-repeat="page in [].constructor(getPageCountCustomer()) track by $index"
+              ng-class="{ active: currentPageCustomer === ($index + 1) }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer($index + 1)">{{ $index + 1 }}</a>
+            </li>
+            <li class="page-item" ng-class="{ disabled: currentPageCustomer === getPageCountCustomer() }">
+              <a class="page-link" href="javascript:void(0)" ng-click="setPageCustomer(currentPageCustomer + 1)">
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

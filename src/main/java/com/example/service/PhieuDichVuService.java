@@ -1,12 +1,13 @@
 package com.example.service;
 
-import com.example.dto.request.phieudichvu.PhieuDichVuRequest;
-import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
+import java.util.List;
+
+import com.example.model.HoaDon;
 import com.example.model.PhieuDichVu;
-import com.example.model.PhieuGhiNhanTinhTrangXe;
 
 public interface PhieuDichVuService extends CrudService<PhieuDichVu, String> {
-//    public PhieuDichVu createPhieuDichVuRequest(PhieuDichVuRequest request);
-
-
+List<PhieuDichVu> findByHoaDon(HoaDon hoaDon);
+List<PhieuDichVu> getAllDichVus();
+PhieuDichVu getByIdPDV(String idPhieuDichVu);
+List<PhieuDichVu> getListPDVByKh(String idKhachHang);
 }

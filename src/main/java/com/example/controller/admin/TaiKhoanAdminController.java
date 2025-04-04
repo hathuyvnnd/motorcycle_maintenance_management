@@ -15,7 +15,7 @@ import com.example.model.TaiKhoanNhanVien;
 import com.example.service.TaiKhoanService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/admin/taikhoan")

@@ -15,8 +15,11 @@ public interface PhuTungDao extends JpaRepository<PhuTung, String> {
    @Query(value = "SELECT TOP 1 IdPhuTung FROM PhuTung ORDER BY IdPhuTung DESC ", nativeQuery = true)
    String findLastId();
 
+   List<PhuTung> findByTenPhuTungContainingIgnoreCase(String key);
+
    List<PhuTung> findByTinhTrang(Boolean tinhTrang);
 
    // Tìm phụ tùng theo dịch vụ
    List<PhuTung> findByDichVuPT(DichVu dichVu);
+
 }

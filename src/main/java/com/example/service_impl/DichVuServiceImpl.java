@@ -2,7 +2,7 @@ package com.example.service_impl;
 
 import com.example.dao.DichVuDao;
 import com.example.model.DichVu;
-import com.example.model.NhanVien;
+
 import com.example.service.DichVuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,5 +71,10 @@ public class DichVuServiceImpl implements DichVuService {
     @Override
     public boolean exitsById(String id) {
         return dvDao.existsById(id);
+    }
+
+    @Override
+    public List<DichVu> geListDVByKey(String key) {
+        return dvDao.findByTenDichVuContainingIgnoreCase(key);
     }
 }

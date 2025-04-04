@@ -82,4 +82,9 @@ public class PhuTungServiceImpl implements PhuTungService {
     public boolean exitsById(String id) {
         return pTungDao.existsById(id);
     }
+
+    @Override
+    public List<PhuTung> geListPTByKey(String key) {
+        return pTungDao.findByTenPhuTungContainingIgnoreCase(key);
+    }
 }

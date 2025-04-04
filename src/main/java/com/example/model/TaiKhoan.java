@@ -33,5 +33,4 @@ public class TaiKhoan {
 
     @Column(name = "VaiTro", insertable = false, updatable = false, columnDefinition = "NVARCHAR(20)")
     private String vaiTro;
-
 }

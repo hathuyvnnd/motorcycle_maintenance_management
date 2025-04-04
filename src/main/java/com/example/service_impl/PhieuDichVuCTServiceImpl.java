@@ -1,6 +1,12 @@
 package com.example.service_impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.dao.PhieuDichVuCTDao;
+import com.example.model.PhieuDichVu;
 import com.example.model.PhieuDichVuCT;
 import com.example.service.PhieuDichVuCTService;
 import lombok.AccessLevel;
@@ -30,9 +36,13 @@ public class PhieuDichVuCTServiceImpl implements PhieuDichVuCTService {
         return String.format("PDVCT%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
     }
+@Autowired
+PhieuDichVuCTDao pdvctDao;
 
     @Override
     public PhieuDichVuCT create(PhieuDichVuCT entity) {
         return dao.save(entity);
+    public List<PhieuDichVuCT> getPhieuDichVuCTByPDV(PhieuDichVu phieuDichVu){
+        return pdvctDao.findByPhieuDichVu(phieuDichVu);
     }
 }

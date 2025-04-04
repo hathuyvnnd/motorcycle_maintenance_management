@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import com.example.model.HoaDon;
 import com.example.model.LichHen;
 import com.example.model.PhieuGhiNhanTinhTrangXe;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,7 @@ public interface PhieuGhiNhanTinhTrangXeDao extends JpaRepository<PhieuGhiNhanTi
 
     PhieuGhiNhanTinhTrangXe findByBienSoXeAndNgayNhan(String bienSoXe, Date NgayNhan);
 
+///////////Cái này của Hathuy đừng có xóa////////////////////////
+    PhieuGhiNhanTinhTrangXe findByIdPhieuGNX(String idPhieuGNX);
+//////////////////////////////////////////////////////////////////
 }

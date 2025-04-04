@@ -4,8 +4,10 @@ import com.example.dao.PhieuGhiNhanTinhTrangXeDao;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
+import com.example.model.HoaDon;
 import com.example.mapper.PhieuTinhTrangMapper;
 import com.example.model.LichHen;
+
 import com.example.model.PhieuGhiNhanTinhTrangXe;
 import com.example.service.PhieuGhiNhanTinhTrangXeService;
 import lombok.AccessLevel;
@@ -13,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ import java.util.List;
 public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService {
     PhieuGhiNhanTinhTrangXeDao dao;
     PhieuTinhTrangMapper mapper;
+
     @Override
     public List<PhieuGhiNhanTinhTrangXe> findAll() {
         return dao.findAll();
@@ -71,6 +73,13 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
 
     }
 
+    //////////////// Cái này của hathuy đừng có xóa
+    @Override
+    public PhieuGhiNhanTinhTrangXe getPGNById(String idPhieuGNX) {
+        return dao.findByIdPhieuGNX(idPhieuGNX);
+    }
+
+    //////////////////////////////////////////////////////
     @Override
     public PhieuGhiNhanTinhTrangXe createPhieuGhiNhanTinhTrangXeRequest(CreateTinhTrangXeRequest request) {
         PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
@@ -79,4 +88,5 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
     public PhieuGhiNhanTinhTrangXe findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian) {
         return dao.findByBienSoXeAndNgayNhan(bienSoXe, thoiGian);
     }
+
 }
