@@ -28,17 +28,14 @@ public class PhieuGhiNhanTinhTrangXe {
     @Column(name = "MoTaTinhTrangXe")
     private String moTaTinhTrangXe;
 
-    @Column(name = "BienSoXe")
-    private String bienSoXe;
-
     @ManyToOne
     @JoinColumn(name = "IdNhanVien")
     // @JsonBackReference
     private NhanVien nhanVien;
     @OneToOne(mappedBy = "phieuGNX")
     private PhieuDichVu phieuDichVu;
-    // @ManyToOne
-    // @JoinColumn(name = "IdKhachHang")
-    // // @JsonBackReference
-    // private KhachHang khachHang;
+
+    @OneToOne
+    @JoinColumn(name = "IdLichHen")
+    private LichHen lichHen;
 }
