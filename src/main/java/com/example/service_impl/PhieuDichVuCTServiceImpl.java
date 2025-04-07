@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class PhieuDichVuCTServiceImpl implements PhieuDichVuCTService {
     PhieuDichVuCTDao dao;
+
     public String generateNewId() {
         // Lấy ID cuối cùng
         String lastId = dao.findLastId();
@@ -36,13 +37,18 @@ public class PhieuDichVuCTServiceImpl implements PhieuDichVuCTService {
         return String.format("PDVCT%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
     }
-@Autowired
-PhieuDichVuCTDao pdvctDao;
+
 
     @Override
     public PhieuDichVuCT create(PhieuDichVuCT entity) {
         return dao.save(entity);
-    public List<PhieuDichVuCT> getPhieuDichVuCTByPDV(PhieuDichVu phieuDichVu){
-        return pdvctDao.findByPhieuDichVu(phieuDichVu);
+    }
+//    public List<PhieuDichVuCT> getPhieuDichVuCTByPDV (PhieuDichVu phieuDichVu){
+//        return dao.findByPhieuDichVu(phieuDichVu);
+//    }
+
+    @Override
+    public List<PhieuDichVuCT> getPhieuDichVuCTByPDV(PhieuDichVu phieuDichVu) {
+        return List.of();
     }
 }

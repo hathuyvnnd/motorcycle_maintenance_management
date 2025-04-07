@@ -61,8 +61,6 @@ public class PhieuDichVuServiceImpl implements PhieuDichVuService {
         return savedpdv;
     }
 
-public class PhieuDichVuServiceImpl implements PhieuDichVuService{
-@Autowired
 PhieuDichVuDAO pdvDao;
     @Override
     public List<PhieuDichVu> findByHoaDon(HoaDon hoaDon) {

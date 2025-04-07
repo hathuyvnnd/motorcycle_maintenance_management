@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class PhieuDichVu {
 
     @ManyToOne
     @JoinColumn(name = "IdNhanVienTaoPhieu")
-//     @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private NhanVien idNhanVienTaoPhieu;
 
     @Column(name = "NgayThucHien")
