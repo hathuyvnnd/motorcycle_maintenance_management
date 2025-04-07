@@ -49,4 +49,6 @@ public class LichHen {
     @OneToMany(mappedBy = "idLichHen")
     Set<LichHenCT> lichHenCTList;
 
+    @OneToOne(mappedBy = "lichHen")
+    private PhieuGhiNhanTinhTrangXe phieuGNX;
 }

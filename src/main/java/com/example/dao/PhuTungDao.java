@@ -20,6 +20,6 @@ public interface PhuTungDao extends JpaRepository<PhuTung, String> {
    List<PhuTung> findByTinhTrang(Boolean tinhTrang);
 
    // Tìm phụ tùng theo dịch vụ
-   List<PhuTung> findByDichVuPT(DichVu dichVu);
+   // List<PhuTung> findByDichVuPT(DichVu dichVu);
 
 }

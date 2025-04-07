@@ -1,10 +1,10 @@
 package com.example.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-
 
 @Getter
 @Setter
@@ -55,10 +55,10 @@ public class PhuTung {
     @Column(name = "HanSuDung")
     private Date hanSuDung;
 
-    @ManyToOne
-    @JoinColumn(name = "IdDichVu")
-    @JsonIdentityReference(alwaysAsId = true)
-    private DichVu dichVuPT;
+    // @ManyToOne
+    // @JoinColumn(name = "IdDichVu")
+    // @JsonIdentityReference(alwaysAsId = true)
+    // private DichVu dichVuPT;
     @OneToMany(mappedBy = "phuTung", fetch = FetchType.LAZY)
     // @JsonManagedReference
     private Set<PhieuSuDungPhuTungCT> phieuSuDungPhuTungCTList;
