@@ -1,0 +1,14 @@
+<div>
+    <h5>Chỉnh sửa lịch hẹn</h5>
+    <form ng-submit="updateLichHen()">
+        <div class="mb-3">
+            <label class="form-label">Ngày hẹn</label>
+            <input type="date" class="form-control" ng-model="selectedAppointment.ngayHen" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ghi chú</label>
+            <textarea class="form-control" ng-model="selectedAppointment.ghiChu"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    </form>
+</div>

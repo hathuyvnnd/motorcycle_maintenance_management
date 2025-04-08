@@ -6,6 +6,7 @@ import com.example.dto.reponse.ApiReponse;
 import com.example.dto.reponse.LichHenResponse;
 import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.lichhen.LichHenUpdateRequest;
+import com.example.dto.request.lichhen.UpdateTrangThaiLichHenRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
@@ -159,7 +160,7 @@ public class LichHenController {
         System.out.println("Ten:  " + request.getTenKhachHang());
         System.out.println("id tu sinh:  " + newidLH);
         LichHen lhdv = lichHenService.findById(newidLH);
-        System.out.println("lhdv: " + lhdv);
+        System.out.println("lhdv: " + lhdv.getIdLichHen());
         System.out.println("id tu sinh:  " + newidLH);
         for (String idDichVu : request.getListIdDichVu()) {
             DichVu dichVu = dichVuService.findById(idDichVu);
@@ -176,43 +177,6 @@ public class LichHenController {
     }
 
 //
-//    @GetMapping("/check-phone")
-//    public ApiReponse<?> checkPhone(@RequestParam String phone,@RequestParam(required = false) String tenKhachHang) {
-//        ApiReponse<Object> response = new ApiReponse<>();
-//
-//        // Kiểm tra nếu phone là null hoặc rỗng
-//        if (phone == null || phone.trim().isEmpty()) {
-//            response.setMessage("Số điện thoại không hợp lệ.");
-//            response.setResult(null);
-//            return response;
-//        }
-//
-//        TaiKhoan taiKhoan = taiKhoanDAO1.findById(phone).orElseGet(() -> {
-//                    // Nếu không tìm thấy, tạo mới tài khoản
-//            TaiKhoanKhachHang newTaiKhoan = TaiKhoanKhachHang.builder()
-//                            .idTaiKhoan(phone)
-//                            .matKhau("123")
-//                            .trangThai(true)
-//                            .build();
-//                    taiKhoanDAO1.save(newTaiKhoan);
-//            System.out.println("ab: "+ newTaiKhoan.getVaiTro());
-//                KhachHang newKhachHang = KhachHang.builder()
-//                        .idKhachHang(khachHangDAO.generateNewId())
-//                        .hoTen(tenKhachHang) // Lấy họ tên từ giao diện
-//                        .taiKhoanKH(newTaiKhoan)
-//                        .build();
-//                khachHangDAO1.save(newKhachHang);
-//                response.setResult(khachHangDAO1.save(newKhachHang));
-//                return newTaiKhoan;
-//                });
-//        KhachHang khachHang = khachHangDAO1.findByTaiKhoanKH(taiKhoan).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-//        response.setMessage("Tìm thấy khách hàng.");
-//        if(khachHang.getHoTen() != null){
-//        response.setResult(Map.of("exists", true, "tenKhachHang", khachHang.getHoTen()));
-//        }
-//        return response;
-//    }
-
     @GetMapping("/checkk")
     ApiReponse<KhachHang>  checkFindKH(@RequestParam String phone) {
             KhachHang kh = khachHangDAO.findByTaiKhoanKH(taiKhoanDAO.findById(phone));
@@ -228,29 +192,15 @@ public class LichHenController {
         return rp;
     }
 
-
-
-
-
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<LichHenResponse> getLichHenById(@PathVariable String id) {
-//        return ResponseEntity.ok(lichHenService.getLichHenById(id));
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity<LichHenResponse> createLichHen(@RequestBody LichHenRequest requestDTO) {
-//        return ResponseEntity.ok(lichHenService.createLichHen(requestDTO));
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<LichHenResponse> updateLichHen(@PathVariable String id, @RequestBody LichHenRequest requestDTO) {
-//        return ResponseEntity.ok(lichHenService.updateLichHen(id, requestDTO));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteLichHen(@PathVariable String id) {
-//        lichHenService.deleteLichHen(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @PutMapping("/update-trang-thai")
+    public ApiReponse<?> updateTrangThai(@RequestBody UpdateTrangThaiLichHenRequest request) {
+        ApiReponse<?> rp = new ApiReponse<>();
+        Boolean blud = lichHenService.updateTrangThai(request.getIdLichHen(), request.getTrangThai());
+        if(blud){
+            rp.setMessage("Update trạng thái lịch hẹn thành công");
+        }else{
+            rp.setMessage("Update trạng thái thất bại");
+        }
+        return rp;
+    }
 }

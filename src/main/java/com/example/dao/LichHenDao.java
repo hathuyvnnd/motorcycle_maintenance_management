@@ -25,7 +25,6 @@ public interface LichHenDao extends JpaRepository<LichHen, String> {
     @Query(value = "SELECT TOP 1 IdLichHen FROM LichHen ORDER BY IdLichHen DESC ", nativeQuery = true)
     String findLastId();
 
-    LichHen findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian);
 
 //    List<LichHen> findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian);
 

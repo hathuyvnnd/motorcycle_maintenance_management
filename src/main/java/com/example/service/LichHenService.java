@@ -8,4 +8,5 @@ public interface LichHenService extends CrudService<LichHen, String> {
     public LichHen createLichHenRequest(LichHenCreateRequest request);
     public LichHen updateLichHenRequest(String id, LichHenUpdateRequest request);
     boolean existsByUsername(String name);
+    Boolean updateTrangThai(String idLichHen, String trangThai);
 }

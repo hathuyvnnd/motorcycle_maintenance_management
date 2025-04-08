@@ -53,6 +53,14 @@ public class LichHenServiceImpl implements LichHenService {
     }
 
     @Override
+    public Boolean updateTrangThai(String idLichHen, String trangThai) {
+        LichHen lh = dao.findById(idLichHen).orElseThrow(()-> new AppException(ErrorCode.LICHHEN_NOTFOUND));
+        lh.setTrangThai(trangThai);
+        dao.save(lh);
+        return true;
+    }
+
+    @Override
     public List<LichHen> findAll() {
         return dao.findAll();
     }
@@ -110,9 +118,9 @@ public class LichHenServiceImpl implements LichHenService {
 
     }
 
-    public void updateLichHenTrangThai(String bienSoXe) {
-        Date today = new Date();
-        LichHen lh = dao.findByBienSoXeAndThoiGian(bienSoXe, today);
+    public void updateLichHenTrangThai(String idLicHen) {
+        LichHen lh = dao.findById(idLicHen).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
+        System.out.println("🔄 Trước cập nhật trạng thái lịch hẹn: " + lh.getTrangThai());
         if (lh != null) {
             switch (lh.getTrangThai()) {
                 case "Đã xác nhận":
@@ -122,7 +130,7 @@ public class LichHenServiceImpl implements LichHenService {
                     lh.setTrangThai("Đang sửa chữa");
                     break;
                 case "Đang sửa chữa":
-                    lh.setTrangThai("Đã hoàn thành");
+                    lh.setTrangThai("Đã sửa chữa");
                     break;
                 default:
                     System.out.println("Trạng thái không cần cập nhật.");

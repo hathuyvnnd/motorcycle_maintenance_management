@@ -86,8 +86,9 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
         PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
         return dao.save(pttx);
     }
-    public PhieuGhiNhanTinhTrangXe findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian) {
-        return dao.findByBienSoXeAndNgayNhan(bienSoXe, thoiGian);
+    public PhieuGhiNhanTinhTrangXe findPhieuByLichHen(String lichHen){
+        return dao.findByLichHen_IdLichHen(lichHen);
     }
+
 
 }

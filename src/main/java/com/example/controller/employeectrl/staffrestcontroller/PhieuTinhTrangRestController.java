@@ -3,6 +3,8 @@ package com.example.controller.employeectrl.staffrestcontroller;
 import com.example.dao.LichHenDao;
 import com.example.dto.reponse.ApiReponse;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
+import com.example.exception.AppException;
+import com.example.exception.ErrorCode;
 import com.example.model.LichHen;
 import com.example.model.PhieuGhiNhanTinhTrangXe;
 import com.example.service_impl.LichHenServiceImpl;
@@ -39,15 +41,13 @@ public class PhieuTinhTrangRestController {
                     .moTaTinhTrangXe(request.getMoTaTinhTrangXe())
                     .ngayNhan(new Date())
                     .idNhanVien("NV010")
-                    .bienSoXe(request.getBienSoXe())
+                    .idLichHen(request.getIdLichHen())
                     .build();
             System.out.println("a:  "+ ph);
             System.out.println("Phiếu tình trạng mới: " + ph);
-
             PhieuGhiNhanTinhTrangXe newPhieu = service.createPhieuGhiNhanTinhTrangXeRequest(ph);
-            lichHenService.updateLichHenTrangThai(request.getBienSoXe());
+            lichHenService.updateLichHenTrangThai(request.getIdLichHen());
             response.setResult(newPhieu);
-
             return response;
         } catch (Exception e) {
             response.setMessage("Khong the luu phieu tinh trang");
@@ -56,9 +56,8 @@ public class PhieuTinhTrangRestController {
         }
     }
     @GetMapping("/test")
-    ApiReponse<LichHen> testli(@RequestParam String bienSoXe){
-        Date dt = new Date();
-        LichHen lh = lichHenService1.findByBienSoXeAndThoiGian(bienSoXe, dt);
+    ApiReponse<LichHen> testli(@RequestParam String idLichHen){
+        LichHen lh = lichHenService1.findById(idLichHen).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
        ApiReponse<LichHen> response = new ApiReponse<>();
        if (lh != null){
        response.setResult(lh);
@@ -69,8 +68,8 @@ public class PhieuTinhTrangRestController {
        return response;
     }
     @GetMapping("/phieu-gnx/find")
-    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuGNXByBienSoVaThoiGian(@RequestParam String bienSoXe, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date thoiGian) {
-        PhieuGhiNhanTinhTrangXe pgn = service.findByBienSoXeAndThoiGian(bienSoXe, thoiGian);
+    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuGNXByBienSoVaThoiGian(@RequestParam String idLichHen) {
+        PhieuGhiNhanTinhTrangXe pgn = service.findPhieuByLichHen(idLichHen);
         ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
         reponse.setResult(pgn);
         return reponse;

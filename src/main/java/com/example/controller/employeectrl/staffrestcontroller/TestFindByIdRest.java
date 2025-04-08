@@ -1,0 +1,67 @@
+package com.example.controller.employeectrl.staffrestcontroller;
+
+import com.example.dao.PhieuDichVuCTDao;
+import com.example.dao.PhieuSuDungPhuTungCTDao;
+import com.example.dto.reponse.ApiReponse;
+import com.example.model.*;
+import com.example.service_impl.LichHenServiceImpl;
+import com.example.service_impl.PhieuDichVuCTServiceImpl;
+import com.example.service_impl.PhieuDichVuServiceImpl;
+import com.example.service_impl.PhieuTinhTrangServiceImpl;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
+@RequestMapping("/test/findid")
+public class TestFindByIdRest {
+    LichHenServiceImpl lhsv;
+    PhieuTinhTrangServiceImpl pttsv;
+    PhieuDichVuServiceImpl pdvsv;
+    PhieuSuDungPhuTungCTDao phieuSuDungPhuTungCTDao;
+    PhieuDichVuCTDao phieuDichVuCTDao;
+    @GetMapping("/lich-hen")
+    ApiReponse<LichHen> findLichHen(@RequestParam String id){
+        ApiReponse<LichHen> reponse = new ApiReponse<>();
+        reponse.setResult(lhsv.findById(id));
+        return reponse;
+    }
+    @GetMapping("/phieu-tinh-trang")
+    ApiReponse<PhieuGhiNhanTinhTrangXe> findTinhTrang(@RequestParam String id){
+        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
+        reponse.setResult(pttsv.findById(id));
+        return reponse;
+    }
+    @GetMapping("/phieu-tinh-trang-by-lich-hen")
+    ApiReponse<PhieuGhiNhanTinhTrangXe> findTinhTrangByLichHen(@RequestParam String id){
+        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
+        reponse.setResult(pttsv.findPhieuByLichHen(id));
+        return reponse;
+    }
+    @GetMapping("/phieu-dich-vu")
+    ApiReponse<PhieuDichVu> findDichVu(@RequestParam String id){
+        ApiReponse<PhieuDichVu> reponse = new ApiReponse<>();
+        reponse.setResult(pdvsv.findById(id));
+        return reponse;
+    }
+    @GetMapping("/phieu-phu-tung")
+    ApiReponse<List<PhieuSuDungPhuTungCT>> findPhieuDungPhuTung(@RequestParam String id){
+        ApiReponse<List<PhieuSuDungPhuTungCT>> reponse = new ApiReponse<>();
+        reponse.setResult(phieuSuDungPhuTungCTDao.findAllByLichHenId(id));
+        return reponse;
+    }
+    @GetMapping("/phieu-dich-vu-ct")
+    ApiReponse<List<PhieuDichVuCT>> findPhieuDungDichVuCT(@RequestParam String id){
+        ApiReponse<List<PhieuDichVuCT>> reponse = new ApiReponse<>();
+        reponse.setResult(phieuDichVuCTDao.findDichVuByLichHenId(id));
+        return reponse;
+    }
+}

@@ -13,6 +13,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface PhieuTinhTrangMapper {
     @Mapping(source = "idNhanVien", target = "nhanVien", qualifiedByName = "mapNhanVien")
+    @Mapping(source = "idLichHen", target = "lichHen", qualifiedByName = "mapLichHen")
     PhieuGhiNhanTinhTrangXe toPhieuTinhTrangXe(CreateTinhTrangXeRequest createTinhTrangXeRequest);
     @Named("mapNhanVien")
     default NhanVien mapNhanVien(String idNhanVien) {
@@ -20,5 +21,12 @@ public interface PhieuTinhTrangMapper {
         NhanVien nv = new NhanVien();
         nv.setIdNhanVien(idNhanVien);
         return nv;
+    }
+    @Named("mapLichHen")
+    default LichHen mapLichHen(String idLichHen) {
+        if (idLichHen == null) return null;
+        LichHen lichHen = new LichHen();
+        lichHen.setIdLichHen(idLichHen);
+        return lichHen;
     }
 }

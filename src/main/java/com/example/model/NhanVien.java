@@ -2,8 +2,10 @@ package com.example.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "NhanVien")
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
 // property = "idNhanVien")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idNhanVien")
 public class NhanVien {
     @Id
     @Column(name = "IdNhanVien", unique = true)

@@ -2,6 +2,8 @@ package com.example.service_impl;
 
 import java.util.List;
 
+import com.example.exception.AppException;
+import com.example.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +52,10 @@ public class PhieuDichVuCTServiceImpl implements PhieuDichVuCTService {
     @Override
     public List<PhieuDichVuCT> getPhieuDichVuCTByPDV(PhieuDichVu phieuDichVu) {
         return List.of();
+    }
+
+    @Override
+    public PhieuDichVuCT findById(String s) {
+        return dao.findById(s).orElseThrow(() -> new AppException(ErrorCode.PHIEUDICHVU_NOTFOUND));
     }
 }

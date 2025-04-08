@@ -17,9 +17,8 @@ public class PhieuDichVuCreateRequest {
     private String idNhanVienTaoPhieu;
     private Date ngayThucHien;
     private Date ngayHoanThanh;
-    private String trangThaiSuaChua;
+    private Boolean trangThaiSuaChua;
     private String tenNhanVienSuaChua;
-    private Boolean trangThai;
     private String idPhieuGNX;
     private List<String> listIdDichVu;
     private String idLichHen;

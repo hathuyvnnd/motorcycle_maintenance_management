@@ -20,4 +20,6 @@ public interface PhieuDichVuDAO extends JpaRepository<PhieuDichVu, String> {
     @Query(value = "SELECT TOP 1 IdPhieuDichVu FROM PhieuDichVu ORDER BY IdPhieuDichVu DESC ", nativeQuery = true)
     String findLastId();
 
+    PhieuDichVu findByPhieuGNX_LichHen_IdLichHen(String idLichHen);
+
 }
