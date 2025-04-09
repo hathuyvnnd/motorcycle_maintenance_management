@@ -9,6 +9,7 @@ import com.example.exception.ErrorCode;
 import com.example.model.KhachHang;
 import com.example.model.NhanVien;
 import com.example.model.TaiKhoan;
+import com.example.model.TaiKhoanKhachHang;
 import com.example.service.KhachHangService;
 import com.example.service.NhanVienService;
 
@@ -108,27 +109,33 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Override
     @Transactional
     public KhachHang dangKyKhachHang(String soDienThoai, String matKhau, String hoTen, String diaChi, String email, String hinhAnh) {
-        // 1. Tạo tài khoản mới
-        TaiKhoan taiKhoan = new TaiKhoan();
-        taiKhoan.setIdTaiKhoan(soDienThoai);  // Sử dụng số điện thoại làm ID khách hàng
-        taiKhoan.setMatKhau(matKhau);
-        taiKhoan.setTrangThai(true);  // Có thể tùy chỉnh trạng thái
-        taiKhoan.setVaiTro("khachHang");  // Vai trò là "KH" (Khách hàng)
+        // Kiểm tra trùng tài khoản
+        if (tkDao.existsById(soDienThoai)) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
 
-        tkDao.save(taiKhoan);  // Lưu tài khoản
+        // Tạo tài khoản khách hàng (sử dụng entity con để đảm bảo phân biệt VaiTro)
+        TaiKhoanKhachHang taiKhoanKH = TaiKhoanKhachHang.builder()
+                .idTaiKhoan(soDienThoai)
+                .matKhau(matKhau)
+                .trangThai(true)
+                .build();
 
-        // 2. Tạo khách hàng mới và liên kết với tài khoản
-        KhachHang khachHang = new KhachHang();
-        khachHang.setIdKhachHang(generateNewId()); // Lấy ID tự tăng dạng chuỗi KH + số tự tăng
-        khachHang.setTaiKhoanKH(taiKhoan);
-        khachHang.setHoTen(hoTen);
-        khachHang.setDiaChi(diaChi);
-        khachHang.setEmail(email);
-        khachHang.setHinhAnh(hinhAnh);
-        khachHang.setNgayDangKi(new Date());  // Ghi lại thời gian đăng ký
+        tkDao.save(taiKhoanKH);
 
-        khachHangDao.save(khachHang);  // Lưu khách hàng
+        // Tạo khách hàng
+        KhachHang khachHang = KhachHang.builder()
+                .idKhachHang(generateNewId())
+                .taiKhoanKH(taiKhoanKH)
+                .hoTen(hoTen)
+                .diaChi(diaChi)
+                .email(email)
+                .hinhAnh(hinhAnh)
+                .ngayDangKi(new Date())
+                .build();
 
-        return khachHang;  // Trả về đối tượng khách hàng vừa tạo
+        khachHangDao.save(khachHang);
+
+        return khachHang;
     }
 }
