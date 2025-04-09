@@ -28,7 +28,7 @@
     <tbody>
       <tr ng-repeat="hd in listPDV | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
         <td>{{hd.idPhieuDichVu}}</td>
-        <td>{{hd.phieuGNX.bienSoXe}}</td>
+        <td>{{hd.phieuGNX.lichHen.bienSoXe}}</td>
         <td>{{hd.nhanVienTaoPhieu.idNhanVien}}</td>
         <td>{{ hd.hoaDon && hd.hoaDon.idHoaDon ? hd.hoaDon.idHoaDon : 'Không có hóa đơn' }}</td>
         <td>{{hd.trangThaiSuaChua == 1 ? "Đã hoàn thành" : "Đang thực hiện"}}</td>
