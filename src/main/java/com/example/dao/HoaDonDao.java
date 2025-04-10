@@ -18,4 +18,9 @@ public interface HoaDonDao extends JpaRepository<HoaDon, String> {
     // Lấy danh sách phiếu dịch vụ theo từng khách hàng
     @Query("SELECT h.phieuDichVuHD FROM HoaDon h WHERE h.khachHang.idKhachHang=?1")
     List<PhieuDichVu> findPhieuDichVuByKhachHangId(String idKhachHang);
+
+    @Query(value = "SELECT TOP 1 IdHoaDon FROM Hoadon ORDER BY IdHoaDon DESC ", nativeQuery = true)
+    String findLastId();
+
+    HoaDon findByPhieuDichVuHD_PhieuGNX_LichHen_IdLichHen(String idLichHen);
 }

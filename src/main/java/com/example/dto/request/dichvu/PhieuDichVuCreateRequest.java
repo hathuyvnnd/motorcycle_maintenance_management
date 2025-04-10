@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+import com.example.dto.request.phutung.PhuTungRequest;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +23,7 @@ public class PhieuDichVuCreateRequest {
     private String tenNhanVienSuaChua;
     private String idPhieuGNX;
     private List<String> listIdDichVu;
+    private List<PhuTungRequest> danhSachPhuTung;
     private String idLichHen;
+    // private int soLuongCuaPhuTung;
 }

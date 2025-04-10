@@ -1,0 +1,73 @@
+<div>
+    <!-- Dịch vụ -->
+    <h6>Dịch vụ</h6>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Tên dịch vụ</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="d in dichVuDaChon">
+            <td>{{ d.dichVu.tenDichVu }}</td>
+            <td>{{ d.dichVu.giaDichVu | currency:'₫' }}</td>
+            <td>{{ d.dichVu.giaDichVu * 1 | currency:'₫' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Phụ tùng -->
+    <h6>Phụ tùng</h6>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Tên phụ tùng</th>
+            <th>Đơn giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in phuTungDaChon">
+            <td>{{ p.phuTung.tenPhuTung }}</td>
+            <td>{{ p.phuTung.giaPhuTung | currency:'₫' }}</td>
+            <td>{{ p.soLuong }}</td>
+            <td>{{ p.phuTung.giaPhuTung * p.soLuong | currency:'₫' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Tổng tiền + phương thức -->
+    <div class="mb-3 mt-3">
+        <label class="form-label">Tổng tiền</label>
+        <input type="text" class="form-control" ng-value="tongTien | currency:'₫'" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phương thức thanh toán</label>
+        <input type="text" class="form-control" ng-value="phuongThucThanhToan" readonly />
+    </div>
+</div>
+<!-- Nút mở modal -->
+<button class="btn btn-outline-primary" ng-click="moModalQR()">Hiện mã QR</button>
+<!-- <img ng-if="qrcodeURL" ng-src="{{ qrcodeURL }}" alt="QR Code" /> -->
+
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h5 class="modal-title" id="qrModalLabel">Quét mã QR để thanh toán</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+  
+        <div class="modal-body text-center">
+            <!-- <a href="">{{ qrcodeURL }}</a> -->
+          <img ng-if="qrcodeURL" ng-src="{{ qrcodeURL }}" alt="QR Code"  style="max-width: 300px;" />
+        </div>
+  
+      </div>
+    </div>
+  </div>

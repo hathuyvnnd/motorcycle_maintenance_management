@@ -1,9 +1,11 @@
 package com.example.controller.employeectrl.staffrestcontroller;
 
+import com.example.dao.HoaDonDao;
 import com.example.dao.PhieuDichVuCTDao;
 import com.example.dao.PhieuSuDungPhuTungCTDao;
 import com.example.dto.reponse.ApiReponse;
 import com.example.model.*;
+import com.example.service_impl.HoaDonServiceImpl;
 import com.example.service_impl.LichHenServiceImpl;
 import com.example.service_impl.PhieuDichVuCTServiceImpl;
 import com.example.service_impl.PhieuDichVuServiceImpl;
@@ -28,6 +30,8 @@ public class TestFindByIdRest {
     PhieuDichVuServiceImpl pdvsv;
     PhieuSuDungPhuTungCTDao phieuSuDungPhuTungCTDao;
     PhieuDichVuCTDao phieuDichVuCTDao;
+    HoaDonServiceImpl hdsv;
+    HoaDonDao hddao;
     @GetMapping("/lich-hen")
     ApiReponse<LichHen> findLichHen(@RequestParam String id){
         ApiReponse<LichHen> reponse = new ApiReponse<>();
@@ -52,6 +56,19 @@ public class TestFindByIdRest {
         reponse.setResult(pdvsv.findById(id));
         return reponse;
     }
+    @GetMapping("/hoa-don")
+    ApiReponse<HoaDon> findHoaDonHoaDon(@RequestParam String id){
+        ApiReponse<HoaDon> reponse = new ApiReponse<>();
+        reponse.setResult(hdsv.findById(id));
+        return reponse;
+    }
+    @GetMapping("/hoa-don/by-lich-hen")
+    ApiReponse<HoaDon> findHoaDonByLichHen(@RequestParam String id){
+        ApiReponse<HoaDon> reponse = new ApiReponse<>();
+        reponse.setResult(hddao.findByPhieuDichVuHD_PhieuGNX_LichHen_IdLichHen(id));
+        return reponse;
+    }
+
     @GetMapping("/phieu-phu-tung")
     ApiReponse<List<PhieuSuDungPhuTungCT>> findPhieuDungPhuTung(@RequestParam String id){
         ApiReponse<List<PhieuSuDungPhuTungCT>> reponse = new ApiReponse<>();
@@ -64,4 +81,6 @@ public class TestFindByIdRest {
         reponse.setResult(phieuDichVuCTDao.findDichVuByLichHenId(id));
         return reponse;
     }
+   
+    
 }

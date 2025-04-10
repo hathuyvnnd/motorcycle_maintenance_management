@@ -132,6 +132,9 @@ public class LichHenServiceImpl implements LichHenService {
                 case "Đang sửa chữa":
                     lh.setTrangThai("Đã sửa chữa");
                     break;
+                case "Đã sửa chữa":
+                lh.setTrangThai("Chờ thanh toán");
+                break;
                 default:
                     System.out.println("Trạng thái không cần cập nhật.");
                     return;

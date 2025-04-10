@@ -5,12 +5,17 @@ import com.example.dto.reponse.ApiReponse;
 import com.example.dto.request.dichvu.PhieuDichVuCreateRequest;
 import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.phieudichvu.PhieuDichVuRequest;
+import com.example.dto.request.phutung.PhuTungRequest;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
 import com.example.model.*;
+import com.example.service.PhieuSuDungPhuTungCTService;
 import com.example.service_impl.DichVuServiceImpl;
 import com.example.service_impl.LichHenServiceImpl;
 import com.example.service_impl.PhieuDichVuCTServiceImpl;
 import com.example.service_impl.PhieuDichVuServiceImpl;
+import com.example.service_impl.PhieuSuDungPTCTImpl;
+import com.example.service_impl.PhuTungServiceImpl;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +33,8 @@ public class TaoDichVuRestController {
  DichVuServiceImpl dichVuService;
  LichHenServiceImpl lichHenService;
  PhieuDichVuCTServiceImpl phieuDichVuCTService;
+ PhuTungServiceImpl phuTungServiceImpl;
+ PhieuSuDungPTCTImpl phieuSuDungPhuTungCTservice;
  @GetMapping("/phieu-dich-vu")
  ApiReponse<PhieuDichVu> findDichVu(@RequestParam String id){
   ApiReponse<PhieuDichVu> reponse = new ApiReponse<>();
@@ -68,9 +75,21 @@ public class TaoDichVuRestController {
    // Lưu vào DB
    phieuDichVuCTService.create(phieuDichVuCT);
   }
-   lichHenService.updateLichHenTrangThai(request.getIdLichHen());
-  return response;
- }
+ for (PhuTungRequest phuTungRequest : request.getDanhSachPhuTung()) {
+        PhuTung phuTung = phuTungServiceImpl.findById(phuTungRequest.getId());
+        System.out.println("id dich vu tung cai" + phuTung.getIdPhuTung());
+        PhieuSuDungPhuTungCT phieuSuDungPhuTungCT = PhieuSuDungPhuTungCT.builder()
+                .idPhieuSuDungPhuTungCT(phieuSuDungPhuTungCTservice.generateNewId())
+                .soLuong(phuTungRequest.getSoLuong())
+                .phuTung(phuTung)
+                .phieuDichVu(pdv)
+                .build();
+        // Lưu vào DB
+        phieuSuDungPhuTungCTservice.create(phieuSuDungPhuTungCT);
+       }
+lichHenService.updateLichHenTrangThai(request.getIdLichHen());
+return response;
+}
  PhieuDichVuDAO dao;
  @GetMapping("/phieu-dich-vu/id-lich-hen")
  ApiReponse<PhieuDichVu> findDichVuByIdLichHen(@RequestParam String id){

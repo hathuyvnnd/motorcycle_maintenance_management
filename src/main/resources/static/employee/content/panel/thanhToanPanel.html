@@ -9,7 +9,6 @@
         <tr>
             <th>Tên dịch vụ</th>
             <th>Đơn giá</th>
-            <th>Số lượng</th>
             <th>Thành tiền</th>
         </tr>
         </thead>
@@ -17,7 +16,6 @@
         <tr ng-repeat="d in dichVuDaChon">
             <td>{{ d.dichVu.tenDichVu }}</td>
             <td>{{ d.dichVu.giaDichVu | currency:'₫' }}</td>
-            <td>1</td> <!-- vì bạn không có `soLuong`, nên tạm cho là 1 -->
             <td>{{ d.dichVu.giaDichVu * 1 | currency:'₫' }}</td>
         </tr>
         </tbody>
@@ -36,10 +34,10 @@
         </thead>
         <tbody>
         <tr ng-repeat="p in phuTungDaChon">
-            <td>{{ p.tenPhuTung }}</td>
-            <td>{{ p.donGia | currency:'₫' }}</td>
+            <td>{{ p.phuTung.tenPhuTung }}</td>
+            <td>{{ p.phuTung.giaPhuTung | currency:'₫' }}</td>
             <td>{{ p.soLuong }}</td>
-            <td>{{ p.donGia * p.soLuong | currency:'₫' }}</td>
+            <td>{{ p.phuTung.giaPhuTung * p.soLuong | currency:'₫' }}</td>
         </tr>
         </tbody>
     </table>
@@ -48,12 +46,13 @@
     <form name="hoaDonForm" ng-submit="taoHoaDon()">
         <div class="mb-3 mt-3">
             <label class="form-label">Tổng tiền</label>
-            <input type="text" class="form-control" ng-model="tongTien" readonly />
+            <!-- <input type="text" class="form-control" ng-model="tongTien" readonly /> -->
+            <input type="text" class="form-control" ng-value="tongTien | currency:'₫'" readonly />
         </div>
 
         <div class="mb-3">
             <label class="form-label">Phương thức thanh toán</label>
-            <select class="form-select" ng-model="phuongThucThanhToan" required>
+            <select class="form-select" ng-model="$root.phuongThucThanhToan" required>
                 <option value="" disabled selected>-- Chọn phương thức --</option>
                 <option value="Tien Mat">Tiền mặt</option>
                 <option value="Chuyen Khoan">Chuyển khoản</option>
