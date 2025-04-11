@@ -30,5 +30,5 @@ public interface LichHenDao extends JpaRepository<LichHen, String> {
 //    List<LichHen> findByBienSoXeAndThoiGian(String bienSoXe, Date thoiGian);
 
     List<LichHen> findByThoiGian(Date thoiGian);
-
+    Boolean existsByThoiGianAndBienSoXe(Date thoiGian, String bienSoXe); //của thuỷ mới thêm đừng có xóa nha
 }

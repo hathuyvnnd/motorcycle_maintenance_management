@@ -1,18 +1,23 @@
 package com.example.service_impl;
 
-import com.example.dao.LichHenDao;
+import com.example.dao.*;
+import com.example.dto.request.khachhang.LichHenCTDTO;
+import com.example.dto.request.khachhang.LichHenDTO;
 import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
 import com.example.model.LichHen;
+import com.example.model.LichHenCT;
 import com.example.service.LichHenService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +31,10 @@ public class LichHenServiceImpl implements LichHenService {
 
     LichHenDao dao;
     LichHenMapper mapper;
+    LichHenChiTietDao lhctDao;
+    KhachHangDao khDao;
+    LoaiXeDao loaiXeDao;
+    DichVuDao dvDao;
 
     @Override
     public LichHen createLichHenRequest(LichHenCreateRequest request) {
@@ -108,6 +117,23 @@ public class LichHenServiceImpl implements LichHenService {
         return String.format("LH%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
 
     }
+    public String taoIdByLHCT() {
+        // Lấy ID cuối cùng
+        String lastId = dao.findLastId();
+
+        // Nếu không có ID, tạo ID đầu tiên
+        if (lastId == null) {
+            return "LHCT001";
+        }
+
+        // Lấy phần số từ ID (bỏ phần "KH") và tăng nó lên
+        int number = Integer.parseInt(lastId.substring(2));
+        number++;
+
+        // Ghép phần số mới với "KH"
+        return String.format("LHCT%03d", number); // Định dạng với 3 chữ số, ví dụ:KH002
+
+    }
 
     public void updateLichHenTrangThai(String bienSoXe) {
         Date today = new Date();
@@ -164,4 +190,30 @@ public class LichHenServiceImpl implements LichHenService {
 //    public void deleteLichHen(String id) {
 //        lichHenRepository.deleteById(id);
 //    }
+
+    @Override
+    public void taoLichHenByKH(LichHenDTO dto) {
+        if (dao.existsByThoiGianAndBienSoXe(dto.getThoiGian(), dto.getBienSoXe())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "❗ Bạn đã có lịch cho xe vào ngày này.");
+        }
+        LichHen lh = new LichHen();
+        lh.setIdLichHen(generateNewId());
+        lh.setThoiGian(dto.getThoiGian());
+        lh.setBienSoXe(dto.getBienSoXe());
+        lh.setTrangThai(dto.getTrangThai());
+        lh.setIdKhachHang(khDao.findById(dto.getIdKhachHang()).orElseThrow());
+        lh.setIdLoaiXe(loaiXeDao.findById(dto.getIdLoaiXe()).orElseThrow());
+
+        dao.save(lh);
+
+        for (LichHenCTDTO ctDto : dto.getLichHenCTList()) {
+            LichHenCT ct = new LichHenCT();
+            ct.setIdLichHenCT(taoIdByLHCT());
+            ct.setIdLichHen(lh);
+            ct.setIdDichVu(dvDao.findById(ctDto.getIdDichVu()).orElseThrow());
+            ct.setGhiChu(ctDto.getGhiChu());
+            lhctDao.save(ct);
+        }
+    }
+
 }

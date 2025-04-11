@@ -2,6 +2,8 @@ package com.example.service;
 
 import com.example.model.LoaiXe;
 
-public interface LoaiXeService extends CrudService<LoaiXe, String> {
+import java.util.List;
 
+public interface LoaiXeService extends CrudService<LoaiXe, String> {
+    List<LoaiXe> findAll();
 }

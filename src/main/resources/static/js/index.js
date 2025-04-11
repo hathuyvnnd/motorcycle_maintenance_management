@@ -53,8 +53,6 @@ app.config(function ($routeProvider) {
     });
 });
 app.run(["$rootScope", "$location", function ($rootScope, $location) {
-  console.log("✅ AngularJS đã khởi động!");
-
   $rootScope.keyword = "";
 
   $rootScope.submitSearch = function (event) {
@@ -64,12 +62,10 @@ app.run(["$rootScope", "$location", function ($rootScope, $location) {
     if ($rootScope.keyword && $rootScope.keyword.trim() !== "") {//Trim() cắt khoảng trắng
       $location.path("/timkiem/" + encodeURIComponent($rootScope.keyword)); //encodeURIComponent mã hóa kí tự từ URL
     } else {
-      console.warn("❌ Không có từ khóa để tìm kiếm!");
+      console.warn(" Không có từ khóa để tìm kiếm!");
     }
   };
 }]);
-
-
 
 
 app.controller("HomeController", function ($scope, $http, $rootScope) {
@@ -89,6 +85,7 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
     }
   );
 
+// Load dịch vụ
   $http.get("/api/dichvu").then(
     function (response) {
       $scope.list = response.data;
@@ -107,8 +104,6 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
     }
   };
 
-
-
   // Hàm sắp xếp theo tên dịch vụ
   $scope.sortBy = function (order) {
     $scope.sortOrder = order;
@@ -122,7 +117,23 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
     }
 };
 
-  
+  // Thêm Lịch hẹn chi tiết vào local storage
+  $scope.dsLichHenCT = JSON.parse(localStorage.getItem("lichhenct")) || [];
+  $scope.chonDichVu = function (dv){
+    const exists = $scope.dsLichHenCT.some(item => item.idDichVu === dv.idDichVu);
+    if (!exists) {
+      $scope.dsLichHenCT.push({
+        idDichVu: dv.idDichVu,
+        tenDichVu: dv.tenDichVu,
+        giaDichVu: dv.giaDichVu,
+        ghiChu: ""
+      });
+      localStorage.setItem("lichhenct", JSON.stringify($scope.dsLichHenCT));
+      alert("Đã thêm dịch vụ vào lịch hẹn!");
+    } else {
+      alert("Dịch vụ đã được chọn trước đó.");
+    }
+  }
 });
 
 app.controller("PhuTungController", function ($scope, $rootScope, $http, $routeParams) {
@@ -171,8 +182,58 @@ app.controller("PhuTungController", function ($scope, $rootScope, $http, $routeP
 app.controller("GioiThieuController", function ($scope) {
   $scope.title = "Giới Thiệu";
 });
-app.controller("DatLichController", function ($scope) {
+///////////////////////////////////////////////////////////////////////////////////////
+app.controller("DatLichController", function ($scope,$http) {
   $scope.title = "Đặt Lịch Hẹn";
+  $scope.thongBao = null;
+  $scope.form = {};
+  $scope.dsLoaiXe = [];
+  $scope.dsLichHenCT = JSON.parse(localStorage.getItem("lichhenct")) || [];
+
+  $http.get("/api/loaixe").then(function (res) {
+    $scope.dsLoaiXe = res.data;
+  });
+
+  $scope.xacNhanDatLich = function () {
+    if (!$scope.form.ngay) {
+      alert("Vui lòng chọn ngày!");
+      return;
+    }
+
+    const thoiGian = new Date($scope.form.ngay);
+    const ngayISO = thoiGian.toISOString().split("T")[0];
+
+    let lichHenData = {
+      idKhachHang: $scope.form.idKhachHang,
+      idLoaiXe: $scope.form.idLoaiXe,
+      bienSoXe: $scope.form.bienSoXe,
+      thoiGian: ngayISO,
+      trangThai: "Chờ xác nhận",
+      lichHenCTList: $scope.dsLichHenCT.map(ct => ({
+        idDichVu: ct.idDichVu,
+        ghiChu: ct.ghiChu
+      }))
+    };
+
+    $http.post("/api/lichhen", lichHenData).then(function (res) {
+      console.log("Đặt lịch thành công", res); // Log thành công
+      $scope.thongBao = "✅ Đặt lịch thành công!";
+
+      localStorage.removeItem("lichhenct");
+      $scope.dsLichHenCT = [];
+      $scope.form = {};
+      $scope.datLichForm.$setPristine();
+      $scope.datLichForm.$setUntouched();
+    }, function (err) {
+      console.log("Lỗi đặt lịch:", err); // Log lỗi
+      if (err.data && err.data.message) {
+        $scope.thongBao = "❗ " + err.data.message;
+      } else {
+        $scope.thongBao = "❗ Có lỗi xảy ra!";
+      }
+    });
+  };
+
 });
 app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) {
   $scope.title = "Đăng Kí";
@@ -198,6 +259,11 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
           .then(function(response) {
             $scope.success = true;
             $scope.message = 'Đăng ký thành công!';
+
+            //  Reset form và trạng thái
+            $scope.khachHang = {};                       // Xóa dữ liệu form
+            $scope.dangKyForm.$setPristine();            // Đặt form về trạng thái chưa chỉnh sửa
+            $scope.dangKyForm.$setUntouched();           // Reset trạng thái touched của các input
           }, function(error) {
             $scope.success = false;
             // Kiểm tra lỗi trả về từ server
