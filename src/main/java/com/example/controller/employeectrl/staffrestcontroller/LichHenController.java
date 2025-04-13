@@ -36,7 +36,7 @@ public class LichHenController {
     LichHenCTServiceImpl lichHenCTService;
 
     TaiKhoanDao taiKhoanDAO1;
-    KhachHangDao khachHangDAO1;
+    // KhachHangDao khachHangDAO1;
 
      LichHenMapper mapper;
     // Lấy tất cả lịch hẹn
@@ -57,13 +57,13 @@ public class LichHenController {
         return apiReponse;
     }
 
-    @GetMapping("/testallnorp1")
-    ApiReponse<List<KhachHang>> getAllKhachHang1() {
-        List<KhachHang> lslh = khachHangDAO1.findAll();
-        ApiReponse<List<KhachHang>> apiReponse = new ApiReponse<>();
-        apiReponse.setResult(lslh);
-        return apiReponse;
-    }
+    // @GetMapping("/testallnorp1")
+    // ApiReponse<List<KhachHang>> getAllKhachHang1() {
+    //     List<KhachHang> lslh = khachHangDAO1.findAll();
+    //     ApiReponse<List<KhachHang>> apiReponse = new ApiReponse<>();
+    //     apiReponse.setResult(lslh);
+    //     return apiReponse;
+    // }
 
     @GetMapping("/today")
     ApiReponse<List<LichHenResponse>> getLichHenToday() {
@@ -83,7 +83,7 @@ public class LichHenController {
 
 
     @GetMapping("/search")
-        public ApiReponse<List<LichHenResponse>> searchLichHen(@RequestParam String bienSoXe) {
+        public ApiReponse<List<LichHenResponse>> searchLichHenByBienSoXe(@RequestParam String bienSoXe) {
             List<LichHen> result = lichHenService.searchLichHenByBienSo(bienSoXe);
             System.out.println("testt: "+result);
             List<LichHenResponse> lhrp = mapper.toLichHenReponse(result);
@@ -93,13 +93,13 @@ public class LichHenController {
         }
 
         @PostMapping
-        ApiReponse<LichHen> createUser(@RequestBody @Valid LichHenCreateRequest request){
+        ApiReponse<LichHen> createLH(@RequestBody @Valid LichHenCreateRequest request){
             ApiReponse<LichHen> apiReponse = new ApiReponse<>();
             apiReponse.setResult(lichHenService.createLichHenRequest(request));
             return apiReponse;
         }
         @PutMapping("/{id}")
-        ApiReponse<LichHen> updateUser(@PathVariable String id,@RequestBody LichHenUpdateRequest request){
+        ApiReponse<LichHen> updateLH(@PathVariable String id,@RequestBody LichHenUpdateRequest request){
             ApiReponse<LichHen> apiReponse = new ApiReponse<>();
             apiReponse.setResult(lichHenService.updateLichHenRequest(id, request));
             return apiReponse;
@@ -110,7 +110,7 @@ public class LichHenController {
         ApiReponse<Object> response = new ApiReponse<>();
 
         // Kiểm tra số điện thoại có trong hệ thống không
-        TaiKhoan taiKhoan = taiKhoanDAO1.findById(phone).orElse(null);
+        TaiKhoan taiKhoan = taiKhoanDAO.findById(phone);
         if (taiKhoan != null) {
             // Nếu có tài khoản, lấy thông tin khách hàng
             KhachHang khachHang = khachHangDAO.findByTaiKhoanKH(taiKhoan);
@@ -139,12 +139,12 @@ public class LichHenController {
             taiKhoanDAO1.save(newTaiKhoan);
             System.out.println("ab: " + newTaiKhoan.getVaiTro());
             KhachHang newKhachHang = KhachHang.builder()
-                    .idKhachHang(khachHangDAO.generateNewId())
+                    // .idKhachHang(khachHangDAO.generateNewId())
                     .taiKhoanKH(newTaiKhoan)
                     .hoTen(request.getTenKhachHang())
                     .build();
-            khachHangDAO1.save(newKhachHang);
-            response.setResult(khachHangDAO1.save(newKhachHang));
+            khachHangDAO.create(newKhachHang);
+            response.setResult(newKhachHang);
             return newTaiKhoan;
         });
         String newidLH = lichHenService.generateNewId();
@@ -154,6 +154,7 @@ public class LichHenController {
                 .thoiGian(request.getThoiGian())
                 .trangThai("Đã xác nhận")
                 .bienSoXe(request.getBienSoXe())
+                .ghiChu(request.getGhiChu())
                 .build();
         System.out.println("aa " + lhrp);
         lichHenService.createLichHenRequest(lhrp);

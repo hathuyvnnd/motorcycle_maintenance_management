@@ -6,6 +6,7 @@ import com.example.model.PhieuDichVu;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,4 +24,13 @@ public interface HoaDonDao extends JpaRepository<HoaDon, String> {
     String findLastId();
 
     HoaDon findByPhieuDichVuHD_PhieuGNX_LichHen_IdLichHen(String idLichHen);
+
+   @Query("SELECT h FROM HoaDon h " +
+       "JOIN h.phieuDichVuHD pdv " +
+       "JOIN pdv.phieuGNX pgnx " +
+       "JOIN pgnx.lichHen lh " +
+       "WHERE LOWER(lh.bienSoXe) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+List<HoaDon> searchHoaDonByBienSoXeKeyword(@Param("keyword") String keyword);
+
+
 }

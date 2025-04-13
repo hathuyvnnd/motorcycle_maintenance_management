@@ -104,4 +104,11 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     public boolean exitsById(String id) {
         return taiKhoanDao.existsById(id);
     }
+
+    public TaiKhoan doiMatKhauStaff(String id, String mk){
+        TaiKhoan tk = findById(id);
+        tk.setMatKhau(mk);
+        taiKhoanDao.save(tk);
+        return tk;
+    }
 }

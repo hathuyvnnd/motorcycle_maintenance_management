@@ -1,0 +1,36 @@
+<div>
+    <h4 class="mt-4">Tìm Hóa Đơn</h4>
+    <div class="row mb-2">
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="keyword" placeholder="Mã Hóa Đơn..." />
+            <button class="btn btn-primary" ng-click="search()">Tìm kiếm</button>
+        </div>
+    </div>
+    <h4 class="mt-4">Danh Sách Hóa Đơn</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Mã Hóa Đơn</th>
+            <th>Ngày Tạo</th>
+            <th>Biển Số Xe</th>
+            <th>Tổng Tiền</th>
+            <th>Trạng Thái Thanh Toán</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="invoice in invoices">
+            <td>{{ invoice.idHoaDon }}</td>
+            <td>{{ invoice.ngayTao | date:'dd/MM/yyyy' }}</td>
+            <td>{{ invoice.phieuDichVuHD.phieuGNX.lichHen.bienSoXe }}</td>
+            <td>{{ invoice.tongTien | currency }}</td>
+            <td>
+                <span ng-if="invoice.trangThaiThanhToan" class="badge bg-success">Đã Thanh Toán</span>
+                <span ng-if="!invoice.trangThaiThanhToan" class="badge bg-danger">Chưa Thanh Toán</span>
+            </td>
+        </tr>
+        <tr ng-if="invoices.length === 0">
+            <td colspan="5" class="text-center text-dark-emphasis">Không có hóa đơn nào.</td>
+        </tr>
+        </tbody>
+    </table>      
+</div>

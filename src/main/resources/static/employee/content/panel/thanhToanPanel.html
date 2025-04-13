@@ -54,9 +54,8 @@
             <label class="form-label">Phương thức thanh toán</label>
             <select class="form-select" ng-model="$root.phuongThucThanhToan" required>
                 <option value="" disabled selected>-- Chọn phương thức --</option>
-                <option value="Tien Mat">Tiền mặt</option>
-                <option value="Chuyen Khoan">Chuyển khoản</option>
-                <option value="The">Thẻ</option>
+                <option ng-value="true">Tiền mặt</option>
+                <option ng-value="false">Chuyển khoản</option>
             </select>
         </div>
 

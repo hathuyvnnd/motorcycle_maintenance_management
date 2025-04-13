@@ -31,7 +31,7 @@ public class LichHenCTRestController {
         return apiReponse;
     }
     @GetMapping("/byidlichhen")
-    ApiReponse<List<DichVu>> getAllLichHenById(@RequestParam String idLichHen) {
+    ApiReponse<List<DichVu>> getAllLichHenCTByIdLichHen(@RequestParam String idLichHen) {
         List<LichHenCT> lslh = dao.findByIdLichHen_IdLichHen(idLichHen);
         ApiReponse<List<DichVu>> apiReponse = new ApiReponse<>();
         List<DichVu> dichVuList = lslh.stream()

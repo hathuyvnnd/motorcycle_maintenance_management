@@ -1,6 +1,8 @@
 package com.example.service_impl;
 
 import com.example.dao.NhanVienDao;
+import com.example.exception.AppException;
+import com.example.exception.ErrorCode;
 import com.example.model.NhanVien;
 import com.example.service.NhanVienService;
 
@@ -81,5 +83,14 @@ public class NhanVienServiceImpl implements NhanVienService {
     @Override
     public boolean exitsById(String id) {
         return nhanVienDao.existsById(id);
+    }
+
+    public NhanVien updateLA(NhanVien reqq) {
+        NhanVien nv = nhanVienDao.findById(reqq.getIdNhanVien()).orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        nv.setHinhAnh(reqq.getHinhAnh());
+        nv.setDiaChi(reqq.getDiaChi());
+        nv.setTen(reqq.getTen());
+        nv.setEmail(reqq.getEmail());
+        return nhanVienDao.save(nv);
     }
 }

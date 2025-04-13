@@ -7,6 +7,7 @@ import com.example.dto.reponse.ApiReponse;
 import com.example.model.*;
 import com.example.service_impl.HoaDonServiceImpl;
 import com.example.service_impl.LichHenServiceImpl;
+import com.example.service_impl.NhanVienServiceImpl;
 import com.example.service_impl.PhieuDichVuCTServiceImpl;
 import com.example.service_impl.PhieuDichVuServiceImpl;
 import com.example.service_impl.PhieuTinhTrangServiceImpl;
@@ -32,6 +33,13 @@ public class TestFindByIdRest {
     PhieuDichVuCTDao phieuDichVuCTDao;
     HoaDonServiceImpl hdsv;
     HoaDonDao hddao;
+    NhanVienServiceImpl nvsv;
+    @GetMapping("/nhan-vien")
+    ApiReponse<NhanVien> findNhanVien(@RequestParam String id){
+        ApiReponse<NhanVien> reponse = new ApiReponse<>();
+        reponse.setResult(nvsv.findById(id));
+        return reponse;
+    }
     @GetMapping("/lich-hen")
     ApiReponse<LichHen> findLichHen(@RequestParam String id){
         ApiReponse<LichHen> reponse = new ApiReponse<>();

@@ -1,0 +1,45 @@
+<h5 class="mb-3">Thông tin chung</h5>
+<div class="mb-3">
+    <label class="form-label">Biển số xe</label>
+    <input type="text" class="form-control" ng-model="selectedAppointment.bienSoXe" readonly />
+</div>
+
+<h5 class="mt-4">Dịch vụ đã sử dụng</h5>
+<table class="table table-bordered mt-2" ng-if="dichVuDaChon.length">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên dịch vụ</th>
+            <th>Giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="dv in dichVuDaChon track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{ dv.dichVu.tenDichVu }}</td>
+            <td>{{ dv.dichVu.giaDichVu | vnd}}</td>
+        </tr>
+    </tbody>
+</table>
+<p class="text-center" ng-if="dichVuDaChon.length === 0">Không có dịch vụ nào</p>
+
+<h5 class="mt-4">Phụ tùng đã sử dụng</h5>
+<table class="table table-bordered mt-2" ng-if="phuTungDaChon.length">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên phụ tùng</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="pt in phuTungDaChon track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{ pt.phuTung.tenPhuTung }}</td>
+            <td>{{ pt.soLuong }}</td>
+            <td>{{ pt.soLuong * pt.phuTung.giaPhuTung | currency:'₫' }}</td>
+        </tr>
+    </tbody>
+</table>
+<p class="text-center" ng-if="phuTungDaChon.length === 0">Không có phụ tùng nào</p>

@@ -77,5 +77,11 @@ public class HoaDonServiceImpl implements HoaDonService {
         System.out.println("Đang tìm hoadonhoadon với ID: " + s);
         return hdDao.findById(s).orElse(null);
     }
+
+    @Override
+    public List<HoaDon> searchHoaDonByKeyword(String keyword) {
+        return hdDao.searchHoaDonByBienSoXeKeyword(keyword);
+    }
+    
     
 }

@@ -4,9 +4,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import com.example.dto.reponse.FindHoaDonResponse;
 import com.example.dto.request.hoadon.HoaDonRequest;
 import com.example.model.HoaDon;
 import com.example.model.KhachHang;
+import com.example.model.LichHen;
 import com.example.model.NhanVien;
 import com.example.model.PhieuDichVu;
 
@@ -16,6 +18,8 @@ public interface HoaDonMapper {
     @Mapping(source = "idNhanVienTao", target = "nhanVien", qualifiedByName = "mapNhanVien")
     @Mapping(source = "idPhieuDichVu", target = "phieuDichVuHD", qualifiedByName = "mapPhieuDV")
     HoaDon toHoaDon(HoaDonRequest request);
+
+    
 
     @Named("mapKhachHang")
     default KhachHang mapKhachHang(String idKhachHang) {
@@ -42,4 +46,6 @@ public interface HoaDonMapper {
         phieuDichVu.setIdPhieuDichVu(idPhieuDichVu);
         return phieuDichVu;
     }
+
+
 }

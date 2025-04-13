@@ -90,5 +90,13 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
         return dao.findByLichHen_IdLichHen(lichHen);
     }
 
+    @Override
+    public List<PhieuGhiNhanTinhTrangXe> searchByBienSoXeKeyword(String keyword) {
+        // TODO Auto-generated method stub
+        return dao.searchByBienSoXeKeyword(keyword);
+    }
+
+   
+
 
 }

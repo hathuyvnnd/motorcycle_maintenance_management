@@ -17,5 +17,6 @@ public interface PhieuGhiNhanTinhTrangXeService extends CrudService<PhieuGhiNhan
     String generateNewId();
 
     public PhieuGhiNhanTinhTrangXe createPhieuGhiNhanTinhTrangXeRequest(CreateTinhTrangXeRequest request);
+    List<PhieuGhiNhanTinhTrangXe> searchByBienSoXeKeyword(String keyword);
 
 }

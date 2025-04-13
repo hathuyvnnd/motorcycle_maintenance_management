@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import com.example.model.HoaDon;
 import com.example.model.LichHen;
 import com.example.model.PhieuDichVu;
 import com.example.model.PhieuDichVuCT;
+import com.example.model.PhieuGhiNhanTinhTrangXe;
 import com.example.model.PhieuSuDungPhuTungCT;
 import com.example.model.PhuTung;
 import com.example.service_impl.HoaDonServiceImpl;
@@ -60,5 +62,25 @@ public class HoaDonRestController {
     lichHenService.updateLichHenTrangThai(request.getIdLichHen());
     return response;
 }
- 
+  @GetMapping("/getall")
+    public ApiReponse<List<HoaDon>> getAllHoaDon() {
+        List<HoaDon> pgn = service.findAll();
+        ApiReponse<List<HoaDon>> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+    @GetMapping("/id")
+    public ApiReponse<HoaDon> getHoaDon(@RequestParam String idHoaDon) {
+      HoaDon pgn = service.findById(idHoaDon);
+        ApiReponse<HoaDon> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+    @GetMapping("/search")
+    public ApiReponse<List<HoaDon>> searchHoaDonByBienSoXe(@RequestParam String keyword) {
+        List<HoaDon> pgn = service.searchHoaDonByKeyword(keyword);
+        ApiReponse<List<HoaDon>> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
 }

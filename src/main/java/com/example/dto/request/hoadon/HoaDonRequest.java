@@ -20,7 +20,7 @@ public class HoaDonRequest {
     String idPhieuDichVu;
     String idLichHen;
     String idNhanVienTao;
-    String phuongThucThanhToan;
+    Boolean phuongThucThanhToan;
     float tongTien;
     Date ngayTao;
     boolean trangThaiThanhToan;

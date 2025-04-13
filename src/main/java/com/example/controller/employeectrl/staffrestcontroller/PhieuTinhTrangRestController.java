@@ -55,6 +55,39 @@ public class PhieuTinhTrangRestController {
             return response;
         }
     }
+    @GetMapping("/phieu-gnx/find")
+    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuGNXByIdLichHen(@RequestParam String idLichHen) {
+        PhieuGhiNhanTinhTrangXe pgn = service.findPhieuByLichHen(idLichHen);
+        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+    @GetMapping("/getall")
+    public ApiReponse<List<PhieuGhiNhanTinhTrangXe>> getAllPhieuTinhTrang() {
+        List<PhieuGhiNhanTinhTrangXe> pgn = service.findAll();
+        ApiReponse<List<PhieuGhiNhanTinhTrangXe>> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+    @GetMapping("/id")
+    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuTinhTrang(@RequestParam String idPhieuGNX) {
+        PhieuGhiNhanTinhTrangXe pgn = service.findById(idPhieuGNX);
+        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+    @GetMapping("/search")
+    public ApiReponse<List<PhieuGhiNhanTinhTrangXe>> searchPhieuTinhTrangByBienSoXe(@RequestParam String keyword) {
+        List<PhieuGhiNhanTinhTrangXe> pgn = service.searchByBienSoXeKeyword(keyword);
+        ApiReponse<List<PhieuGhiNhanTinhTrangXe>> reponse = new ApiReponse<>();
+        reponse.setResult(pgn);
+        return reponse;
+    }
+
+
+
+
+
     @GetMapping("/test")
     ApiReponse<LichHen> testli(@RequestParam String idLichHen){
         LichHen lh = lichHenService1.findById(idLichHen).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
@@ -67,29 +100,8 @@ public class PhieuTinhTrangRestController {
 
        return response;
     }
-    @GetMapping("/phieu-gnx/find")
-    public ApiReponse<PhieuGhiNhanTinhTrangXe> getPhieuGNXByBienSoVaThoiGian(@RequestParam String idLichHen) {
-        PhieuGhiNhanTinhTrangXe pgn = service.findPhieuByLichHen(idLichHen);
-        ApiReponse<PhieuGhiNhanTinhTrangXe> reponse = new ApiReponse<>();
-        reponse.setResult(pgn);
-        return reponse;
-    }
 
 
-
-//    @GetMapping("/test")
-//    ApiReponse<List<LichHen>> testli(@RequestParam String bienSoXe){
-//        Date dt = new Date();
-//        List<LichHen> lh = lichHenService1.findByBienSoXeAndThoiGian(bienSoXe, dt);
-//        ApiReponse<List<LichHen>> response = new ApiReponse<>();
-//        if (lh != null){
-//            response.setResult(lh);
-//        }else{
-//            response.setMessage("khong thay lich hen");
-//        }
-//
-//        return response;
-//    }
     @GetMapping("/testday")
     ApiReponse<List<LichHen>> testli1(){
         Date dt = new Date();

@@ -3,11 +3,13 @@ package com.example.model;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "NhanVien")
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
 // property = "idNhanVien")
@@ -24,8 +27,10 @@ public class NhanVien {
     @Column(name = "IdNhanVien", unique = true)
     private String idNhanVien;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    // @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "SoDienThoai", referencedColumnName = "IdTaiKhoan", unique = true)
+    @JsonIdentityReference(alwaysAsId = true)
     private TaiKhoan taiKhoanNV;
 
     @Column(name = "Ten")
