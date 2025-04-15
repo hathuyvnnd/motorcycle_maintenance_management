@@ -83,3 +83,45 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
+
+
+/* giao dien thong tin staff */
+.image-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.avatar-img {
+  width: 100%;
+  max-width: 180px; /* 👈 Tối đa 180px thôi, tự nhỏ lại nếu màn hình nhỏ */
+  height: auto;
+  aspect-ratio: 1 / 1; /* Giữ tỷ lệ vuông */
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  margin: auto;
+  display: block;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 10px; /* 👉 Nhỏ lại */
+  color: white;
+  background-color: rgba(0, 0, 0, 0.047);
+  padding: 6px;
+  border-radius: 50%;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.image-container:hover .edit-icon {
+  display: block;
+}
+
+.avatar-input {
+    display: none;
+    }
+
+    

@@ -54,32 +54,50 @@ $scope.chucNangList = [
       link: "doi-mat-khau"
     },
     {
-      ten: "Tra Cứu",
+      ten: "Xem Lịch Hẹn Trong Ngày",
       icon: "https://cdn-icons-png.flaticon.com/512/891/891462.png",
       isNew: false,
       link: "/tra-cuu"
     },
     {
-      ten: "Quản Lý Lớp",
+      ten: "Tạo Lịch",
       icon: "https://cdn-icons-png.flaticon.com/512/3030/3030371.png",
       isNew: false,
       link: "/quan-ly-lop"
     },
     {
-      ten: "Thời Khoá Biểu",
+      ten: "Tra Cứu Lịch Hẹn",
       icon: "https://cdn-icons-png.flaticon.com/512/747/747310.png",
       isNew: false,
       link: "/thoi-khoa-bieu"
     },
     {
-      ten: "Nhập Điểm",
+      ten: "Thông Tin",
       icon: "https://cdn-icons-png.flaticon.com/512/942/942748.png",
       isNew: true,
       link: "/nhap-diem"
     },
    
   ];
-  
+  $scope.staff = {}; // sẽ bind lên giao diện
+     idNhanVien = localStorage.getItem("idNhanVien");
+
+    if (idNhanVien) {
+        $http.get(`/test/findid/nhan-vien`, { params: { id: idNhanVien } })
+          .then(function (response) {
+            // Do backend trả về dạng ApiReponse, nên dữ liệu nằm trong .result
+            $scope.staff = response.data.result;
+            console.log("ttnv",  $scope.staff);
+            // Cập nhật đường dẫn ảnh
+            $scope.imageUrl = "/images/" +  $scope.staff.hinhAnh;
+            console.log("ttnvim",  $scope.imageUrl);
+          })
+          .catch(function (error) {
+            console.error("Lỗi khi lấy thông tin nhân viên:", error);
+          });
+    } else {
+        console.warn("Chưa có ID nhân viên trong localStorage");
+    }
 });
 app.filter('vnd', function () {
     return function (input) {
@@ -812,27 +830,33 @@ app.controller("TaoLichHenController", function ($scope, $http) {
 
     $scope.loadDichVu(); // Tải danh sách dịch vụ khi khởi tạo controller
 });
-app.controller("thongTinStaffController", function ($scope, $http) {
-    const idNhanVien = localStorage.getItem("idNhanVien");
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
 
-    $scope.staff = {}; // sẽ bind lên giao diện
-
-    if (idNhanVien) {
-        $http.get(`/test/findid/nhan-vien`, { params: { id: idNhanVien } })
-          .then(function (response) {
-            // Do backend trả về dạng ApiReponse, nên dữ liệu nằm trong .result
-            $scope.staff = response.data.result;
-            console.log("ttnv",  $scope.staff);
-            // Cập nhật đường dẫn ảnh
-            $scope.staff.hinhAnhUrl = "/images/nhan-vien/" + $scope.staff.hinhAnh;
-          })
-          .catch(function (error) {
-            console.error("Lỗi khi lấy thông tin nhân viên:", error);
+        element.bind('change', function () {
+          scope.$apply(function () {
+            modelSetter(scope, element[0].files[0]);
           });
-    } else {
-        console.warn("Chưa có ID nhân viên trong localStorage");
-    }
-
+        });
+      }
+    };
+  }]);
+app.controller("thongTinStaffController", function ($scope, $http) {
+    $scope.previewUrl = null;
+    $scope.selectedFileName = "";
+    
+    $scope.previewImage = function(input) {
+        const file = input.files[0];
+        if (file) {
+          $scope.previewUrl = URL.createObjectURL(file);
+          $scope.selectedFileName = file.name;
+          $scope.$apply();
+        }
+      };
     // Mở modal chỉnh sửa thông tin nhân viên
     $scope.openEditModal = function () {
         // Gọi API lấy thông tin nhân viên nếu chưa có
@@ -840,25 +864,30 @@ app.controller("thongTinStaffController", function ($scope, $http) {
         $('#editStaffModal').modal('show');
     };
 
-    // Upload ảnh cho nhân viên
-    $scope.uploadFile = function(file, nhanVien) {
+    $scope.uploadImage = function() {
+        if (!$scope.nhanVien || !$scope.nhanVien.file) return alert("Vui lòng chọn ảnh");
+  
         var formData = new FormData();
-        formData.append("file", file);
-        formData.append("nhanVien", angular.toJson(nhanVien));
-
-        $http.post("/api/staff/upload-image", formData, {
-            headers: { 'Content-Type': undefined },
-            transformRequest: angular.identity
+        formData.append("file", $scope.nhanVien.file);
+  
+        $http.post("/api/nhanvien/testupload/" + idNhanVien + "/upload-avatar", formData, {
+          transformRequest: angular.identity,
+          headers: { 'Content-Type': undefined },
         }).then(function(response) {
-            // Cập nhật lại URL ảnh sau khi upload thành công
-            $scope.staff.hinhAnhUrl = "/images/nhan-vien/" + file.name;
-            alert("Image uploaded and employee updated successfully!");
+          alert(response.data.message);
+          $scope.imageUrl = "/images/" + response.data.fileName;
+          $scope.previewUrl = null;
+          $scope.selectedFileName = "";
+          $scope.nhanVien.file = null;
+          document.getElementById("modalFileInput").value = null;
+          bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
         }, function(error) {
-            alert("Upload failed.");
+          alert("Upload thất bại!");
+          console.error("Lỗi upload", error);
         });
-    };
+      };
 
-    // Cập nhật thông tin nhân viên
+    // Cập nhật thông tin nhân viên k hình
     $scope.updateStaff = function () {
         const reqstaff = {
             idNhanVien: $scope.staff.idNhanVien,
@@ -866,7 +895,7 @@ app.controller("thongTinStaffController", function ($scope, $http) {
             email: $scope.staff.email,
             diaChi: $scope.staff.diaChi,
             // Đảm bảo rằng hinhAnh được cập nhật (nếu có thay đổi)
-            hinhAnh: $scope.staff.hinhAnh // Cập nhật thông tin hình ảnh
+            // hinhAnh: $scope.staff.hinhAnh 
         };
 
         $http.put('/api/nhan-vien-thong-tin', reqstaff).then(

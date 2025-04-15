@@ -10,4 +10,9 @@ public class StaffController {
     @GetMapping("/giaodien")
     public String showHomeAdmin(){
         return "forward:/employee/a.html";
-    }}
+    }
+    @GetMapping("/giaodien/test")
+    public String showHomeUploadNhanVien(){
+        return "forward:/employee/content/testupload.html";
+    }
+}

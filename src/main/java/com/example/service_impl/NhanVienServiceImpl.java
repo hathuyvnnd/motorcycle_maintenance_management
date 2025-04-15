@@ -87,7 +87,6 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     public NhanVien updateLA(NhanVien reqq) {
         NhanVien nv = nhanVienDao.findById(reqq.getIdNhanVien()).orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
-        nv.setHinhAnh(reqq.getHinhAnh());
         nv.setDiaChi(reqq.getDiaChi());
         nv.setTen(reqq.getTen());
         nv.setEmail(reqq.getEmail());
