@@ -138,4 +138,8 @@ public class KhachHangServiceImpl implements KhachHangService {
 
         return khachHang;
     }
+    @Override
+    public KhachHang getByEmail(String email){
+        return khachHangDao.findKhachHangByEmail(email);
+    }
 }

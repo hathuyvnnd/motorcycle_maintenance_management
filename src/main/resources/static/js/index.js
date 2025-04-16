@@ -233,6 +233,18 @@ app.controller("DatLichController", function ($scope,$http) {
       }
     });
   };
+  $scope.kiemTraNgay = function () {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // reset giờ về 0h00 để so sánh chỉ theo ngày
+
+    const selectedDate = new Date($scope.form.ngay);
+
+    if (selectedDate <= today) {
+      $scope.loiNgay = true;
+    } else {
+      $scope.loiNgay = false;
+    }
+  };
 
 });
 app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) {
@@ -288,8 +300,24 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
 app.controller("DangNhapController", function ($scope) {
   $scope.title = "Đăng Nhập";
 });
-app.controller("QuenMatKhauController", function ($scope) {
+app.controller("QuenMatKhauController", function ($scope,$http) {
   $scope.title = "Quên Mật Khẩu";
+  $scope.form = {};
+  $scope.message = "";
+  $scope.success = false;
+
+  $scope.submitForgotPassword = function () {
+    $http.post("/api/forgot-password", { email: $scope.form.email })
+        .then(function (response) {
+          $scope.message = response.data.message; // ✅ lấy message từ object
+          $scope.success = true;
+        })
+        .catch(function (error) {
+          $scope.message = (error.data && error.data.message) || "Đã xảy ra lỗi khi gửi email.";
+          $scope.success = false;
+        });
+
+};
 });
 
 //////////////////////////////////////////////////////////////////////

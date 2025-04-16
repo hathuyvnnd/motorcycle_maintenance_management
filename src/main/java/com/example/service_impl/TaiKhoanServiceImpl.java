@@ -1,17 +1,19 @@
 package com.example.service_impl;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.dao.KhachHangDao;
+import com.example.model.*;
+import com.example.service.KhachHangService;
+import com.example.util.SendMail;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.TaiKhoanDao;
-import com.example.model.TaiKhoan;
-import com.example.model.TaiKhoanAdmin;
-import com.example.model.TaiKhoanKhachHang;
-import com.example.model.TaiKhoanNhanVien;
 import com.example.service.TaiKhoanService;
 
 @Service
@@ -20,6 +22,14 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Autowired
     private TaiKhoanDao taiKhoanDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    KhachHangDao khDao;
+
+    @Autowired
+    SendMail sendMail;
     @Override
     public List<TaiKhoan> findAll() {
         return taiKhoanDao.findAll();
@@ -103,5 +113,38 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public boolean exitsById(String id) {
         return taiKhoanDao.existsById(id);
+    }
+
+    //////////////////// Hàm tạo mật khẩu random////////////////////////////////////
+    @Override
+    public String randomPassword(int length){
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
+    ///////////////////Hàm reset mật khẩu Tài Khoản Khách Hàng qua email/////////////
+    @Override
+    public boolean resetPasswordByEmail(String email){
+        KhachHang kh = khDao.findKhachHangByEmail(email);
+        if(kh == null){
+            return false;
+        }
+        TaiKhoan tk = kh.getTaiKhoanKH();
+        String newPassword = randomPassword(8);
+
+        // Mã hóa mật khẩu trước khi lưu
+        tk.setMatKhau(passwordEncoder.encode(newPassword));
+        taiKhoanDao.save(tk);
+
+        // Gửi email HTML với mật khẩu mới
+        sendMail.sendPasword(kh.getEmail(),newPassword);
+        return true;
+
     }
 }
