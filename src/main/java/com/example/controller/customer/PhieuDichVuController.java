@@ -38,7 +38,7 @@ public class PhieuDichVuController {
     }
 
     // @GetMapping("/api/lichsu")
-    // public List<PhieuDichVu> getMethodName(@RequestParam("idKhachHang") String idKhachHang) {
+    // public List<PhieuDichVu> getPDVByKH(@RequestParam("idKhachHang") String idKhachHang) {
     //     return pdvService.getListPDVByKh(idKhachHang);
     // }
     @GetMapping("/api/chitiet")

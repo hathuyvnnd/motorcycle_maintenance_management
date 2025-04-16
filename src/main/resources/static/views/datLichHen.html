@@ -33,7 +33,14 @@
 
         <div class="form-group">
             <label>Ngày hẹn:</label>
-            <input type="date" ng-model="form.ngay" class="form-control" required>
+            <input type="date" ng-model="form.ngay"
+                   class="form-control"
+                   ng-change="kiemTraNgay()"
+                   required>
+
+            <div class="text-danger" ng-show="loiNgay">
+                Ngày hẹn phải **lớn hơn hôm nay**. Vui lòng chọn lại.
+            </div>
         </div>
 
         <h5>Dịch vụ đã chọn:</h5>
