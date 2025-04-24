@@ -2,6 +2,7 @@ package com.example.service_impl;
 
 import com.example.dao.PhieuGhiNhanTinhTrangXeDao;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
+import com.example.dto.request.tinhtrangxe.UpdateTinhTrangRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.model.HoaDon;
@@ -95,7 +96,16 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
         // TODO Auto-generated method stub
         return dao.searchByBienSoXeKeyword(keyword);
     }
-
+    @Override
+    public PhieuGhiNhanTinhTrangXe updateGhiChu(UpdateTinhTrangRequest request){
+        PhieuGhiNhanTinhTrangXe entity = dao.findByLichHen_IdLichHen(request.getIdLichHen());
+        if (entity == null) {
+            throw new RuntimeException("Không tìm thấy phiếu GNX cho lịch hẹn này!");
+        }
+    
+        mapper.updatePhieuTinhTrangXe(request, entity); // Dùng mapper update vào entity cũ
+        return dao.save(entity);
+    }
    
 
 

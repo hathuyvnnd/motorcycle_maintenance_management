@@ -38,7 +38,10 @@
                 </span>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item"  ng-click="openModalXem(appointment)">Xem chi tiết</a></li>
-                        <li><a class="dropdown-item"  ng-click="openModalThayDoi(appointment)">Chỉnh sửa</a></li>
+                        <li ng-if="canEditAppointment(appointment.trangThai)">
+                            <a class="dropdown-item" ng-click="openModalThayDoi(appointment)">Chỉnh sửa</a>
+                          </li>
+                          
                     </ul>
                 </div>
             </td>

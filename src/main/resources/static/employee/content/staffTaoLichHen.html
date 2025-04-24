@@ -1,11 +1,13 @@
-<div ng-controller="TaoLichHenController">
+<div>
     <h2 class="mb-4">Tạo Lịch Hẹn Mới</h2>
 
     <!-- Nhập số điện thoại -->
     <div class="mb-3">
         <label class="form-label">Số điện thoại</label>
-        <input type="tel" class="form-control" ng-model="phone" placeholder="Nhập số điện thoại" required>
-        <button class="btn btn-primary mt-2" ng-click="checkPhone()">Kiểm tra</button>
+        <div class="input-group">
+            <input type="tel" class="form-control" ng-model="phone" placeholder="Nhập số điện thoại" required>
+            <button class="btn btn-primary" ng-click="checkPhone()">Kiểm tra</button>
+        </div>
     </div>
 
     <!-- Nhập tên khách hàng (Tự động điền nếu có tài khoản) -->

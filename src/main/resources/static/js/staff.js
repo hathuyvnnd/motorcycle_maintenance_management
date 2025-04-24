@@ -14,6 +14,7 @@ $routeProvider
   .when("/nhan-vien-tao-lich-hen", {
 
     templateUrl: "/employee/content/staffTaoLichHen.html",
+    controller: "TaoLichHenController",
   })
   .when("/nhan-vien-thong-tin", {
     templateUrl: "/employee/content/thongtinstaff.html",
@@ -116,10 +117,11 @@ app.controller("lichHenController", function ($scope, $http, $rootScope , $q) {
 
     // Gọi API lấy danh sách lịch hẹn
     $scope.loadAppointments = function () {
-        $http.get("http://localhost:8081/api/lich-hen/today")
+        $http.get('/api/lich-hen/today')
             .then(function (response) {
                 if (response.data && response.data.result) {
                     $scope.appointments = response.data.result;
+                    console.log("t",$scope.appointments);
                 } else {
                     console.error("API không trả về dữ liệu hợp lệ.");
                 }
@@ -253,16 +255,20 @@ app.controller("lichHenController", function ($scope, $http, $rootScope , $q) {
     
         $('#lichHenModal').modal('show');
     };
-        $scope.openModalThayDoi = function (appointment) {
+    $scope.canEditAppointment = function(trangThai) {
+        const trangThaiKhongChoSua = ['Đã xác nhận', 'Đã hoàn thành', 'Đã hủy'];
+        return !trangThaiKhongChoSua.includes(trangThai);
+    };
+    $scope.openModalThayDoi = function (appointment) {
         $scope.selectedAppointment = appointment;
         console.log("ttlichhen", $scope.selectedAppointment);
     
         switch (appointment.trangThai) {
-            case "Đã xác nhận":
-                $scope.panelTemplate = "/employee/content/panel/lichHenEditPanel.html";
-                $scope.selectedAppointment.thoiGian = new Date($scope.selectedAppointment.thoiGian);
+            // case "Đã xác nhận":
+            //     $scope.panelTemplate = "/employee/content/panel/lichHenEditPanel.html";
+            //     $scope.selectedAppointment.thoiGian = new Date($scope.selectedAppointment.thoiGian);
     
-                break;
+            //     break;
             case "Đang kiểm tra":
                 $scope.panelTemplate = "/employee/content/panel/editPhieuTinhTrang.html";
                 $scope.loadPhieuTinhTrang();
@@ -545,7 +551,34 @@ $scope.taoHoaDon = function () {
             modal.hide();
         }
     };
+    $scope.updatePhieuTinhTrang = function () {
+        const data = {
+            idLichHen: $scope.selectedAppointment.idLichHen,
+            moTaTinhTrangXe: $scope.detailPhieuTinhTrang.moTaTinhTrangXe || "",
+            idNhanVien: $scope.staff.idNhanVien
+        };
+        console.log("dataa",data);
 
+        $http.put("http://localhost:8081/api/staff/phieu-tinh-trang", data)
+            .then(function (response) {
+                if (response.data && response.data.result) {
+                    alert("Tạo phiếu ghi nhận thành công!");
+                    $scope.loadAppointments();
+                } else {
+                    alert("Không thể tạo phiếu ghi nhận.");
+                }
+            })
+            .catch(function (error) {
+                console.error("Lỗi khi tạo phiếu:", error);
+                alert("Lỗi khi tạo phiếu.");
+            });
+
+        var myModalEl = document.getElementById("lichHenModal");
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        if (modal) {
+            modal.hide();
+        }
+    };
     $scope.saveServiceTicket = function () {
         if ($scope.services.length === 0) {
             alert("Vui lòng chọn ít nhất một dịch vụ!");
@@ -576,7 +609,7 @@ $scope.taoHoaDon = function () {
                                         $http.post("http://localhost:8081/api/staff/phieu-dich-vu/tao-phieu", requestDataa)
                                             .then(function (response) {
                                                 alert("Phieu dich vu đã được tạo thành công!");
-                                                location.reload();
+                                                $scope.loadAppointments();
                                             })
                                             .catch(function (error) {
                                                 console.error("Lỗi khi tạo lịch hẹn:", error);
@@ -588,6 +621,7 @@ $scope.taoHoaDon = function () {
                 .catch(function (error) {
                     console.error("Lỗi khi lấy phiếu ghi nhận:", error);
                 });
+                $scope.closeModal();
     };
     
     $scope.hoanTatSuaChua = function () {
@@ -740,7 +774,11 @@ app.controller("TaoLichHenController", function ($scope, $http) {
             alert("Vui lòng nhập số điện thoại!");
             return;
         }
-
+        var phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test($scope.phone)) {
+            alert("Số điện thoại phải đúng 10 chữ số!");
+            return;
+        }
         $http.get("http://localhost:8081/api/lich-hen/checkPhone", { params: { phone: $scope.phone } })
             .then(function (response) {
                 if (response.data.result) {
@@ -749,6 +787,7 @@ app.controller("TaoLichHenController", function ($scope, $http) {
                 } else {
                     $scope.customerExists = false;
                     $scope.tenKhachHang = "";
+                    alert("Không tìm thấy khách hàng với số điện thoại này.");
                 }
                 $scope.phoneChecked = true;
             })

@@ -20,4 +20,7 @@ public interface PhieuDichVuCTDao extends JpaRepository<PhieuDichVuCT, String> {
     @Query("SELECT ct FROM PhieuDichVuCT ct " +
             "WHERE ct.phieuDichVu.phieuGNX.lichHen.idLichHen = :idLichHen")
     List<PhieuDichVuCT> findDichVuByLichHenId(@Param("idLichHen") String idLichHen);
+
+    List<PhieuDichVuCT> findByPhieuDichVu_IdPhieuDichVu(String idPhieuDichVu);
+    void deleteByPhieuDichVu_IdPhieuDichVu(String idPhieuDichVu);
 }

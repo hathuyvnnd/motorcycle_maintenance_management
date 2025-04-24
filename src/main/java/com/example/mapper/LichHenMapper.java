@@ -5,6 +5,7 @@ import com.example.dto.request.lichhen.LichHenCreateRequest;
 import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.model.KhachHang;
 import com.example.model.LichHen;
+import com.example.model.LichHenCT;
 import com.example.model.LoaiXe;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,19 +14,31 @@ import org.mapstruct.Named;
 
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface LichHenMapper {
     @Mapping(source = "idLoaiXe.idLoaiXe", target = "idLoaiXe")
     @Mapping(source = "idKhachHang.idKhachHang", target = "idKhachHang")
     @Mapping(source = "idKhachHang.hoTen", target = "tenKhachHang")
+    // @Mapping(source = "lichHenCTList", target = "ghiChu", qualifiedByName = "getFirstGhiChu")
+    @Mapping(source = "idKhachHang.taiKhoanKH.idTaiKhoan", target = "soDienThoai")
     LichHenResponse toLichHenResponse(LichHen lichHen);
 
     @Mapping(source = "idLoaiXe.idLoaiXe", target = "idLoaiXe")
     @Mapping(source = "idKhachHang.idKhachHang", target = "idKhachHang")
     @Mapping(source = "idKhachHang.hoTen", target = "tenKhachHang")
-    List<LichHenResponse> toLichHenReponse(List<LichHen> lichHen);
+    // @Mapping(source = "lichHenCTList", target = "ghiChu", qualifiedByName = "getFirstGhiChu")
+    @Mapping(source = "idKhachHang.taiKhoanKH.idTaiKhoan", target = "soDienThoai")
+    List<LichHenResponse> toLichHenResponse(List<LichHen> lichHen);
 
+    //  @Named("getFirstGhiChu")
+    // static String getFirstGhiChu(Set<LichHenCT> lichHenCTList) {
+    //     return lichHenCTList != null && !lichHenCTList.isEmpty()
+    //             ? lichHenCTList.iterator().next().getGhiChu()
+    //             : null;
+    // }
+    
     @Mapping(source = "idLoaiXe", target = "idLoaiXe", qualifiedByName = "mapLoaiXe")
     @Mapping(source = "idKhachHang", target = "idKhachHang", qualifiedByName = "mapKhachHang")
     LichHen toLichHen(LichHenCreateRequest request);

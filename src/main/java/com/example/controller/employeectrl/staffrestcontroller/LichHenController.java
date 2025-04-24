@@ -43,7 +43,7 @@ public class LichHenController {
         @GetMapping
         ApiReponse<List<LichHenResponse>> getAllLichHen() {
             List<LichHen> lslh = lichHenService.findAll();
-            List<LichHenResponse> lhrp = mapper.toLichHenReponse(lslh);
+            List<LichHenResponse> lhrp = mapper.toLichHenResponse(lslh);
             ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
 
             apiReponse.setResult(lhrp);
@@ -57,13 +57,7 @@ public class LichHenController {
         return apiReponse;
     }
 
-    // @GetMapping("/testallnorp1")
-    // ApiReponse<List<KhachHang>> getAllKhachHang1() {
-    //     List<KhachHang> lslh = khachHangDAO1.findAll();
-    //     ApiReponse<List<KhachHang>> apiReponse = new ApiReponse<>();
-    //     apiReponse.setResult(lslh);
-    //     return apiReponse;
-    // }
+  
 
     @GetMapping("/today")
     ApiReponse<List<LichHenResponse>> getLichHenToday() {
@@ -74,7 +68,7 @@ public class LichHenController {
                 .filter(lichHen -> !"Chờ xác nhận".equals(lichHen.getTrangThai()))
                 .collect(Collectors.toList());
 
-        List<LichHenResponse> lhrp = mapper.toLichHenReponse(filteredLichHen);
+        List<LichHenResponse> lhrp = mapper.toLichHenResponse(filteredLichHen);
 
         ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
         apiReponse.setResult(lhrp);
@@ -86,7 +80,7 @@ public class LichHenController {
         public ApiReponse<List<LichHenResponse>> searchLichHenByBienSoXe(@RequestParam String bienSoXe) {
             List<LichHen> result = lichHenService.searchLichHenByBienSo(bienSoXe);
             System.out.println("testt: "+result);
-            List<LichHenResponse> lhrp = mapper.toLichHenReponse(result);
+            List<LichHenResponse> lhrp = mapper.toLichHenResponse(result);
             ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
             apiReponse.setResult(lhrp);
             return apiReponse;

@@ -2,7 +2,9 @@ package com.example.controller.employeectrl.staffrestcontroller;
 
 import com.example.dao.LichHenDao;
 import com.example.dto.reponse.ApiReponse;
+import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
+import com.example.dto.request.tinhtrangxe.UpdateTinhTrangRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.model.LichHen;
@@ -115,5 +117,10 @@ public class PhieuTinhTrangRestController {
 
         return response;
     }
-
+      @PutMapping
+        ApiReponse<PhieuGhiNhanTinhTrangXe> updatePhieuGNX(@RequestBody UpdateTinhTrangRequest request){
+            ApiReponse<PhieuGhiNhanTinhTrangXe> apiReponse = new ApiReponse<>();
+            apiReponse.setResult(service.updateGhiChu(request));
+            return apiReponse;
+        }
 }

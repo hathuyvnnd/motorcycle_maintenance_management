@@ -19,4 +19,7 @@ public interface PhieuSuDungPhuTungCTDao extends JpaRepository<PhieuSuDungPhuTun
 
    @Query(value = "SELECT TOP 1 IdPhieuSuDungPhuTungCT FROM PhieuSuDungPhuTungCT ORDER BY IdPhieuSuDungPhuTungCT DESC ", nativeQuery = true)
    String findLastId();
+
+   List<PhieuSuDungPhuTungCT> findByPhieuDichVu_IdPhieuDichVu(String idPhieuDichVu);
+   void deleteByPhieuDichVu_IdPhieuDichVu(String idPhieuDichVu);
 }
