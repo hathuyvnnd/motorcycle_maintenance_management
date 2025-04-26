@@ -19,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -198,4 +200,37 @@ public class LichHenController {
         }
         return rp;
     }
+
+
+
+
+    @GetMapping("/cho-xac-nhan")
+    ApiReponse<List<LichHenResponse>> getLichHenChoXacNhan() {
+        List<LichHen> lslh = lichHenService.getLichHenChoXacNhan();
+        List<LichHenResponse> lhrp = mapper.toLichHenResponse(lslh);
+        ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
+        apiReponse.setResult(lhrp);
+        return apiReponse;
+    }
+
+    @GetMapping("/chua-hoan-tat")
+    ApiReponse<List<LichHenResponse>> getLichHenChuaHoanTat() {
+        List<LichHen> lslh = lichHenService.layTatCaLichHenNgoaiTrangThaiChinh();
+        List<LichHenResponse> lhrp = mapper.toLichHenResponse(lslh);
+        ApiReponse<List<LichHenResponse>> apiReponse = new ApiReponse<>();
+        apiReponse.setResult(lhrp);
+        return apiReponse;
+    }
+       @PostMapping("/update-ngay")
+    public ApiReponse<?> updateNgay(@RequestBody LichHen request) {
+        Boolean blud =  lichHenService.updateNgay(request.getIdLichHen(),request.getThoiGian());
+        ApiReponse<?> rp = new ApiReponse<>();
+        if(blud){
+            rp.setMessage("Update trạng thái lịch hẹn thành công");
+        }else{
+            rp.setMessage("Update trạng thái thất bại");
+        }
+        return rp;
+    }
+
 }

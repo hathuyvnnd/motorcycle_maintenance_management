@@ -1,46 +1,53 @@
-<div class="container mt-5" style="width: 40%;margin: 0 auto" ng-app="scheduleApp" ng-controller="ScheduleController">
-    <h2 class="text-center" style="font-weight: bold">Đặt Lịch Hẹn</h2>
-    <form ng-submit="submitForm()">
-
-        <div class="mb-3">
-            <label for="idLichHen" class="form-label">ID</label>
-            <input type="text" class="form-control" id="idLichHen" ng-model="formData.idLichHen" required>
+<div class="container mt-4">
+    <h3>Xác nhận đặt lịch hẹn</h3>
+    <form  name="datLichForm" novalidate>
+        <div ng-if="thongBao" class="alert alert-info">
+            {{ thongBao }}
         </div>
-        <div class="mb-3">
-            <label for="idLoaiXe" class="form-label">Loại Xe</label>
-            <select class="form-control" id="idLoaiXe" ng-model="formData.idLoaiXe" required>
-                <option value="">Chọn loại xe</option>
-                <option ng-repeat="vehicle in vehicles" value="{{vehicle.idLoaiXe}}">{{vehicle.tenLoaiXe}}</option>
+        <div class="form-group">
+            <label>Khách hàng:</label>
+            <input type="text" ng-model="form.idKhachHang" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Loại xe:</label>
+            <select class="form-control" ng-model="form.idLoaiXe" ng-options="xe.idLoaiXe as xe.tenLoaiXe for xe in dsLoaiXe" required>
+                <option value="">-- Chọn loại xe --</option>
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="thoiGian" class="form-label">Thời Gian</label>
-            <input type="datetime-local" class="form-control" id="thoiGian" ng-model="formData.thoiGian" required>
+        <div class="form-group" ng-class="{'has-error': datLichForm.bienSoXe.$invalid && datLichForm.bienSoXe.$touched}">
+            <label>Biển số xe:</label>
+            <input type="text" name="bienSoXe" ng-model="form.bienSoXe"
+                   class="form-control" required
+                   ng-pattern="/^\d{2}[A-Z][A-Z0-9]-\d{4,5}$/"
+                   ng-change="form.bienSoXe = form.bienSoXe?.toUpperCase()">
+
+            <small class="text-danger" ng-show="datLichForm.bienSoXe.$error.required && datLichForm.bienSoXe.$touched">
+                Vui lòng nhập biển số xe.
+            </small>
+            <small class="text-danger" ng-show="datLichForm.bienSoXe.$error.pattern && datLichForm.bienSoXe.$touched">
+                Biển số xe không đúng định dạng. Ví dụ: <strong>30AB-12345</strong>
+            </small>
         </div>
 
-        <div class="mb-3">
-            <label for="bienSoXe" class="form-label">Biển Số Xe</label>
-            <input type="text" class="form-control" id="bienSoXe" ng-model="formData.bienSoXe" placeholder="Nhập biển số xe" required>
+        <div class="form-group">
+            <label>Ngày hẹn:</label>
+            <input type="date" ng-model="form.ngay"
+                   class="form-control"
+                   ng-change="kiemTraNgay()"
+                   required>
+
+            <div class="text-danger" ng-show="loiNgay">
+                Ngày hẹn phải **lớn hơn hôm nay**. Vui lòng chọn lại.
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="dichVu" class="form-label">Dịch Vụ</label>
-            <select class="form-control" id="dichVu" ng-model="formData.dichVu" required>
-                <option value="">Chọn dịch vụ</option>
-                <option value="bao_duong">Bảo dưỡng định kỳ</option>
-                <option value="thay_dau">Thay dầu động cơ</option>
-                <option value="kiem_tra_phanh">Kiểm tra phanh</option>
-                <option value="sua_chua_dien">Sửa chữa điện</option>
-                <option value="can_chinh_banh">Cân chỉnh bánh xe</option>
-            </select>
-        </div>
+        <h5>Dịch vụ đã chọn:</h5>
+        <ul>
+            <li ng-repeat="ct in dsLichHenCT">{{ct.tenDichVu}} - {{ct.giaDichVu | number:0}} VNĐ</li>
+        </ul>
 
-        <div class="mb-3">
-            <label for="ghiChu" class="form-label">Ghi Chú</label>
-            <textarea class="form-control" id="ghiChu" ng-model="formData.ghiChu" placeholder="Nhập ghi chú"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 50px">Đặt Lịch</button>
+        <button class="btn btn-primary" ng-click="xacNhanDatLich()">✅ Xác nhận đặt lịch</button>
     </form>
 </div>

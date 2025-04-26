@@ -1,11 +1,21 @@
-<div class="change-password-container bg-white mt-4" ng-controller="changePassController">
+<div class="change-password-container bg-white mt-4" ng-controller="QuenMatKhauController">
     <h2>Quên Mật Khẩu</h2>
-    <form>
-        <h2 style="color:green; font-size: 13px; text-align: left; font-style: italic; font-weight: bold;">Vui lòng nhập email đăng nhập của bạn bên dưới để lấy lại mật khẩu!, vui lòng không cung cấp mật khẩu của bạn với bất kì ai</h2>
+    <form name="forgotPassForm" ng-submit="submitForgotPassword()" novalidate>
+        <h2 style="color:green; font-size: 13px; text-align: left; font-style: italic; font-weight: bold;">
+            Vui lòng nhập email đăng nhập của bạn bên dưới để lấy lại mật khẩu!, vui lòng không cung cấp mật khẩu của bạn với bất kì ai
+        </h2>
+
         <div class="mb-3 input-group">
             <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
-            <input type="email" class="form-control" placeholder="Nhập email của bạn ở đây">
+            <input type="email" class="form-control" placeholder="Nhập email của bạn ở đây" ng-model="form.email" required>
         </div>
-        <button type="submit" class="btn btn-custom w-100 py-2">Lấy lại mật khẩu</button>
+
+        <div ng-show="message" class="alert" ng-class="{'alert-success': success, 'alert-danger': !success}">
+            {{ message }}
+        </div>
+
+        <button type="submit" class="btn btn-custom w-100 py-2" ng-disabled="forgotPassForm.$invalid">
+            Lấy lại mật khẩu
+        </button>
     </form>
 </div>

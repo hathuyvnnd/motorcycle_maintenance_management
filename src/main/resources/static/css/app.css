@@ -124,4 +124,21 @@ footer {
     display: none;
     }
 
-    
+    .chart-container {
+      position: relative;
+      height: 200px;
+    }
+
+.lichhen-card1 {
+  background: linear-gradient(to right, #382eee, #00c6ff); /* Tạo gradient từ xanh sang trắng */
+}
+.lichhen-card2 {
+  background: linear-gradient(to right, #ef3b3b, #ed6f6f); /* Tạo gradient từ xanh sang trắng */
+}
+.lichhen-card3 {
+  background: linear-gradient(to right, #248c30, #2de77a); /* Tạo gradient từ xanh sang trắng */
+}
+.shadow-custom-tinhnang{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* bóng dưới nhẹ đẹp */
+  transition: all 0.3s ease; /* hiệu ứng chuyển động mượt */
+}

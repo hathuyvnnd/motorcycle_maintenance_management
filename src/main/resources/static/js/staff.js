@@ -3,6 +3,7 @@ app.config(function ($routeProvider) {
 $routeProvider
   .when("/", {
     templateUrl: "/employee/content/homestaff.html",
+    controller: "homeStaffController",
   })
   .when("/hoa-don", {
     templateUrl: "/employee/content/hoadonstaff.html",
@@ -31,6 +32,14 @@ $routeProvider
   .when("/tra-cuu-hoa-don", {
     templateUrl: "/employee/content/tracuuhoadon.html",
     controller: "traCuuHoaDonController",
+  })
+  .when("/lich-hen-cho-xac-nhan", {
+    templateUrl: "/employee/content/lichhenchoxacnhan.html",
+    controller: "lHChoXacNhanController",
+  })
+  .when("/lich-hen-chua-hoan-tat", {
+    templateUrl: "/employee/content/lichhenchuahoantat.html",
+    controller: "lHChuaHoanTatController",
   })
   .otherwise({
     redirectTo: "/",
@@ -80,6 +89,11 @@ $scope.chucNangList = [
     },
    
   ];
+
+  $http.get("/api/lich-hen").then(function(response) {
+    $scope.allLichHen = response.data.result;
+    });
+    
   $scope.staff = {}; // sẽ bind lên giao diện
      idNhanVien = localStorage.getItem("idNhanVien");
 
@@ -1075,5 +1089,424 @@ app.controller('traCuuHoaDonController', function($scope, $http) {
     };
 });
 
+app.controller('lHChoXacNhanController', function($scope, $http) {
+    $http.get('/api/lich-hen/cho-xac-nhan')
+    .then(function (response) {
+        if (response.data && response.data.result) {
+            $scope.lschoxacnhan = response.data.result;
+            $scope.lschoxacnhanFiltered = $scope.lschoxacnhan; // Mặc định show hết
+            console.log("t",$scope.lschoxacnhan);
+        } else {
+            console.error("API không trả về dữ liệu hợp lệ.");
+        }
+    })
+    .catch(function (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+    });
+    $scope.timLichTheoNgay = function () {
+        if (!$scope.ngayChon) {
+            // Nếu không có ngày nào được chọn (đã clear)
+            $scope.lschoxacnhanFiltered = angular.copy($scope.lschoxacnhan);
+        } else {
+            const selectedDate = new Date($scope.ngayChon).setHours(0, 0, 0, 0);
+            $scope.lschoxacnhanFiltered = $scope.lschoxacnhan.filter(function (lich) {
+                const lichDate = new Date(lich.thoiGian).setHours(0, 0, 0, 0);
+                return lichDate === selectedDate;
+            });
+        }
+    };
+    // $scope.xacNhanLichHen = function(lichHen) {
+    //     const xacNhan = confirm("Bạn có muốn xác nhận lịch hẹn này không?");
+    //     if (xacNhan) {
+    //         // Gọi API hoặc hàm cập nhật trạng thái
+    //         lichHen.trangThai = "Đã Xác Nhận";
+    
+    //         // Nếu dùng API gọi backend thì ví dụ:
+    //         $http.put("http://localhost:8081/api/lich-hen/update-trang-thai", {
+    //             idLichHen: lichHen.idLichHen,
+    //             trangThai: lichHen.trangThai
+    //         })
+    //             .then(function(response) {
+    //                 alert("Đã xác nhận lịch hẹn!");
+    //             }, function(error) {
+    //                 alert("Xác nhận thất bại.");
+    //             });
+    //     }
+    // };
+    $scope.xacNhanLichHen = function(lichHen) {
+        Swal.fire({
+            title: 'Xác nhận lịch hẹn?',
+            text: "Bạn có chắc chắn muốn xác nhận lịch hẹn này?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                lichHen.trangThai = "Đã Xác Nhận";
+    
+                $http.put("http://localhost:8081/api/lich-hen/update-trang-thai", {
+                    idLichHen: lichHen.idLichHen,
+                    trangThai: lichHen.trangThai
+                }).then(function(response) {
+                    Swal.fire('Thành công!', 'Lịch hẹn đã được xác nhận.', 'success');
+                }, function(error) {
+                    Swal.fire('Lỗi!', 'Xác nhận thất bại.', 'error');
+                });
+            }
+        });
+    };
+    
+        console.log("mmm",$scope.lschoxacnhanFiltered );
+});
+app.controller('lHChuaHoanTatController', function($scope, $http) {
+    $scope.currentPage = 1;
+    $scope.pageSize = 10;
+    
+    // Lấy dữ liệu lịch hẹn chưa hoàn tất
+    $http.get('/api/lich-hen/chua-hoan-tat')
+    .then(function (response) {
+        if (response.data && response.data.result) {
+            $scope.lschuahoantat = response.data.result;
+            $scope.lschuahoantatFiltered = $scope.lschuahoantat; // Mặc định show hết
+            console.log("t", $scope.lschuahoantat);
+        } else {
+            console.error("API không trả về dữ liệu hợp lệ.");
+        }
+    })
+    .catch(function (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+    });
 
-  
+    // Tìm lịch hẹn theo ngày
+    $scope.timLichTheoNgay = function () {
+        if (!$scope.ngayChon) {
+            // Nếu không có ngày nào được chọn (đã clear)
+            $scope.lschuahoantatFiltered = angular.copy($scope.lschuahoantat);
+        } else {
+            const selectedDate = new Date($scope.ngayChon).setHours(0, 0, 0, 0);
+            $scope.lschuahoantatFiltered = $scope.lschuahoantat.filter(function (lich) {
+                const lichDate = new Date(lich.thoiGian).setHours(0, 0, 0, 0);
+                return lichDate === selectedDate;
+            });
+        }
+    };
+
+    // Xác nhận lịch hẹn
+    $scope.confirmAppointment = function(lich) {
+        // Lấy thông tin từ lịch hẹn đã chọn
+        const appointmentId = lich.idLichHen;
+        console.log("id lich hen trong trang trang chua hoan tat", appointmentId);
+        const today = new Date();
+        // const todayString = today.toISOString().split('T')[0];  // Lấy ngày hiện tại theo định dạng YYYY-MM-DD
+
+        // Hiển thị hộp thoại xác nhận với SweetAlert2
+        Swal.fire({
+            title: 'Bạn có muốn tiếp tục lịch hẹn này?',
+            text: "Khi bạn nhấn xác nhận, ngày sẽ được cập nhật thành hôm nay.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gọi API để cập nhật ngày lịch hẹn
+                $http({
+                    method: 'POST',
+                    url: '/api/lich-hen/update-ngay',
+                    data: {
+                        idLichHen: appointmentId, // ID lịch hẹn từ đối tượng được chọn
+                        thoiGian: today // Cập nhật ngày thành hôm nay
+                    }
+                }).then(function(response) {
+                    // Thực hiện gì đó khi API thành công, ví dụ thông báo thành công
+                    Swal.fire(
+                        'Thành công!',
+                        'Ngày lịch hẹn đã được cập nhật.',
+                        'success'
+                    );
+                    lich.thoiGian = today;
+                }, function(error) {
+                    // Thông báo lỗi nếu có sự cố khi gọi API
+                    Swal.fire(
+                        'Lỗi!',
+                        'Không thể cập nhật ngày lịch hẹn.',
+                        'error'
+                    );
+                });
+            }
+        });
+    };
+    
+    $scope.changePage = function(pageNum, $event) {
+        $event.preventDefault();
+        $scope.currentPage = pageNum;
+    };
+    
+    $scope.getPageNumbers = function () {
+        if (!$scope.lschuahoantatFiltered || !$scope.lschuahoantatFiltered.length) {
+            return [];
+        }
+        $scope.totalPages = Math.ceil($scope.lschuahoantatFiltered.length / $scope.pageSize);
+        var pages = [];
+        for (var i = 1; i <= $scope.totalPages; i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
+    
+    console.log("mmm", $scope.lschuahoantatFiltered);
+});
+
+app.filter('startFrom', function () {
+    return function (input, start) {
+        if (!input || !input.length) return [];
+        return input.slice(start);
+    };
+});
+app.controller("homeStaffController", function ($http, $scope) {
+    $scope.thongKeLichHenTheoTuan = function() {
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
+        startOfWeek.setHours(0, 0, 0, 0);
+    
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(today.getDate() + (7 - today.getDay())); // Sunday
+        endOfWeek.setHours(23, 59, 59, 999);
+    
+        const countByDay = {
+            'Thứ Hai': 0,
+            'Thứ Ba': 0,
+            'Thứ Tư': 0,
+            'Thứ Năm': 0,
+            'Thứ Sáu': 0,
+            'Thứ Bảy': 0,
+            'Chủ Nhật': 0
+        };
+    
+        $scope.allLichHen.forEach(function(lich) {
+            const date = new Date(lich.thoiGian);
+            if (date >= startOfWeek && date <= endOfWeek) {
+                const day = date.getDay(); // 0 = Chủ Nhật, 1 = Thứ Hai, ...
+                const map = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+                const tenThu = map[day];
+                countByDay[tenThu]++;
+            }
+        });
+    
+        $scope.thongKeTuan = countByDay;
+        $scope.veBieuDoThongKeTuan();
+    };
+
+    $scope.veBieuDoThongKeTuan = function() {
+        const ctx = document.getElementById('lichHenChartTuan').getContext('2d');
+        const labels = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
+        const data = labels.map(label => $scope.thongKeTuan[label] || 0);
+    
+        if ($scope.bieuDoLichHenTuan) {
+            $scope.bieuDoLichHenTuan.destroy(); // Xoá biểu đồ cũ nếu có
+        }
+    
+        $scope.bieuDoLichHenTuan = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lịch hẹn',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    borderRadius: 2, // Bo tròn đầu cột
+                    borderSkipped: false, // Không bỏ viền nào
+                    barThickness: 10, // Độ dày cột
+                    hoverBackgroundColor: 'rgba(84, 215, 69, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: "#eee"
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    };
+    
+    // Thống kê lịch hẹn theo năm
+    $scope.thongKeLichHenTheoNam = function() {
+        const today = new Date();
+        const year = today.getFullYear();
+
+        const countByMonth = {
+            'Tháng 1': 0, 'Tháng 2': 0, 'Tháng 3': 0, 'Tháng 4': 0,
+            'Tháng 5': 0, 'Tháng 6': 0, 'Tháng 7': 0, 'Tháng 8': 0,
+            'Tháng 9': 0, 'Tháng 10': 0, 'Tháng 11': 0, 'Tháng 12': 0
+        };
+
+        $scope.allLichHen.forEach(function(lich) {
+            const date = new Date(lich.thoiGian);
+            if (date.getFullYear() === year) {
+                const month = date.getMonth(); // 0 - January
+                const map = [
+                    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4',
+                    'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8',
+                    'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+                ];
+                const tenThang = map[month];
+                countByMonth[tenThang]++;
+            }
+        });
+
+        $scope.thongKeNam = countByMonth;
+        $scope.veBieuDoThongKeNam();
+    };
+
+    $scope.veBieuDoThongKeNam = function() {
+        const ctx = document.getElementById('lichHenChartNam').getContext('2d');
+        const labels = [
+            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4',
+            'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8',
+            'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+        ];
+        const data = labels.map(label => $scope.thongKeNam[label] || 0);
+    
+        if ($scope.bieuDoLichHenNam) {
+            $scope.bieuDoLichHenNam.destroy();
+        }
+    
+        $scope.bieuDoLichHenNam = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lịch hẹn',
+                    data: data,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    borderRadius: 2,
+                    borderSkipped: false,
+                    barThickness: 10,
+                    hoverBackgroundColor: 'rgba(84, 215, 69, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: "#eee"
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    };
+    
+
+    // Watch để đợi allLichHen load xong mới vẽ
+    $scope.$watch('allLichHen', function(newVal) {
+        if (newVal && newVal.length > 0) {
+            console.log('Đã có dữ liệu lịch hẹn, bắt đầu thống kê...');
+            $scope.thongKeLichHenTheoTuan();
+            $scope.thongKeLichHenTheoNam();
+            $scope.tinhThongKeLichHenHomNay();
+        }
+    });
+    $scope.tinhThongKeLichHenHomNay = function() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const endOfToday = new Date(today);
+        endOfToday.setHours(23, 59, 59, 999);
+    
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+        const endOfYesterday = new Date(yesterday);
+        endOfYesterday.setHours(23, 59, 59, 999);
+    
+        // Biến đếm hôm nay
+        let tongHomNay = 0, choXacNhanHomNay = 0, daHoanThanhHomNay = 0;
+        // Biến đếm hôm qua
+        let tongHomQua = 0, choXacNhanHomQua = 0, daHoanThanhHomQua = 0;
+    
+        $scope.allLichHen.forEach(function(lich) {
+            const thoiGian = new Date(lich.thoiGian);
+    
+            if (thoiGian >= today && thoiGian <= endOfToday) {
+                tongHomNay++;
+                if (lich.trangThai === 'Chờ xác nhận') choXacNhanHomNay++;
+                if (lich.trangThai === 'Hoàn thành') daHoanThanhHomNay++;
+            }
+    
+            if (thoiGian >= yesterday && thoiGian <= endOfYesterday) {
+                tongHomQua++;
+                if (lich.trangThai === 'Chờ xác nhận') choXacNhanHomQua++;
+                if (lich.trangThai === 'Hoàn thành') daHoanThanhHomQua++;
+            }
+        });
+    
+        // Gán dữ liệu
+        $scope.soLichHenHomNay = tongHomNay;
+        $scope.soLichHenChoXacNhan = choXacNhanHomNay;
+        $scope.soLichHenDaHoanThanh = daHoanThanhHomNay;
+    
+        $scope.soLichHenHomQua = tongHomQua;
+        $scope.soLichHenChoXacNhanHomQua = choXacNhanHomQua;
+        $scope.soLichHenDaHoanThanhHomQua = daHoanThanhHomQua;
+    
+        // Hàm tính phần trăm
+        function tinhPhanTram(homNay, homQua) {
+            if (homQua === 0) return 0;
+            return ((homNay - homQua) / homQua * 100).toFixed(1);
+        }
+    
+        $scope.phanTramHomNay = tinhPhanTram(tongHomNay, tongHomQua);
+        $scope.phanTramChoXacNhan = tinhPhanTram(choXacNhanHomNay, choXacNhanHomQua);
+        $scope.phanTramDaHoanThanh = tinhPhanTram(daHoanThanhHomNay, daHoanThanhHomQua);
+    };
+    
+});

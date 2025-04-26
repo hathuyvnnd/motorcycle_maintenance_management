@@ -31,11 +31,11 @@
         @JsonIdentityReference(alwaysAsId = true)
         private NhanVien nhanVien;
 
-        @OneToOne
-        @JoinColumn(name = "IdPhieuDichVu", unique = true)
-        // @JsonIdentityReference(alwaysAsId = true)
-        // @JsonManagedReference
-        private PhieuDichVu phieuDichVuHD;
+    @OneToOne
+    @JoinColumn(name = "IdPhieuDichVu", unique = true)
+//    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonManagedReference
+    private PhieuDichVu phieuDichVuHD;
 
         @Column(name = "NgayTao")
         private Date ngayTao;
