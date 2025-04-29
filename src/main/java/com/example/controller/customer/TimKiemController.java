@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service_impl.TimKiemServiceImpl;
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class TimKiemController {
     @Autowired
     private TimKiemServiceImpl timKiemService;
 
-    @GetMapping("/api/timkiem")
+    @GetMapping("/timkiem")
     public ResponseEntity<List<Object>> search(@RequestParam("keyword") String keyword) {
         List<Object> results = timKiemService.timKiem(keyword);
         return ResponseEntity.ok(results);

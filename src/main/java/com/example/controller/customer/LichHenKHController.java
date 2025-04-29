@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping  ("/api/khachhang")
 public class LichHenKHController {
     @Autowired
     LichHenService lhService;
 
-    @PostMapping("lichhen")
+    @PostMapping("/lichhen")
     public ResponseEntity<?> datLich(@RequestBody LichHenDTO dto) {
         lhService.taoLichHenByKH(dto);
-        return ResponseEntity.ok(new MessageResponse("✔️ Đặt lịch thành công!"));
+        return ResponseEntity.ok(new MessageResponse(" Đặt lịch thành công!"));
     }
 }

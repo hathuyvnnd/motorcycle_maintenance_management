@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class PhieuGNXController {
     @Autowired
     PhieuGhiNhanTinhTrangXeService pgnService;
 
     
-    @GetMapping("/api/tinhtrangxe")
+    @GetMapping("/tinhtrangxe")
     public PhieuGhiNhanTinhTrangXe getTinhTrangXeByHD(@RequestParam("idPhieuGNX") String idPhieuGNX) {
         return pgnService.getPGNById(idPhieuGNX);
     }

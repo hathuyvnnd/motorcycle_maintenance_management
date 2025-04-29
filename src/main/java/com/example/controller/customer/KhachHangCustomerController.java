@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")  // ✅ Định tuyến đúng
+@RequestMapping  ("/api/khachhang")
 public class KhachHangCustomerController {
 
     @Autowired
     private KhachHangService khService;
 
-    @PostMapping("/khachhang/dangky")
+    @PostMapping("/dangky")
     public ResponseEntity<?> dangKyKhachHang(@RequestBody KhachHangDTO khachHangDTO) {
         try {
             if (khService.exitsById(khachHangDTO.getSoDienThoai())) {
