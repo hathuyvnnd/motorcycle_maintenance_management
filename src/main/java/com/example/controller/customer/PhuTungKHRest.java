@@ -18,7 +18,7 @@ import com.example.service.LoaiPhuTungService;
 import com.example.service.PhuTungService;
 
 @RestController
-@RequestMapping()
+@RequestMapping  ("/api/khachhang")
 public class PhuTungKHRest {
     @Autowired
     PhuTungService pTungService;
@@ -26,7 +26,7 @@ public class PhuTungKHRest {
     @Autowired
     LoaiPhuTungService loaiPTService;
 
-    @GetMapping("/api/phutung")
+    @GetMapping("/phutung")
     public List<PhuTung> getPhuTungTheoLoai(@RequestParam("idLoaiPT") String idLoaiPT) {
     System.out.println(" Lấy danh sách phụ tùng cho loại: " + idLoaiPT);
     LoaiPhuTung loaiPT = loaiPTService.findById(idLoaiPT);

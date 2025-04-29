@@ -57,7 +57,7 @@ app.run(["$rootScope", "$location", function ($rootScope, $location) {
 
   $rootScope.submitSearch = function (event) {
     if (event) event.preventDefault(); // Ngăn reload trang
-    console.log("🔍 Hàm submitSearch() chạy! Từ khóa:", $rootScope.keyword);
+    console.log(" Hàm submitSearch() chạy! Từ khóa:", $rootScope.keyword);
 
     if ($rootScope.keyword && $rootScope.keyword.trim() !== "") {//Trim() cắt khoảng trắng
       $location.path("/timkiem/" + encodeURIComponent($rootScope.keyword)); //encodeURIComponent mã hóa kí tự từ URL
@@ -76,7 +76,7 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
   $scope.itemsPerPage = 6;
 
   // Lấy danh sách loại phụ tùng
-  $http.get("/api/loaiphutung").then(
+  $http.get("/api/khachhang/loaiphutung").then(
     function (response) {
       $rootScope.listLoaiPT = response.data;
     },
@@ -86,7 +86,7 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
   );
 
 // Load dịch vụ
-  $http.get("/api/dichvu").then(
+  $http.get("/api/khachhang/dichvu").then(
     function (response) {
       $scope.list = response.data;
       $scope.totalPages = Math.ceil($scope.list.length / $scope.itemsPerPage);
@@ -146,7 +146,7 @@ app.controller("PhuTungController", function ($scope, $rootScope, $http, $routeP
   var idLoaiPT = $routeParams.idLoaiPT;
   console.log(" Lấy danh sách phụ tùng cho loại: ", idLoaiPT);
   // Gọi API để lấy danh sách phụ tùng
-  $http.get("/api/phutung?idLoaiPT=" + idLoaiPT).then(
+  $http.get("/api/khachhang/phutung?idLoaiPT=" + idLoaiPT).then(
     function (response) {
       $rootScope.listPhuTung = response.data;
       $scope.totalPages = Math.ceil($rootScope.listPhuTung.length / $scope.itemsPerPage);
@@ -169,7 +169,7 @@ app.controller("PhuTungController", function ($scope, $rootScope, $http, $routeP
 
 
   /////////////////////////////////////////////////////////
-  $http.get("/api/loaiphutung").then(
+  $http.get("/api/khachhang/loaiphutung").then(
     function (response) {
       $rootScope.listLoaiPT = response.data;
     },
@@ -190,7 +190,7 @@ app.controller("DatLichController", function ($scope,$http) {
   $scope.dsLoaiXe = [];
   $scope.dsLichHenCT = JSON.parse(localStorage.getItem("lichhenct")) || [];
 
-  $http.get("/api/loaixe").then(function (res) {
+  $http.get("/api/khachhang/loaixe").then(function (res) {
     $scope.dsLoaiXe = res.data;
   });
 
@@ -215,7 +215,7 @@ app.controller("DatLichController", function ($scope,$http) {
       }))
     };
 
-    $http.post("/api/lichhen", lichHenData).then(function (res) {
+    $http.post("/api/khachhang/lichhen", lichHenData).then(function (res) {
       console.log("Đặt lịch thành công", res); // Log thành công
       $scope.thongBao = "✅ Đặt lịch thành công!";
 
@@ -307,7 +307,7 @@ app.controller("QuenMatKhauController", function ($scope,$http) {
   $scope.success = false;
 
   $scope.submitForgotPassword = function () {
-    $http.post("/api/forgot-password", { email: $scope.form.email })
+    $http.post("/api/khachhang/forgot-password", { email: $scope.form.email })
         .then(function (response) {
           $scope.message = response.data.message; // ✅ lấy message từ object
           $scope.success = true;
@@ -328,7 +328,7 @@ app.controller("LichSuSuaChuaController", function ($scope, $rootScope, $http) {
   $scope.itemsPerPage = 6;
   $scope.batDau = "";
   $scope.ketThuc = "";
-  $http.get("/api/lichsu").then(function(response){
+  $http.get("/api/khachhang/lichsu").then(function(response){
     $scope.listPDV = response.data;
     $scope.totalPages = Math.ceil($scope.listPDV.length / $scope.itemsPerPage);
     $scope.pageNumbers = Array.from({ length: $scope.totalPages }, (_, i) => i + 1);
@@ -364,7 +364,7 @@ app.controller("HoaDonController", function ($scope, $http,$routeParams) {
 // Lấy ID từ URL
 var idHoaDon = $routeParams.idHoaDon;
   // Gọi API để lấy một đối tượng hóa đơn duy nhất
-  $http.get("/api/hoadon?idHoaDon="+idHoaDon)
+  $http.get("/api/khachang/hoadon?idHoaDon="+idHoaDon)
       .then(function (response) {
           $scope.hoaDon = response.data; // Lưu một đối tượng duy nhất
       })
@@ -380,7 +380,7 @@ app.controller("DichVuController",function($scope, $http,$routeParams){
   $scope.title = "Chi Tiết Dịch Vụ";
   $scope.chiTietPhieuDichVu = {};
   var idPhieuDichVu = $routeParams.idPhieuDichVu;
-  $http.get("/api/chitiet?idPhieuDichVu="+idPhieuDichVu)
+  $http.get("/api/khachhang/chitiet?idPhieuDichVu="+idPhieuDichVu)
   .then(function(response){
     $scope.chiTietPhieuDichVu = response.data;
   })
@@ -395,7 +395,7 @@ app.controller("TinhTrangXeController",function($scope, $http,$routeParams){
   $scope.phieuGhiNhanXe = null;
   var idPhieuGNX = $routeParams.idPhieuGNX;
   console.log(" ID Phiếu Dịch Vụ từ route:", idPhieuGNX); // Debug kiểm tra
-  $http.get("/api/tinhtrangxe?idPhieuGNX="+idPhieuGNX)
+  $http.get("/api/khachhang/tinhtrangxe?idPhieuGNX="+idPhieuGNX)
   .then(function(response){
     $scope.phieuGhiNhanXe = response.data;
   })
@@ -413,7 +413,7 @@ app.controller("TimKiemController", function ($scope, $http, $routeParams) {
   console.log("Tìm kiếm với từ khóa:", $scope.keyword); // Debug
 
   if ($scope.keyword.trim() !== "") {
-    $http.get("/api/timkiem?keyword=" + encodeURIComponent($scope.keyword))
+    $http.get("/api/khachhang/timkiem?keyword=" + encodeURIComponent($scope.keyword))
       .then(function (response) {
         console.log("Kết quả tìm kiếm:", response.data);
         $scope.kqTimKiem = response.data;

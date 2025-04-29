@@ -22,7 +22,7 @@ import com.example.service.PhieuDichVuService;
 import com.example.service.PhieuSuDungPhuTungCTService;
 
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class PhieuDichVuController {
     @Autowired
     PhieuDichVuService pdvService;
@@ -32,7 +32,7 @@ public class PhieuDichVuController {
 
     @Autowired
     PhieuSuDungPhuTungCTService psdptService;
-    @GetMapping("/api/lichsu")
+    @GetMapping("/lichsu")
     public List<PhieuDichVu> getListPDV() {
         return pdvService.getAllDichVus();
     }
@@ -41,7 +41,7 @@ public class PhieuDichVuController {
     // public List<PhieuDichVu> getPDVByKH(@RequestParam("idKhachHang") String idKhachHang) {
     //     return pdvService.getListPDVByKh(idKhachHang);
     // }
-    @GetMapping("/api/chitiet")
+    @GetMapping("/chitiet")
 public ResponseEntity<?> getChiTietDV(@RequestParam("idPhieuDichVu") String idPhieuDichVu) {
     try {
         Map<String, Object> response = new HashMap<>();

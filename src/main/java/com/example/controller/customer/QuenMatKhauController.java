@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class QuenMatKhauController {
 
     @Autowired
     TaiKhoanService tkService;
-    @PostMapping("/api/forgot-password")
+    @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         boolean result = tkService.resetPasswordByEmail(email);

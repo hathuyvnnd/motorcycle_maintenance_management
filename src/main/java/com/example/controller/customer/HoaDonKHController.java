@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class HoaDonKHController {
     @Autowired
     HoaDonService hdService;
@@ -40,7 +40,7 @@ public class HoaDonKHController {
     // }
 
     // API lấy hóa đơn theo ID khách hàng
-    @GetMapping("/api/hoadonOne")
+    @GetMapping("/hoadonOne")
     public List<HoaDon> getHoaDonByKH(@RequestParam("id") String id) {
         KhachHang kh = khService.findById(id);
         if (kh == null) {
@@ -51,7 +51,7 @@ public class HoaDonKHController {
     }
 
 
-    @GetMapping("/api/hoadonct")
+    @GetMapping("/hoadonct")
     public List<PhieuDichVuCT> getPhieuDichVuByHD(@RequestParam("idHoaDon") String idHoaDon){
         HoaDon hd = hdService.findById(idHoaDon);
         if(hd != null){
@@ -67,7 +67,7 @@ public class HoaDonKHController {
     return null;
 
 }
-@GetMapping("api/hoadon")
+@GetMapping("/hoadon")
     public HoaDon getHDByID(@RequestParam("idHoaDon") String idHoaDon){
         return hdService.getHoaDonById(idHoaDon);
     }
