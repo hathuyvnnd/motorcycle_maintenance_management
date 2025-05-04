@@ -22,7 +22,7 @@ import com.example.service.LoaiPhuTungService;
 
 @RestController
 @RequestMapping("/api/admin/loaiphutung")
-public class LoaiPTAdminController {
+public class LoaiPTAdminAPI {
     @Autowired
     private LoaiPhuTungService loaiPhuTungService;
 
@@ -44,7 +44,7 @@ public class LoaiPTAdminController {
         return loaiPhuTungService.create(loaiPhuTung);
     }
 
-    // 4a. Cập nhật LoaiPhuTung KHÔNG kèm file
+    // 4a. Cập nhật LoaiPhuTung
     @PutMapping("/{id}")
     public LoaiPhuTung update(@PathVariable String id, @RequestBody LoaiPhuTung loaiPhuTung) {
         loaiPhuTung.setIdLoaiPT(id);

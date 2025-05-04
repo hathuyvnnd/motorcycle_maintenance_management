@@ -2,7 +2,7 @@
   <h3><b>{{ pageTitle }}</b></h3>
 
   <!-- Form thêm mới / sửa phụ tùng -->
-  <form class="mt-4" name="accessoryForm" novalidate ng-submit="saveAccessory()">
+  <form class="mt-4" name="accessoryForm" novalidate ng-submit="accessoryForm.$valid && saveAccessory()">
     <div class="row mb-3">
       <!-- Tên Phụ Tùng -->
       <label for="tenPhuTung" class="col-sm-2 col-form-label">Tên Phụ Tùng</label>
@@ -10,21 +10,33 @@
         <input
           type="text"
           class="form-control"
+          ng-class="{'is-invalid': accessoryForm.tenPhuTung.$touched && accessoryForm.tenPhuTung.$invalid}"
           id="tenPhuTung"
+          name="tenPhuTung"
           placeholder="Tên Phụ Tùng"
           ng-model="newAccessory.tenPhuTung"
           required />
+        <small class="text-danger" ng-show="accessoryForm.tenPhuTung.$touched && accessoryForm.tenPhuTung.$invalid">
+          Tên phụ tùng là bắt buộc.
+        </small>
       </div>
+
       <!-- Giá Phụ Tùng -->
       <label for="giaPhuTung" class="col-sm-2 col-form-label">Giá</label>
       <div class="col-sm-4">
         <input
           type="number"
           class="form-control"
+          ng-class="{'is-invalid': accessoryForm.giaPhuTung.$touched && accessoryForm.giaPhuTung.$invalid}"
           id="giaPhuTung"
+          name="giaPhuTung"
           placeholder="Giá"
           ng-model="newAccessory.giaPhuTung"
+          min="0"
           required />
+        <small class="text-danger" ng-show="accessoryForm.giaPhuTung.$touched && accessoryForm.giaPhuTung.$invalid">
+          Giá không được để trống và phải ≥ 0.
+        </small>
       </div>
     </div>
 
@@ -35,11 +47,20 @@
         <input
           type="number"
           class="form-control"
+          ng-class="{'is-invalid': accessoryForm.soLuongTonKho.$touched && accessoryForm.soLuongTonKho.$invalid}"
           id="soLuongTonKho"
+          name="soLuongTonKho"
           placeholder="Số Lượng Tồn Kho"
           ng-model="newAccessory.soLuongTonKho"
+          min="0"
           required />
+        <small
+          class="text-danger"
+          ng-show="accessoryForm.soLuongTonKho.$touched && accessoryForm.soLuongTonKho.$invalid">
+          Số lượng tồn kho là bắt buộc và phải ≥ 0.
+        </small>
       </div>
+
       <!-- Thương Hiệu -->
       <label for="thuongHieu" class="col-sm-2 col-form-label">Thương Hiệu</label>
       <div class="col-sm-4">
@@ -47,6 +68,7 @@
           type="text"
           class="form-control"
           id="thuongHieu"
+          name="thuongHieu"
           placeholder="Thương Hiệu"
           ng-model="newAccessory.thuongHieu" />
       </div>
@@ -60,9 +82,11 @@
           type="text"
           class="form-control"
           id="phuHopLoaiXe"
+          name="phuHopLoaiXe"
           placeholder="Phù Hợp Loại Xe"
           ng-model="newAccessory.phuHopLoaiXe" />
       </div>
+
       <!-- Ngày Nhập Kho -->
       <label for="ngayNhapKho" class="col-sm-2 col-form-label">Ngày Nhập Kho</label>
       <div class="col-sm-4">
@@ -70,7 +94,7 @@
           type="date"
           class="form-control"
           id="ngayNhapKho"
-          placeholder="Ngày Nhập Kho"
+          name="ngayNhapKho"
           ng-model="newAccessory.ngayNhapKho" />
       </div>
     </div>
@@ -79,56 +103,60 @@
       <!-- Hạn Sử Dụng -->
       <label for="hanSuDung" class="col-sm-2 col-form-label">Hạn Sử Dụng</label>
       <div class="col-sm-4">
-        <input
-          type="date"
-          class="form-control"
-          id="hanSuDung"
-          placeholder="Hạn Sử Dụng"
-          ng-model="newAccessory.hanSuDung" />
+        <input type="date" class="form-control" id="hanSuDung" name="hanSuDung" ng-model="newAccessory.hanSuDung" />
       </div>
-      <!-- Loại Phụ Tùng (chỉ ID) -->
+
+      <!-- Loại Phụ Tùng -->
       <label for="idLoaiPT" class="col-sm-2 col-form-label">Loại Phụ Tùng</label>
       <div class="col-sm-4">
         <select
           class="form-select"
+          ng-class="{'is-invalid': accessoryForm.idLoaiPT.$touched && accessoryForm.idLoaiPT.$invalid}"
           id="idLoaiPT"
+          name="idLoaiPT"
           ng-model="newAccessory.loaiPT"
           ng-options="loai as loai.tenLoaiPT for loai in listLoaiPhuTung track by loai.idLoaiPT"
           required>
           <option value="">Chọn loại phụ tùng</option>
         </select>
+        <small class="text-danger" ng-show="accessoryForm.idLoaiPT.$touched && accessoryForm.idLoaiPT.$invalid">
+          Vui lòng chọn loại phụ tùng.
+        </small>
       </div>
     </div>
 
     <div class="row mb-3">
-      <!-- Dịch Vụ (chỉ ID) -->
-      <label for="idDichVu" class="col-sm-2 col-form-label">Dịch Vụ</label>
-      <div class="col-sm-4">
-        <select
-          class="form-select"
-          id="idDichVu"
-          ng-model="newAccessory.dichVuPT"
-          ng-options="dv as dv.tenDichVu for dv in listDichVu track by dv.idDichVu"
-          required>
-          <option value="">Chọn dịch vụ</option>
-        </select>
-      </div>
       <!-- Mô Tả -->
       <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
       <div class="col-sm-4">
-        <textarea class="form-control" id="moTa" placeholder="Mô Tả" ng-model="newAccessory.moTa"></textarea>
+        <textarea
+          class="form-control"
+          id="moTa"
+          name="moTa"
+          placeholder="Mô Tả"
+          ng-model="newAccessory.moTa"></textarea>
+      </div>
+
+      <!-- Tình Trạng -->
+      <label for="tinhTrang" class="col-sm-2 col-form-label">Tình Trạng</label>
+      <div class="col-sm-4">
+        <select
+          class="form-select"
+          ng-class="{'is-invalid': accessoryForm.tinhTrang.$touched && accessoryForm.tinhTrang.$invalid}"
+          id="tinhTrang"
+          name="tinhTrang"
+          ng-model="newAccessory.tinhTrang"
+          required>
+          <option ng-value="true">Mới</option>
+          <option ng-value="false">Cũ</option>
+        </select>
+        <small class="text-danger" ng-show="accessoryForm.tinhTrang.$touched && accessoryForm.tinhTrang.$invalid">
+          Vui lòng chọn tình trạng.
+        </small>
       </div>
     </div>
 
     <div class="row mb-3">
-      <!-- Tình Trạng -->
-      <label for="tinhTrang" class="col-sm-2 col-form-label">Tình Trạng</label>
-      <div class="col-sm-4">
-        <select class="form-select" id="tinhTrang" ng-model="newAccessory.tinhTrang" required>
-          <option ng-value="true">Mới</option>
-          <option ng-value="false">Cũ</option>
-        </select>
-      </div>
       <!-- Hình Ảnh -->
       <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-4">
@@ -136,6 +164,7 @@
           type="file"
           class="form-control"
           id="profileImage"
+          name="profileImage"
           accept="image/*"
           onchange="angular.element(this).scope().setFile(this.files)" />
       </div>
@@ -173,7 +202,7 @@
           <th>Hình Ảnh</th>
           <th>Ngày Nhập</th>
           <th>Hạn SD</th>
-          <th>ID Dịch Vụ</th>
+          <!-- <th>ID Dịch Vụ</th> -->
           <th>Chức Năng</th>
         </tr>
       </thead>
@@ -198,7 +227,7 @@
           </td>
           <td>{{ pt.ngayNhapKho | date:'yyyy-MM-dd' }}</td>
           <td>{{ pt.hanSuDung | date:'yyyy-MM-dd' }}</td>
-          <td>{{ getLoaiDVDisplay(pt.dichVuPT) }}</td>
+          <!-- <td>{{ getLoaiDVDisplay(pt.dichVuPT) }}</td> -->
           <td>
             <button class="btn btn-warning btn-sm" ng-click="selectAccessory(pt)">Sửa</button>
             <button class="btn btn-danger btn-sm" ng-click="deletePhuTung(pt.idPhuTung)">Xóa</button>

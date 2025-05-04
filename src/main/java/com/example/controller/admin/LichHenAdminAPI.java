@@ -13,7 +13,7 @@ import com.example.service.LichHenService;
 
 @RestController
 @RequestMapping("/api/admin/lich_hen")
-public class LichHenAdminController {
+public class LichHenAdminAPI {
     @Autowired
     private LichHenService lichHenService;
 

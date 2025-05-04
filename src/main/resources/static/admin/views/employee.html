@@ -1,71 +1,77 @@
 <div ng-controller="EmployeeController">
   <h3><b>{{ pageTitle }}</b></h3>
   <!-- Form thêm mới / sửa nhân viên -->
-  <form class="mt-4" name="employeeForm" novalidate>
+  <form class="mt-4" name="employeeForm" novalidate ng-submit="saveEmployee()">
     <div class="row mb-3">
-      <!-- <label for="employeeId" class="col-sm-2 col-form-label">ID Nhân Viên</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="employeeId"
-          placeholder="ID Nhân Viên"
-          ng-model="newEmployee.idNhanVien"
-          ng-disabled="isEditMode" />
-      </div> -->
       <label for="employeeName" class="col-sm-2 col-form-label">Tên Nhân Viên</label>
       <div class="col-sm-4">
         <input
           type="text"
           class="form-control"
           id="employeeName"
+          name="employeeName"
           placeholder="Tên Nhân Viên"
-          ng-model="newEmployee.ten" />
+          ng-model="newEmployee.ten"
+          ng-pattern="/^[\p{L} ]{2,50}$/u"
+          required />
+        <div class="text-danger" ng-show="employeeForm.employeeName.$dirty && employeeForm.employeeName.$invalid">
+          <small ng-show="employeeForm.employeeName.$error.required">Vui lòng nhập tên nhân viên.</small>
+          <small ng-show="employeeForm.employeeName.$error.pattern">
+            Tên chỉ chứa chữ và khoảng trắng (2–50 ký tự).
+          </small>
+        </div>
       </div>
+
       <label for="email" class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-4">
-        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="newEmployee.email" />
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Email"
+          ng-model="newEmployee.email"
+          required />
+        <div class="text-danger" ng-show="employeeForm.email.$dirty && employeeForm.email.$invalid">
+          <small ng-show="employeeForm.email.$error.required">Vui lòng nhập email.</small>
+          <small ng-show="employeeForm.email.$error.email">Email không hợp lệ.</small>
+        </div>
       </div>
     </div>
+
     <div class="row mb-3">
       <label for="accountId" class="col-sm-2 col-form-label">Số Điện Thoại</label>
       <div class="col-sm-4">
-        <!-- Select box hiển thị các ID tài khoản (số điện thoại) chưa liên kết -->
         <select
           class="form-select"
           id="accountId"
+          name="accountId"
           ng-model="newEmployee.taiKhoanNV.idTaiKhoan"
-          ng-options="acc.idTaiKhoan as acc.idTaiKhoan for acc in availableAccounts">
+          ng-options="acc.idTaiKhoan as acc.idTaiKhoan for acc in availableAccounts"
+          required>
           <option value="">-- Chọn Số Điện Thoại --</option>
         </select>
+        <div class="text-danger" ng-show="employeeForm.accountId.$dirty && employeeForm.accountId.$invalid">
+          <small>Vui lòng chọn số điện thoại.</small>
+        </div>
       </div>
+
       <label for="address" class="col-sm-2 col-form-label">Địa Chỉ</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="address" placeholder="Địa Chỉ" ng-model="newEmployee.diaChi" />
-      </div>
-    </div>
-    <!-- <div class="row mb-3"> -->
-    <!-- <label for="phoneNumber" class="col-sm-2 col-form-label">Số Điện Thoại</label>
       <div class="col-sm-4">
         <input
           type="text"
-          name="phoneNumber"
           class="form-control"
-          id="phoneNumber"
-          placeholder="Số Điện Thoại"
-          ng-model="newEmployee.soDienThoai" />
-      </div> -->
+          id="address"
+          name="address"
+          placeholder="Địa Chỉ"
+          ng-model="newEmployee.diaChi"
+          required />
+        <div class="text-danger" ng-show="employeeForm.address.$dirty && employeeForm.address.$invalid">
+          <small ng-show="employeeForm.address.$error.required">Vui lòng nhập địa chỉ.</small>
+        </div>
+      </div>
+    </div>
 
-    <!-- <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
-      <div class="col-sm-4">
-        <input
-          type="file"
-          class="form-control"
-          id="profileImage"
-          accept="image/*"
-          onchange="angular.element(this).scope().setFile(this.files)" />
-      </div> -->
-    <!-- </div> -->
     <div class="row mb-3">
       <label for="profileImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-4">
@@ -76,20 +82,16 @@
           accept="image/*"
           onchange="angular.element(this).scope().setFile(this.files)" />
       </div>
-      <div class="col-sm-2">
-        <!-- Hiển thị tên file hiện tại nếu có -->
+      <div class="col-sm-4">
         <p ng-if="newEmployee.hinhAnh">File hiện tại: {{ newEmployee.hinhAnh }}</p>
       </div>
     </div>
+
     <div>
-      <!-- Đã cập nhật: Sử dụng cùng một nút gọi hàm saveEmployee() -->
-      <button type="button" class="btn btn-primary me-2" ng-click="saveEmployee()">
+      <button type="submit" class="btn btn-primary me-2" ng-disabled="employeeForm.$invalid">
         {{ isEditMode ? "Cập Nhật Nhân Viên" : "Thêm Nhân Viên" }}
       </button>
-      <!-- Nút Reset form nếu cần -->
-      <button type="button" class="btn btn-secondary" ng-click="newEmployee = { taiKhoanNV: {} }; isEditMode = false;">
-        Reset
-      </button>
+      <button type="button" class="btn btn-secondary" ng-click="resetEmployeeForm()">Reset</button>
     </div>
   </form>
 
