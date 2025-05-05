@@ -1,4 +1,34 @@
 var appAdmin = angular.module("megaviaApp", ["ngRoute"]);
+appAdmin.factory("AuthInterceptor", [
+  "$q",
+  "$window",
+  function ($q, $window) {
+    return {
+      request: function (config) {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          config.headers = config.headers || {};
+          config.headers.Authorization = "Bearer " + token;
+          console.log("Admin: token added to header");
+        }
+        return config;
+      },
+      responseError: function (rejection) {
+        if (rejection.status === 401) {
+          $window.location.href = "/views/dangnhap.html";
+        }
+        return $q.reject(rejection);
+      },
+    };
+  },
+]);
+
+appAdmin.config([
+  "$httpProvider",
+  function ($httpProvider) {
+    $httpProvider.interceptors.push("AuthInterceptor");
+  },
+]);
 
 appAdmin.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
@@ -45,11 +75,11 @@ appAdmin.config(function ($routeProvider) {
       templateUrl: "admin/views/type_accessory.html",
       controller: "TypeAccessoryController",
     })
-    .when("/", {
+    .when("/index", {
       redirectTo: "/statistics",
     })
     .otherwise({
-      redirectTo: "/statistics",
+      redirectTo: "/index/statistics",
     });
 });
 
@@ -1302,6 +1332,7 @@ appAdmin.controller("StatisticsController", [
     };
   },
 ]);
+
 appAdmin.filter("sumByKey", function () {
   return function (data, key) {
     if (!angular.isArray(data) || !key) {
@@ -1311,3 +1342,5 @@ appAdmin.filter("sumByKey", function () {
       return sum + (parseFloat(item[key]) || 0);
     }, 0);
   }});
+
+

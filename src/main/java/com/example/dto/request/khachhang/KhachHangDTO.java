@@ -9,5 +9,4 @@ public class KhachHangDTO {
     private String hoTen;
     private String diaChi;
     private String email;
-    private String hinhAnh;
 }

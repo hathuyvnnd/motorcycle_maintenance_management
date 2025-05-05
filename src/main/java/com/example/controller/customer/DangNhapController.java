@@ -3,6 +3,7 @@ package com.example.controller.customer;
 import com.example.dto.reponse.TaiKhoanDN;
 import com.example.model.TaiKhoan;
 import com.example.service.TaiKhoanService;
+import com.example.service_impl.TaiKhoanServiceImpl;
 import com.example.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/auth")
 public class DangNhapController {
     @Autowired
-    private TaiKhoanService taiKhoanService;
+    private TaiKhoanServiceImpl taiKhoanService;
 
     @Autowired
     private JwtToken jwt;
@@ -28,6 +29,8 @@ public class DangNhapController {
     public ResponseEntity<?> login(@RequestBody TaiKhoan taikhoanLogin) {
         System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getIdTaiKhoan());
         System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getMatKhau());
+        System.out.println("TK Login" + taikhoanLogin.getIdTaiKhoan());
+        System.out.println("MK Login" + taikhoanLogin.getMatKhau());
         TaiKhoan tk = taiKhoanService.findById(taikhoanLogin.getIdTaiKhoan());
         System.out.println("mat khau khi tim kiem" + tk.getMatKhau());
         if (tk != null && passwordEncoder.matches(taikhoanLogin.getMatKhau(),tk.getMatKhau())) {

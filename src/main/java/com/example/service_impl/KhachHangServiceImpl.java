@@ -49,7 +49,8 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Override
     public String findIdKhachHangByTaiKhoanKH_IdTaiKhoan(String sdt) {
-        return khachHangDao.findIdKhachHangBySoDienThoai(sdt).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        return khachHangDao.findIdKhachHangBySoDienThoai(sdt)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
     }
 
     @Override
@@ -111,7 +112,8 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Override
     @Transactional
-    public KhachHang dangKyKhachHang(String soDienThoai, String matKhau, String hoTen, String diaChi, String email, String hinhAnh) {
+
+    public KhachHang dangKyKhachHang(String soDienThoai, String matKhau, String hoTen, String diaChi, String email) {
         // Kiểm tra trùng tài khoản
         if (tkDao.existsById(soDienThoai)) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -134,20 +136,21 @@ public class KhachHangServiceImpl implements KhachHangService {
                 .hoTen(hoTen)
                 .diaChi(diaChi)
                 .email(email)
-                // .hinhAnh(hinhAnh)
                 .ngayDangKi(new Date())
                 .build();
-
         khachHangDao.save(khachHang);
 
         return khachHang;
     }
+
     @Override
-    public KhachHang getByEmail(String email){
+    public KhachHang getByEmail(String email) {
         return khachHangDao.findKhachHangByEmail(email);
     }
 
     @Override
-    public KhachHang getByTaiKhoan(TaiKhoan tk) {return khachHangDao.findKhachHangByTaiKhoanKH(tk);}
+    public KhachHang getByTaiKhoan(TaiKhoan tk) {
+        return khachHangDao.findKhachHangByTaiKhoanKH(tk);
+    }
 
 }
