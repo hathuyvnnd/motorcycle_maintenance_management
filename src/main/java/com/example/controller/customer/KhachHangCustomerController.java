@@ -29,8 +29,7 @@ public class KhachHangCustomerController {
                     khachHangDTO.getMatKhau(),
                     khachHangDTO.getHoTen(),
                     khachHangDTO.getDiaChi(),
-                    khachHangDTO.getEmail(),
-                    khachHangDTO.getHinhAnh()
+                    khachHangDTO.getEmail()
             );
             return ResponseEntity.ok(khachHang);  // Trả về thông tin khách hàng vừa tạo
         } catch (Exception e) {

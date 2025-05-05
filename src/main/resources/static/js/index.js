@@ -341,7 +341,7 @@ app.controller("DangNhapController", function ($scope, $http, $location,$rootSco
                 $rootScope.vaiTro = response.data.vaiTro;
 
                 if (response.data.vaiTro === 'Admin') {
-                    $location.path("/statistics");
+                    window.location.href = "/admin/index.html";
                 } else if (response.data.vaiTro === 'Nhân viên') {
                     $location.path("/hoa-don");
                 } else if (response.data.vaiTro === 'Khách hàng') {
