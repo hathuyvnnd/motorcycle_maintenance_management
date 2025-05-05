@@ -1238,12 +1238,11 @@ appAdmin.controller("InvoiceController", function ($scope, HoaDonService) {
   };
   $scope.getAllHoaDon();
 });
-<<<<<<< HEAD
 
 // app.controller("StatisticsController", function ($scope) {
 //   $scope.pageTitle = "Thống kê";
 // });
-app.controller("StatisticsController", [
+appAdmin.controller("StatisticsController", [
   "$scope",
   "$http",
   function ($scope, $http) {
@@ -1303,7 +1302,7 @@ app.controller("StatisticsController", [
     };
   },
 ]);
-app.filter("sumByKey", function () {
+appAdmin.filter("sumByKey", function () {
   return function (data, key) {
     if (!angular.isArray(data) || !key) {
       return 0;
@@ -1312,8 +1311,4 @@ app.filter("sumByKey", function () {
       return sum + (parseFloat(item[key]) || 0);
     }, 0);
   };
-=======
-appAdmin.controller("StatisticsController", function ($scope) {
-  $scope.pageTitle = "Thống kê";
->>>>>>> e112da67844c504a4d1de3d237f3ff6b6c28cd5d
 });
