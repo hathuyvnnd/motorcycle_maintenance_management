@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import com.example.model.LoaiPhuTung;
 @RestController
-@RequestMapping
+@RequestMapping  ("/api/khachhang")
 public class LoaiPhuTungKHRest {
 
     @Autowired
     private LoaiPhuTungService loaiPTService;
     
-    @GetMapping("/api/loaiphutung")
+    @GetMapping("/loaiphutung")
     public List<LoaiPhuTung> getAllLoaiPT() {
         List<LoaiPhuTung> list = loaiPTService.findAll();
         System.out.println("Danh sách loại phụ tùng: "+list);

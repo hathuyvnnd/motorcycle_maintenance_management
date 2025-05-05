@@ -1,10 +1,13 @@
-var app = angular.module("myApp", ["ngRoute"]);
-app.config(function ($routeProvider) {
+var appEmployee = angular.module("myApp", ["ngRoute"]);
+appEmployee.config(function ($routeProvider) {
 $routeProvider
   .when("/", {
     templateUrl: "/employee/content/homestaff.html",
     controller: "homeStaffController",
   })
+  // .when("/", {
+  //   templateUrl: "/employee/content/hoadonstaff.html",
+  // })
   .when("/hoa-don", {
     templateUrl: "/employee/content/hoadonstaff.html",
   })
@@ -41,11 +44,11 @@ $routeProvider
     templateUrl: "/employee/content/lichhenchuahoantat.html",
     controller: "lHChuaHoanTatController",
   })
-  .otherwise({
-    redirectTo: "/",
-  });
+  // .otherwise({
+  //   redirectTo: "/",
+  // });
 });
-app.controller("laman", function ($http, $scope) {
+f.controller("laman", function ($http, $scope) {
 $scope.lichhen = []; // Dữ liệu lich hen
 localStorage.setItem("idNhanVien", "NV001");
 $scope.isSidebarHidden = false;
@@ -121,7 +124,199 @@ app.filter('vnd', function () {
     };
   });
 
-app.controller("lichHenController", function ($scope, $http, $rootScope , $q) {
+//app.controller("ServiceController", function ($scope) {
+//$scope.services = [];
+//$scope.parts = [];
+//$scope.showPartsSelection = false;
+//
+//$scope.addService = function () {
+//  if ($scope.selectedService) {
+//    $scope.services.push($scope.selectedService);
+//    if ($scope.selectedService === "Thay thế phụ tùng") {
+//      $scope.showPartsSelection = true;
+//    }
+//    $scope.selectedService = "";
+//  }
+//};
+//
+//$scope.removeService = function (index) {
+//  if ($scope.services[index] === "Thay thế phụ tùng") {
+//    $scope.showPartsSelection = false;
+//    $scope.parts = [];
+//  }
+//  $scope.services.splice(index, 1);
+//};
+//
+//$scope.addPart = function () {
+//  if ($scope.selectedPart && $scope.selectedQuantity) {
+//    $scope.parts.push({ name: $scope.selectedPart, quantity: $scope.selectedQuantity });
+//    $scope.selectedPart = "";
+//    $scope.selectedQuantity = "";
+//  }
+//};
+//
+//$scope.removePart = function (index) {
+//  $scope.parts.splice(index, 1);
+//};
+//
+//$scope.saveServiceTicket = function () {
+//  alert("Phiếu dịch vụ đã được lưu!");
+//};
+//});
+
+
+//app.controller("lichHenController", function ($scope, $http, $rootScope) {
+//    $scope.appointments = [];
+//    $scope.selectedAppointment = null;
+//    $scope.panelTemplate = ""; // Load giao diện modal phù hợp
+//
+//    // Gọi API lấy danh sách lịch hẹn
+//    $http.get("http://localhost:8081/api/lich-hen/today")
+//        .then(function (response) {
+//            if (response.data && response.data.result) {
+//                $scope.appointments = response.data.result;
+//            } else {
+//                console.error("API không trả về dữ liệu hợp lệ.");
+//            }
+//        })
+//        .catch(function (error) {
+//            console.error("Lỗi khi lấy dữ liệu:", error);
+//        });
+//    $scope.getActionText = function (status) {
+//    switch (status) {
+//        case "Đã xác nhận":
+//            return "Lập phiếu tình trạng xe";
+//        case "Đang kiểm tra":
+//            return "Lập phiếu dịch vụ";
+//        case "true":
+//            return "Cập nhật phiếu dịch vụ";
+//        case "false":
+//            return "Thanh toán";
+//        case "Đã thanh toán":
+//            return "Xem hóa đơn";
+//        default:
+//            return "Không xác định";
+//    }
+//};
+//    // Mở modal phù hợp với trạng thái
+//         $scope.services = [];
+//        $scope.parts = [];
+//        $scope.showPartsSelection = false;
+//    $scope.openModal = function (appointment) {
+//        console.log("selectedAppointment: ",  $scope.selectedAppointment);
+//        $scope.selectedAppointment = appointment;
+//
+//        // Load template phù hợp với trạng thái
+//        switch (appointment.trangThai) {
+//             case "Đã xác nhận":
+//                $scope.panelTemplate = "/employee/content/panel/ghiNhanTinhTrangPanel.html";
+//                break;
+//            case "Đang kiểm tra":
+//                $scope.panelTemplate = "/employee/content/panel/lapPhieuDichVuModal.html";
+//                break;
+//            case "Đang sửa chữa":
+//            case "Đã hoàn thành":
+//            case "Đã thanh toán":
+//                $scope.panelTemplate = "/employee/content/panel/ghiNhanTinhTrangPanel.html";
+//                break;
+//            default:
+//                $scope.panelTemplate = "";
+//                break;
+//        }
+//
+//        // Mở modal Bootstrap
+//        var myModal = new bootstrap.Modal(document.getElementById("lichHenModal"));
+//        myModal.show();
+//  };
+//    $scope.addService = function () {
+//     console.log("selectedAppointment: ",  $scope.selectedService);
+//      if ($scope.selectedService) {
+//        $scope.services.push($scope.selectedService);
+//        if ($scope.selectedService === "Thay thế phụ tùng") {
+//          $scope.showPartsSelection = true;
+//        }
+//        $scope.selectedService = "";
+//      }
+//    };
+//
+//    $scope.removeService = function (index) {
+//      if ($scope.services[index] === "Thay thế phụ tùng") {
+//        $scope.showPartsSelection = false;
+//        $scope.parts = [];
+//      }
+//      $scope.services.splice(index, 1);
+//    };
+//
+//    $scope.addPart = function () {
+//      if ($scope.selectedPart && $scope.selectedQuantity) {
+//        $scope.parts.push({ name: $scope.selectedPart, quantity: $scope.selectedQuantity });
+//        $scope.selectedPart = "";
+//        $scope.selectedQuantity = "";
+//      }
+//    };
+//
+//    $scope.removePart = function (index) {
+//      $scope.parts.splice(index, 1);
+//    };
+//    $scope.taoPhieuTinhTrang = function (appointment) {
+//  console.log("Selected Appointment:", $scope.selectedAppointment); // Kiểm tra dữ liệu
+//
+//    if (!$scope.selectedAppointment || !$scope.selectedAppointment.bienSoXe) {
+//        alert("Lỗi: Không có thông tin xe để tạo phiếu!");
+//        return;
+//    }
+//
+//    const data = {
+//        bienSoXe: $scope.selectedAppointment.bienSoXe,
+//        moTaTinhTrangXe: $scope.selectedAppointment.moTaTinhTrangXe || ""
+//    };
+//
+//    $http.post("http://localhost:8081/api/staff/phieu-tinh-trang", data)
+//        .then(function (response) {
+//            if (response.data && response.data.result) {
+//                alert("Tạo phiếu ghi nhận thành công!");
+//                console.log(response.data.result);
+//                 $scope.loadAppointments();
+//            } else {
+//                alert("Không thể tạo phiếu ghi nhận.");
+//            }
+//        })
+//        .catch(function (error) {
+//            console.error("Lỗi khi tạo phiếu:", error);
+//            alert("Lỗi khi tạo phiếu.");
+//        });
+//  var myModalEl = document.getElementById("lichHenModal");
+//                var modal = bootstrap.Modal.getInstance(myModalEl);
+//                if (modal) {
+//                    modal.hide();
+//                }
+//};
+//    $scope.loadAppointments = function () {
+//        $http.get("http://localhost:8081/api/lich-hen/today")
+//            .then(function (response) {
+//                if (response.data && response.data.result) {
+//                    $scope.appointments = response.data.result;
+//                }
+//            })
+//            .catch(function (error) {
+//                console.error("Lỗi khi lấy dữ liệu:", error);
+//            });
+//    };
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//    $scope.saveServiceTicket = function () {
+//      alert("Phiếu dịch vụ đã được lưu!");
+//    };
+//});
+
+appEmployee.controller("lichHenController", function ($scope, $http, $rootScope) {
     $scope.appointments = [];
     $scope.selectedAppointment = null;
     $scope.panelTemplate = ""; // Load giao diện modal phù hợp
@@ -734,42 +929,7 @@ $scope.taoHoaDon = function () {
 });
 
 
-
-// app.controller("thanhToanController", function($scope, $http) {
-//     var idLichHen = $scope.selectedAppointment.idLichHen;
-
-//     $http.get("http://localhost:8081/test/findid/phieu-phu-tung", { params: { id: idLichHen } })
-//         .then(function(response) {
-//             $scope.phuTungDaChon = response.data.result;
-//         });
-
-//     $http.get("http://localhost:8081/test/findid/phieu-dich-vu-ct", { params: { id: idLichHen } })
-//         .then(function(response) {
-//             $scope.dichVuDaChon = response.data.result;
-//         });
-
-//     // Tính tổng tiền
-//     $scope.tinhTongTien = function () {
-//         let tong = 0;
-//         if ($scope.dichVuDaChon) {
-//             $scope.dichVuDaChon.forEach(d => tong += d.dichVu.giaDichVu);
-//         }
-//         if ($scope.phuTungDaChon) {
-//             $scope.phuTungDaChon.forEach(p => tong += p.donGia * p.soLuong);
-//         }
-//         $scope.tongTien = tong;
-//     };
-
-//     // Tự động tính lại mỗi lần dữ liệu thay đổi
-//     $scope.$watchGroup(['dichVuDaChon', 'phuTungDaChon'], function () {
-//         $scope.tinhTongTien();
-//     });
-// });
-
-
-
-
-app.controller("TaoLichHenController", function ($scope, $http) {
+appEmployee.controller("TaoLichHenController", function ($scope, $http) {
     $scope.phone = "";
     $scope.customerExists = false;
     $scope.phoneChecked = false;

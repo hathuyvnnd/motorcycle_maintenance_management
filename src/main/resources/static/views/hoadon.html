@@ -21,15 +21,16 @@
           <td>Trạng Thái Thanh Toán:</td>
           <td>{{ hoaDon.trangThaiThanhToan == 1 ? 'Đã Thanh Toán' : 'Chưa Thanh Toán' }}</td>
       </tr>
+        <tr ng-show="hoaDon.trangThaiThanhToan == 1">
+            <td>Phương Thức Thanh Toán:</td>
+            <td>{{ hoaDon.phuongThucThanhToan == 1 ? 'Chuyển Khoản' : 'Tiền Mặt' }}</td>
+        </tr>
       <tr ng-show="hoaDon.trangThaiThanhToan == 0">
         <td colspan="2">
             <button class="btn btn-success" ng-click="thanhToan(hoaDon.idHoaDon)">Thanh Toán</button>
         </td>
       </tr>
-      <tr ng-show="hoaDon.trangThaiThanhToan == 1">
-          <td>Phương Thức Thanh Toán:</td>
-          <td>{{ hoaDon.phuongThucThanhToan == 1 ? 'Chuyển Khoản' : 'Tiền Mặt' }}</td>
-      </tr>
+
     </table>
     <div class="text-center">
       <button class="btn btn-secondary" onclick="window.history.back()">Quay Lại</button>

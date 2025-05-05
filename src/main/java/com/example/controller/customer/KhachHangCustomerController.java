@@ -2,22 +2,22 @@ package com.example.controller.customer;
 
 import com.example.dto.request.khachhang.KhachHangDTO;
 import com.example.model.KhachHang;
+import com.example.model.TaiKhoan;
 import com.example.service.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")  // ✅ Định tuyến đúng
+@RequestMapping  ("/api")
 public class KhachHangCustomerController {
 
     @Autowired
     private KhachHangService khService;
 
-    @PostMapping("/khachhang/dangky")
+
+    @PostMapping("/dangky")
     public ResponseEntity<?> dangKyKhachHang(@RequestBody KhachHangDTO khachHangDTO) {
         try {
             if (khService.exitsById(khachHangDTO.getSoDienThoai())) {
@@ -38,4 +38,5 @@ public class KhachHangCustomerController {
             return ResponseEntity.badRequest().body("Đăng ký thất bại: " + e.getMessage());
         }
     }
+
 }

@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping  // Thêm dòng này
+@RequestMapping  ("/api/khachhang")
 public class DichVuKHRest {
 
     @Autowired
     private DichVuService dvService;
 
-    @GetMapping("/api/dichvu")  
+    @GetMapping("/dichvu")
     public List<DichVu> getAllDV() {
         return dvService.findAll();
     }
+
 }
 

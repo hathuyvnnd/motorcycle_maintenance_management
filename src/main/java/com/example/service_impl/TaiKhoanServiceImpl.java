@@ -160,4 +160,9 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         return true;
 
     }
+
+    @Override
+    public TaiKhoan findByIdTaiKhoan(String id){return taiKhoanDao.findTaiKhoanByIdTaiKhoan(id); }
+
+
 }

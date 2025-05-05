@@ -21,4 +21,5 @@ public interface DichVuDao extends JpaRepository<DichVu, String> {
 
     List<DichVu> findByTrangThai(Boolean trangThai);
 
+
 }

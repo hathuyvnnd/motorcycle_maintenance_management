@@ -16,23 +16,24 @@
   <table class="table table-bordered mt-3 text-center">
     <thead>
       <tr>
-        <th scope="col">Mã Phiếu Dịch Vụ</th>
-        <th scope="col">Biển Số Xe</th>
-        <th scope="col">Nhân Viên Tạo Phiếu</th>
         <th scope="col">Mã Hóa Đơn</th>
+        <th scope="col">Mã Phiếu Dịch Vụ</th>
+        <th scope="col">Nhân Viên Tạo Phiếu</th>
+        <th scope="col">Tổng Tiền</th>
+        <th scope="col">Phương Thức Thanh Toán</th>
+        <th scope="col">Ngày Tạo</th>
         <th scope="col">Trạng Thái</th>
-        <th scope="col">Ngày Thực Hiện</th>
-        <th scope="col">Hành động</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="hd in listPDV | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
-        <td>{{hd.idPhieuDichVu}}</td>
-        <td>{{hd.phieuGNX.lichHen.bienSoXe}}</td>
-        <td>{{hd.nhanVienTaoPhieu.idNhanVien}}</td>
-        <td>{{ hd.hoaDon && hd.hoaDon.idHoaDon ? hd.hoaDon.idHoaDon : 'Không có hóa đơn' }}</td>
-        <td>{{hd.trangThaiSuaChua == 1 ? "Đã hoàn thành" : "Đang thực hiện"}}</td>
-        <td>{{hd.ngayThucHien | date:'dd/MM/yyyy'}}</td>
+      <tr ng-repeat="hd in listHoaDon | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
+        <td>{{hd.idHoaDon}}</td>
+        <td>{{hd.phieuDichVuHD.idPhieuDichVu}}</td>
+        <td>{{hd.nhanVien.idNhanVien}}</td>
+        <td>{{ hd.tongTien }}</td>
+        <td>{{ hd.phuongThucThanhToan }}</td>
+        <td>{{hd.ngayTao | date:'dd/MM/yyyy'}}</td>
+        <td>{{hd.trangThaiSuaChua == 1 ? "Đã Thanh Toán" : "Chưa Thanh Toán"}}</td>
         <td>
           <button class="btn btn-outline-warning btn-sm text-black" ng-show="hd.hoaDon != null">
             <a class="text-black text-decoration-none" ng-href="#!/hoadon/{{hd.hoaDon.idHoaDon}}">Hóa Đơn</a>
