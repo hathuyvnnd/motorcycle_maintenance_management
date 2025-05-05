@@ -2,18 +2,12 @@ package com.example.controller.customer;
 
 import java.util.List;
 
+import com.example.model.*;
+import com.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.model.HoaDon;
-import com.example.model.KhachHang;
-import com.example.model.PhieuDichVu;
-import com.example.model.PhieuDichVuCT;
-import com.example.service.HoaDonService;
-import com.example.service.KhachHangService;
-import com.example.service.PhieuDichVuCTService;
-import com.example.service.PhieuDichVuService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +27,9 @@ public class HoaDonKHController {
     @Autowired
     PhieuDichVuCTService pdvctService;
 
+    @Autowired
+    TaiKhoanService taiKhoanService;
+
     // API lấy tất cả hóa đơn
     // @GetMapping("/api/hoadon")
     // public List<HoaDon> getAll() {
@@ -40,9 +37,15 @@ public class HoaDonKHController {
     // }
 
     // API lấy hóa đơn theo ID khách hàng
-    @GetMapping("/hoadonOne")
-    public List<HoaDon> getHoaDonByKH(@RequestParam("id") String id) {
-        KhachHang kh = khService.findById(id);
+    @GetMapping("/lichsu")
+    public List<HoaDon> getHoaDonByKH() {
+        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("ID lấy từ SecurityContextHolder: " + id);
+        TaiKhoan tk = taiKhoanService.findByIdTaiKhoan(id);
+        System.out.println("ID Tài Khoản: " + id);
+        KhachHang kh = khService.getByTaiKhoan(tk);
+
+        System.out.println("Tài  Khoản Khách hàng: " + kh.getIdKhachHang());
         if (kh == null) {
             System.out.println("Không Tìm thấy KH");
             return null;  // Trả về null nếu không tìm thấy khách hàng

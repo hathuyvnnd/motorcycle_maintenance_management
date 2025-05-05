@@ -68,22 +68,21 @@
             
            
             <!--Icon user-->
-            <div class="dropdown">
+            <div class="dropdown" ng-controller="NavbarController">
                 <a href="#" class="nav-link text-white dropdown-toggle" role="button" data-bs-toggle="dropdown">
                     <i class="fas fa-user-circle fa-2x"></i>
+                    <span ng-if="isLoggedIn">Wellcom,  {{ vaiTro }}:  {{ idTaiKhoan }} </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-md-end dropdown-menu-start">
-                    <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                    <li><a class="dropdown-item" href="#!/dangnhap">Đăng nhập</a></li>
-                    <li><a class="dropdown-item" href="#!/dangki">Đăng kí</a></li>
-                    <li><a class="dropdown-item" href="#!/quenmatkhau">Quên mật khẩu</a></li>
-                    <li><a class="dropdown-item" href="#!/lichsusuachua">Lịch sử sửa chữa</a></li>
-                </ul>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-start">
-                    <li><a class="dropdown-item" href="#!/dangnhap">Đăng nhập</a></li>
-                    <li><a class="dropdown-item" href="#!/dangki">Đăng kí</a></li>
-                    <li><a class="dropdown-item" href="#!/quenmatkhau">Quên mật khẩu</a></li>
+                    <!-- Nếu đã đăng nhập -->
+                    <li ng-if="isLoggedIn"><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                    <li ng-if="isLoggedIn"><a class="dropdown-item" href="#!/lichsusuachua">Lịch sử sửa chữa</a></li>
+                    <li ng-if="isLoggedIn"><a class="dropdown-item" href="#!/logout">Đăng xuất</a></li>
+
+                    <!-- Nếu chưa đăng nhập -->
+                    <li ng-if="!isLoggedIn"><a class="dropdown-item" href="#!/dangki">Đăng kí</a></li>
+                    <li ng-if="!isLoggedIn"><a class="dropdown-item" href="#!/dangnhap">Đăng nhập</a></li>
+                    <li ng-if="!isLoggedIn"><a class="dropdown-item" href="#!/quenmatkhau">Quên mật khẩu</a></li>
                 </ul>
             </div>
         </div>

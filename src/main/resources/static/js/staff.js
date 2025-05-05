@@ -1,9 +1,9 @@
-var app = angular.module("myApp", ["ngRoute"]);
-app.config(function ($routeProvider) {
+var appEmployee = angular.module("myApp", ["ngRoute"]);
+appEmployee.config(function ($routeProvider) {
 $routeProvider
-  .when("/", {
-    templateUrl: "/employee/content/hoadonstaff.html",
-  })
+  // .when("/", {
+  //   templateUrl: "/employee/content/hoadonstaff.html",
+  // })
   .when("/hoa-don", {
     templateUrl: "/employee/content/hoadonstaff.html",
   })
@@ -14,11 +14,11 @@ $routeProvider
   .when("/nhan-vien-tao-lich-hen", {
     templateUrl: "/employee/content/staffTaoLichHen.html",
   })
-  .otherwise({
-    redirectTo: "/",
-  });
+  // .otherwise({
+  //   redirectTo: "/",
+  // });
 });
-app.controller("laman", function ($http, $scope) {
+appEmployee.controller("laman", function ($http, $scope) {
 $scope.lichhen = []; // Dữ liệu lich hen
 
 $scope.isSidebarHidden = false;
@@ -222,7 +222,7 @@ $scope.toggleSidebar = function () {
 //    };
 //});
 
-app.controller("lichHenController", function ($scope, $http, $rootScope) {
+appEmployee.controller("lichHenController", function ($scope, $http, $rootScope) {
     $scope.appointments = [];
     $scope.selectedAppointment = null;
     $scope.panelTemplate = ""; // Load giao diện modal phù hợp
@@ -355,7 +355,7 @@ app.controller("lichHenController", function ($scope, $http, $rootScope) {
 });
 
 
-app.controller("TaoLichHenController", function ($scope, $http) {
+appEmployee.controller("TaoLichHenController", function ($scope, $http) {
     $scope.phone = "";
     $scope.customerExists = false;
     $scope.phoneChecked = false;

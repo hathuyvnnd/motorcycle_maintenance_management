@@ -24,5 +24,6 @@ public interface KhachHangDao extends JpaRepository<KhachHang, String> {
 
 //    @Query("SELECT kh FROM KhachHang kh where kh.email=?")
    KhachHang findKhachHangByEmail(String email);
+   KhachHang findKhachHangByTaiKhoanKH(TaiKhoan taikhoan);
 
 }
