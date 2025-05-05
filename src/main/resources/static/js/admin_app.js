@@ -74,13 +74,13 @@ appAdmin.config(function ($routeProvider) {
     .when("/type_accessory", {
       templateUrl: "admin/views/type_accessory.html",
       controller: "TypeAccessoryController",
-    })
-    .when("/", {
-      redirectTo: "/statistics",
-    })
-    .otherwise({
-      redirectTo: "/statistics",
     });
+  // .when("/", {
+  //   redirectTo: "/statistics",
+  // })
+  // .otherwise({
+  //   redirectTo: "/statistics",
+  // });
 });
 
 // ============== Service cho NhanVien ==============
