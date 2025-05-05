@@ -45,12 +45,12 @@ appAdmin.config(function ($routeProvider) {
       templateUrl: "admin/views/type_accessory.html",
       controller: "TypeAccessoryController",
     })
-    .when("/", {
-      redirectTo: "/statistics",
-    })
-    .otherwise({
-      redirectTo: "/statistics",
-    });
+    // .when("/", {
+    //   redirectTo: "/statistics",
+    // })
+    // .otherwise({
+    //   redirectTo: "/statistics",
+    // });
 });
 
 // ============== Service cho NhanVien ==============
