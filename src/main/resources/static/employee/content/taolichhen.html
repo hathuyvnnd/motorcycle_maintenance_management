@@ -1,0 +1,70 @@
+<div>
+    <h4 class="mt-4">Tìm lịch</h4>
+    <div class="row mb-2">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Bảng số xe..." />
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+    <h4 class="mt-4">Lịch hẹn ngày {{currentDay | date:'dd/MM/yyyy'}}</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Mã Số</th>
+            <th>Ngày</th>
+            <th>Bảng Số Xe</th>
+            <th>Tên</th>
+            <th>Tình trạng</th>
+            <th>Hoạt động</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="appointment in appointments">
+            <td>{{ appointment.idLichHen }}</td>
+            <td>{{ appointment.thoiGian | date:'dd/MM/yyyy' }}</td>
+            <td>{{ appointment.bienSoXe }}</td>
+            <td>{{ appointment.tenKhachHang }}</td>
+            <td>{{ appointment.trangThai }}</td>
+            <td>
+               <span ng-click="openModal(appointment)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                {{ getActionText(appointment.trangThai) }}
+            </span>
+            </td>
+            <td class="text-center">
+                <div class="dropdown">
+                <span style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                    &#8942;
+                </span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item"  ng-click="openModalXem(appointment)">Xem chi tiết</a></li>
+                        <li ng-if="canEditAppointment(appointment.trangThai)">
+                            <a class="dropdown-item" ng-click="openModalThayDoi(appointment)">Chỉnh sửa</a>
+                          </li>
+                          
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- <div class="modal fade" id="lichHenModal" tabindex="-1" aria-labelledby="lichHenModalLabel" aria-hidden="true"> -->
+        <div class="modal fade" id="lichHenModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lichHenModalLabel">Chi tiết</h5>
+                    <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div ng-include="panelTemplate"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" ng-click="closeModal()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

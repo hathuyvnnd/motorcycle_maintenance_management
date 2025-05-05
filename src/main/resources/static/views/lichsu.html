@@ -31,7 +31,7 @@
       <tr ng-repeat="hd in listHoaDon | filter: dateFilter | limitTo: itemsPerPage : (currentPage - 1) * itemsPerPage">
         <td>{{hd.idHoaDon}}</td>
         <td>{{hd.phieuDichVuHD}}</td>
-        <td>{{hd.nhanVien.idNhanVien}}</td>
+        <td>{{hd.nhanVien}}</td>
         <td>{{ hd.tongTien | number:0}} VNĐ</td>
         <td>{{ hd.phuongThucThanhToan == 1 ? "Đã Thanh Toán" : "Chưa Thanh Toán" }}</td>
         <td>{{hd.ngayTao | date:'dd/MM/yyyy'}}</td>
@@ -44,12 +44,6 @@
 
           <button class="btn btn-outline-warning btn-sm text-black" >
             <a class="text-black text-decoration-none" ng-href="#!/phieudichvu/{{hd.phieuDichVuHD}}">Phiếu Dịch Vụ</a>
-          </button>
-        
-          <button class="btn btn-outline-success btn-sm text-black">
-            <a class="text-black text-decoration-none" ng-href="#!/tinhtrangxe/{{hd.phieuDichVuHD.phieuGNX}}">
-              Tình Trạng Xe
-            </a>
           </button>
         </td>
       </tr>

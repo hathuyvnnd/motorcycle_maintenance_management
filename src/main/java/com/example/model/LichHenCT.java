@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "LichHenCT")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idLichHenCT")
 public class LichHenCT {
@@ -30,6 +33,7 @@ public class LichHenCT {
 
     @ManyToOne
     @JoinColumn(name = "IdLichHen")
+    @JsonManagedReference
     private LichHen idLichHen;
 
     @Column(name = "GhiChu")

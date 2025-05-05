@@ -2,11 +2,11 @@
   <div class="col-md-6">
     <table class="table text-center">
         <td>Mã Phiếu Dịch Vụ:</td>
-        <td>{{ phieuDichVu}}</td>
+        <td>{{ phieuDichVu.idPhieuDichVu}}</td>
       </tr>
       <tr>
         <td>Nhân Viên Tạo:</td>
-        <td>{{ phieuDichVu.nhanVienTaoPhieu.idNhanVien }}</td>
+        <td>{{ phieuDichVu.idNhanVienTaoPhieu}}</td>
       </tr>
       <tr>
         <td>Ngày Thực Hiện:</td>
@@ -29,6 +29,11 @@
       <button class="btn btn-secondary" onclick="window.history.back()">Quay Lại</button>
       <button class="btn btn-outline-warning btn-sm text-black" >
         <a class="text-black text-decoration-none" ng-href="#!/dichvuchitiet/{{phieuDichVu.idPhieuDichVu}}">Chi Tiết</a>
+      </button>
+      <button class="btn btn-outline-success btn-sm text-black">
+        <a class="text-black text-decoration-none" ng-href="#!/tinhtrangxe/{{phieuDichVu.phieuGNX.idPhieuGNX}}">
+          Tình Trạng Xe
+        </a>
       </button>
     </div>
   </div>

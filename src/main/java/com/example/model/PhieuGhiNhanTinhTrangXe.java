@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class PhieuGhiNhanTinhTrangXe {
     private String idPhieuGNX;
 
     @Column(name = "NgayNhan")
+    @Temporal(value = TemporalType.DATE)
     private Date ngayNhan;
 
     @Column(name = "MoTaTinhTrangXe")
@@ -31,6 +33,7 @@ public class PhieuGhiNhanTinhTrangXe {
     @ManyToOne
     @JoinColumn(name = "IdNhanVien")
     // @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private NhanVien nhanVien;
     @OneToOne(mappedBy = "phieuGNX")
     private PhieuDichVu phieuDichVu;

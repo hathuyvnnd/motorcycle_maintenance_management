@@ -8,6 +8,7 @@ import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
+import com.example.model.KhachHang;
 import com.example.model.LichHen;
 import com.example.model.LichHenCT;
 import com.example.service.LichHenService;
@@ -21,8 +22,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +44,9 @@ public class LichHenServiceImpl implements LichHenService {
         if (exitsById(request.getIdLichHen()))
             throw new AppException(ErrorCode.LICHHEN_TONTAI);
         LichHen lh = mapper.toLichHen(request);
-        return dao.save(lh);
-    }
+        LichHen savedLichHen = dao.save(lh);
+        System.out.println("LichHen saved with id: " + savedLichHen.getIdLichHen());  // Log the saved ID
+        return savedLichHen;    }
 
     @Override
     public LichHen updateLichHenRequest(String id, LichHenUpdateRequest request){
@@ -58,6 +62,14 @@ public class LichHenServiceImpl implements LichHenService {
     @Override
     public boolean existsByUsername(String name) {
         return false;
+    }
+
+    @Override
+    public Boolean updateTrangThai(String idLichHen, String trangThai) {
+        LichHen lh = dao.findById(idLichHen).orElseThrow(()-> new AppException(ErrorCode.LICHHEN_NOTFOUND));
+        lh.setTrangThai(trangThai);
+        dao.save(lh);
+        return true;
     }
 
     @Override
@@ -77,27 +89,27 @@ public class LichHenServiceImpl implements LichHenService {
 
     @Override
     public LichHen findById(String s) {
-        return LichHenService.super.findById(s);
+        return dao.findById(s).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
     }
 
     @Override
     public LichHen create(LichHen entity) {
-        return LichHenService.super.create(entity);
+        return dao.save(entity);
     }
 
     @Override
     public void update(LichHen entity) {
-        LichHenService.super.update(entity);
+        dao.save(entity);
     }
 
     @Override
     public void deleteById(String s) {
-        LichHenService.super.deleteById(s);
+        dao.deleteById(s);
     }
 
     @Override
     public boolean exitsById(String s) {
-        return LichHenService.super.exitsById(s);
+        return dao.existsById(s);
     }
 
     public String generateNewId() {
@@ -135,9 +147,9 @@ public class LichHenServiceImpl implements LichHenService {
 
     }
 
-    public void updateLichHenTrangThai(String bienSoXe) {
-        Date today = new Date();
-        LichHen lh = dao.findByBienSoXeAndThoiGian(bienSoXe, today);
+    public void updateLichHenTrangThai(String idLicHen) {
+        LichHen lh = dao.findById(idLicHen).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
+        System.out.println("🔄 Trước cập nhật trạng thái lịch hẹn: " + lh.getTrangThai());
         if (lh != null) {
             switch (lh.getTrangThai()) {
                 case "Đã xác nhận":
@@ -147,8 +159,11 @@ public class LichHenServiceImpl implements LichHenService {
                     lh.setTrangThai("Đang sửa chữa");
                     break;
                 case "Đang sửa chữa":
-                    lh.setTrangThai("Đã hoàn thành");
+                    lh.setTrangThai("Đã sửa chữa");
                     break;
+                case "Đã sửa chữa":
+                lh.setTrangThai("Chờ thanh toán");
+                break;
                 default:
                     System.out.println("Trạng thái không cần cập nhật.");
                     return;
@@ -214,6 +229,47 @@ public class LichHenServiceImpl implements LichHenService {
             ct.setGhiChu(ctDto.getGhiChu());
             lhctDao.save(ct);
         }
+    }
+
+    @Override
+    public List<LichHen> getLichHenChoXacNhan() {
+        Date now = new Date();
+    // return dao.findByTrangThaiAndThoiGianAfter("Chờ xác nhận", now);
+    return dao.findByTrangThai("Chờ Xác Nhận");
+    }
+
+
+
+    public List<LichHen> layTatCaLichHenNgoaiTrangThaiChinh() {
+        List<String> excludedStatuses = Arrays.asList("Chờ xác nhận", "Đã xác nhận", "Hoàn tất","Hoàn thành");
+    List<LichHen> lichHens = dao.findByTrangThaiNotIn(excludedStatuses);
+
+    // List<LichHen> filteredLichHen = lslh.stream()
+    //         .filter(lichHen -> {
+    //             String trangThai = lichHen.getTrangThai();
+    //             return !"Chờ xác nhận".equalsIgnoreCase(trangThai)
+    //                 && !"Đã xác nhận".equalsIgnoreCase(trangThai)
+    //                 && !"Hoàn tất".equalsIgnoreCase(trangThai);
+    //         })
+    //         .collect(Collectors.toList());
+
+    return lichHens;
+}
+public Boolean updateNgay(String id, Date ngay){
+    LichHen lh = dao.findById(id).orElseThrow(() -> new AppException(ErrorCode.LICHHEN_NOTFOUND));
+    lh.setThoiGian(ngay);
+    dao.save(lh);
+    return true;
+}
+
+    @Override
+    public List<LichHen> getLichHenByKh(KhachHang kh) {
+        return dao.findLichHenByIdKhachHang(kh);
+    }
+
+    @Override
+    public LichHen getLichHenById(String id) {
+        return dao.findLichHenByIdLichHen(id);
     }
 
 }

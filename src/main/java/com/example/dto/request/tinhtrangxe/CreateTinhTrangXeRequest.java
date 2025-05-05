@@ -14,6 +14,6 @@ public class CreateTinhTrangXeRequest {
     String idPhieuGNX;
     Date ngayNhan;
     String moTaTinhTrangXe;
-    String bienSoXe;
+    String idLichHen;
     String idNhanVien;
 }

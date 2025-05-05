@@ -113,6 +113,28 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         }
     }
 
+    public void update1(TaiKhoan taiKhoan) {
+        if (taiKhoanDao.existsById(taiKhoan.getIdTaiKhoan())) {
+            // Bỏ mã hóa mật khẩu ở đây
+            // Chuyển đổi đối tượng sang lớp con tương ứng dựa vào giá trị vaiTro
+            if ("Nhân viên".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanNhanVien)) {
+                TaiKhoanNhanVien tkNV = new TaiKhoanNhanVien();
+                BeanUtils.copyProperties(taiKhoan, tkNV);
+                taiKhoan = tkNV;
+            } else if ("Khách hàng".equalsIgnoreCase(taiKhoan.getVaiTro())
+                    && !(taiKhoan instanceof TaiKhoanKhachHang)) {
+                TaiKhoanKhachHang tkKH = new TaiKhoanKhachHang();
+                BeanUtils.copyProperties(taiKhoan, tkKH);
+                taiKhoan = tkKH;
+            } else if ("Admin".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanAdmin)) {
+                TaiKhoanAdmin tkAdmin = new TaiKhoanAdmin();
+                BeanUtils.copyProperties(taiKhoan, tkAdmin);
+                taiKhoan = tkAdmin;
+            }
+            taiKhoanDao.save(taiKhoan);
+        }
+    }
+
     @Override
     public void deleteById(String id) {
         taiKhoanDao.deleteById(id);
@@ -123,6 +145,12 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         return taiKhoanDao.existsById(id);
     }
 
+    public TaiKhoan doiMatKhauStaff(String id, String mk){
+        TaiKhoan tk = findById(id);
+        tk.setMatKhau(mk);
+        taiKhoanDao.save(tk);
+        return tk;
+    }
     //////////////////// Hàm tạo mật khẩu random////////////////////////////////////
     @Override
     public String randomPassword(int length) {
