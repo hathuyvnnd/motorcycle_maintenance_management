@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class TaiKhoan {
     private String idTaiKhoan;
 
     @Column(name = "MatKhau", length = 100)
+    @JsonIgnore
     private String matKhau;
 
     @Column(name = "TrangThai")

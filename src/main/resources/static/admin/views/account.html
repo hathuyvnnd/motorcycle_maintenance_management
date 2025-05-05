@@ -39,19 +39,35 @@
             <input
               type="text"
               class="form-control"
+              name="idTaiKhoanEmployee"
               id="idTaiKhoanEmployee"
               placeholder="ID Tài Khoản"
               ng-model="newAccountEmployee.idTaiKhoan"
-              ng-disabled="isEditModeEmployee" />
+              ng-disabled="isEditModeEmployee"
+              ng-pattern="/^[a-zA-Z0-9_]{5,20}$/"
+              required />
+            <div
+              class="text-danger"
+              ng-show="employeeForm.idTaiKhoanEmployee.$dirty && employeeForm.idTaiKhoanEmployee.$invalid">
+              <small ng-show="employeeForm.idTaiKhoanEmployee.$error.required">ID tài khoản không được để trống.</small>
+              <small ng-show="employeeForm.idTaiKhoanEmployee.$error.pattern">
+                ID chỉ gồm chữ, số, gạch dưới (5–20 ký tự).
+              </small>
+            </div>
           </div>
+
           <label for="matKhauNhanVien" class="col-sm-2 col-form-label">Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
             <input
+              name="matKhauNhanVien"
               ng-attr-type="{{ showPasswordEmployee ? 'text' : 'password' }}"
               class="form-control"
               id="matKhauNhanVien"
               placeholder="Mật Khẩu"
               ng-model="newAccountEmployee.matKhau"
+              ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/"
+              ng-minlength="6"
+              ng-maxlength="20"
               required />
             <span
               class="position-absolute top-50 end-0 translate-middle-y pe-3"
@@ -59,19 +75,36 @@
               ng-click="showPasswordEmployee = !showPasswordEmployee">
               <i class="fa" ng-class="{'fa-eye': !showPasswordEmployee, 'fa-eye-slash': showPasswordEmployee}"></i>
             </span>
+            <div
+              class="text-danger"
+              ng-show="employeeForm.matKhauNhanVien.$dirty && employeeForm.matKhauNhanVien.$invalid">
+              <small ng-show="employeeForm.matKhauNhanVien.$error.required">Mật khẩu không được để trống.</small>
+              <small ng-show="employeeForm.matKhauNhanVien.$error.pattern">
+                Phải chứa ít nhất 1 chữ và 1 số (6–20 ký tự).
+              </small>
+            </div>
           </div>
         </div>
+
         <div class="row mb-3">
           <label for="trangThaiNhanVien" class="col-sm-2 col-form-label">Trạng Thái</label>
           <div class="col-sm-4">
             <select class="form-select" id="trangThaiNhanVien" ng-model="newAccountEmployee.trangThai" required>
+              <option value="" disabled selected>-- Chọn trạng thái --</option>
               <option ng-value="true">Hoạt động</option>
               <option ng-value="false">Không hoạt động</option>
             </select>
+            <div
+              class="text-danger"
+              ng-show="employeeForm.trangThaiNhanVien.$dirty && employeeForm.trangThaiNhanVien.$invalid">
+              <small>Vui lòng chọn trạng thái.</small>
+            </div>
           </div>
+
           <label for="nhapLaiMatKhauNhanVien" class="col-sm-2 col-form-label">Nhập Lại Mật Khẩu</label>
           <div class="col-sm-4 position-relative">
             <input
+              name="nhapLaiMatKhauNhanVien"
               ng-attr-type="{{ showRePasswordEmployee ? 'text' : 'password' }}"
               class="form-control"
               id="nhapLaiMatKhauNhanVien"
@@ -84,8 +117,14 @@
               ng-click="showRePasswordEmployee = !showRePasswordEmployee">
               <i class="fa" ng-class="{'fa-eye': !showRePasswordEmployee, 'fa-eye-slash': showRePasswordEmployee}"></i>
             </span>
+            <div
+              class="text-danger"
+              ng-show="employeeForm.nhapLaiMatKhauNhanVien.$dirty && employeeForm.nhapLaiMatKhauNhanVien.$invalid">
+              <small>Mật khẩu xác nhận không được để trống.</small>
+            </div>
           </div>
         </div>
+
         <div class="row mb-3" ng-if="newAccountEmployee.matKhau && newAccountEmployee.nhapLaiMatKhau">
           <div class="col-sm-12">
             <span ng-if="newAccountEmployee.matKhau === newAccountEmployee.nhapLaiMatKhau" class="text-success">
@@ -96,16 +135,18 @@
             </span>
           </div>
         </div>
+
         <div>
           <button
             type="submit"
             class="btn btn-primary me-2"
-            ng-disabled="newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau">
+            ng-disabled="employeeForm.$invalid || newAccountEmployee.matKhau !== newAccountEmployee.nhapLaiMatKhau">
             {{ isEditModeEmployee ? "Cập Nhật Tài Khoản" : "Thêm Tài Khoản" }}
           </button>
           <button type="button" class="btn btn-secondary" ng-click="resetEmployeeForm()">Reset</button>
         </div>
       </form>
+
       <div class="mt-5">
         <h3><b>Danh sách tài khoản nhân viên</b></h3>
         <table class="table table-bordered mt-3">
@@ -113,7 +154,7 @@
             <tr>
               <th scope="col">STT</th>
               <th scope="col">ID Tài Khoản</th>
-              <th scope="col">Mật Khẩu</th>
+              <!-- <th scope="col">Mật Khẩu</th> -->
               <th scope="col">Vai Trò</th>
               <th scope="col">Trạng Thái</th>
               <th scope="col">Chức Năng</th>
@@ -123,11 +164,11 @@
             <tr ng-repeat="account in getPaginatedEmployeeAccounts() track by $index">
               <th scope="row">{{ $index + 1 + (currentPageEmployee - 1) * pageSizeEmployee }}</th>
               <td>{{ account.idTaiKhoan }}</td>
-              <td>{{ account.matKhau }}</td>
+              <!-- <td>{{ account.matKhau }}</td> -->
               <td>{{ account.vaiTro }}</td>
               <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
               <td>
-                <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'employee')">Sửa</button>
+                <!-- <button class="btn btn-warning btn-sm" ng-click="selectAccount(account, 'employee')">Sửa</button> -->
                 <button class="btn btn-danger btn-sm" ng-click="deleteAccount(account.idTaiKhoan, 'employee')">
                   Xóa
                 </button>

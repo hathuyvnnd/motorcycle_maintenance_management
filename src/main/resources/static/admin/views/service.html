@@ -4,85 +4,85 @@
   <!-- Form thêm mới / sửa dịch vụ -->
   <form class="mt-4" name="serviceForm" novalidate ng-submit="saveService()">
     <div class="row mb-3">
-      <!-- <label for="serviceId" class="col-sm-2 col-form-label">ID Dịch Vụ</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="serviceId"
-          placeholder="ID Dịch Vụ"
-          ng-model="newService.idDichVu"
-          ng-disabled="isEditMode" />
-      </div> -->
       <label for="serviceName" class="col-sm-2 col-form-label">Tên Dịch Vụ</label>
       <div class="col-sm-4">
         <input
           type="text"
           class="form-control"
           id="serviceName"
+          name="serviceName"
           placeholder="Tên Dịch Vụ"
-          ng-model="newService.tenDichVu" />
+          ng-model="newService.tenDichVu"
+          required />
+        <div class="text-danger" ng-show="serviceForm.serviceName.$dirty && serviceForm.serviceName.$invalid">
+          <small ng-show="serviceForm.serviceName.$error.required">Vui lòng nhập tên dịch vụ.</small>
+        </div>
       </div>
+
       <label for="servicePrice" class="col-sm-2 col-form-label">Giá Dịch Vụ</label>
       <div class="col-sm-4">
         <input
-          type="text"
+          type="number"
           class="form-control"
           id="servicePrice"
+          name="servicePrice"
           placeholder="Giá Dịch Vụ"
-          ng-model="newService.giaDichVu" />
+          ng-model="newService.giaDichVu"
+          min="0"
+          required />
+        <div class="text-danger" ng-show="serviceForm.servicePrice.$dirty && serviceForm.servicePrice.$invalid">
+          <small ng-show="serviceForm.servicePrice.$error.required">Vui lòng nhập giá dịch vụ.</small>
+          <small ng-show="serviceForm.servicePrice.$error.number || serviceForm.servicePrice.$error.min">
+            Giá dịch vụ phải là số không âm.
+          </small>
+        </div>
       </div>
     </div>
+
     <div class="row mb-3">
       <label for="serviceDescription" class="col-sm-2 col-form-label">Mô Tả</label>
       <div class="col-sm-4">
         <textarea
           class="form-control"
           id="serviceDescription"
+          name="serviceDescription"
           placeholder="Mô Tả"
           ng-model="newService.moTa"></textarea>
       </div>
+
       <label for="serviceStatus" class="col-sm-2 col-form-label">Trạng Thái</label>
       <div class="col-sm-4">
-        <select class="form-select" id="serviceStatus" ng-model="newService.trangThai" required>
+        <select class="form-select" id="serviceStatus" name="serviceStatus" ng-model="newService.trangThai" required>
+          <option value="" disabled selected>-- Chọn trạng thái --</option>
           <option ng-value="true">Hoạt động</option>
           <option ng-value="false">Không hoạt động</option>
         </select>
+        <div class="text-danger" ng-show="serviceForm.serviceStatus.$dirty && serviceForm.serviceStatus.$invalid">
+          <small>Vui lòng chọn trạng thái.</small>
+        </div>
       </div>
     </div>
-    <!-- <div class="row mb-3">
-      <label for="serviceDescription" class="col-sm-2 col-form-label">Mô Tả</label>
-      <div class="col-sm-4">
-        <textarea
-          class="form-control"
-          id="serviceDescription"
-          placeholder="Mô Tả"
-          ng-model="newService.moTa"></textarea>
-      </div>
-    </div> -->
+
     <div class="row mb-3">
       <label for="serviceImage" class="col-sm-2 col-form-label">Hình Ảnh</label>
       <div class="col-sm-4">
         <input
           type="file"
           class="form-control"
-          id="profileImage"
+          id="serviceImage"
           accept="image/*"
           onchange="angular.element(this).scope().setFile(this.files)" />
       </div>
       <div class="col-sm-2">
-        <!-- Hiển thị tên file hiện tại nếu có -->
         <p ng-if="newService.hinhAnh">File hiện tại: {{ newService.hinhAnh }}</p>
       </div>
     </div>
+
     <div>
-      <button
-        type="submit"
-        class="btn btn-primary me-2"
-        ng-disabled="serviceForm.$invalid || (newService.matKhau && newService.matKhau !== newService.nhapLaiMatKhau)">
+      <button type="submit" class="btn btn-primary me-2" ng-disabled="serviceForm.$invalid">
         {{ isEditMode ? "Cập Nhật Dịch Vụ" : "Thêm Dịch Vụ" }}
       </button>
-      <button type="button" class="btn btn-secondary" ng-click="newService = {}; isEditMode = false;">Reset</button>
+      <button type="button" class="btn btn-secondary" ng-click="resetServiceForm()">Reset</button>
     </div>
   </form>
 

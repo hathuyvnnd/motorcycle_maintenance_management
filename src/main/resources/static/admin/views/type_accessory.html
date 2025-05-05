@@ -11,14 +11,28 @@
           type="text"
           class="form-control"
           id="tenLoaiPT"
+          name="tenLoaiPT"
           placeholder="Tên Loại Phụ Tùng"
           ng-model="newTypeAccessory.tenLoaiPT"
           required />
+        <div class="text-danger" ng-show="loaiPhuTungForm.tenLoaiPT.$touched && loaiPhuTungForm.tenLoaiPT.$invalid">
+          <small ng-show="loaiPhuTungForm.tenLoaiPT.$error.required">Vui lòng nhập tên loại phụ tùng.</small>
+        </div>
       </div>
+
       <!-- Mô Tả -->
       <label for="moTa" class="col-sm-2 col-form-label">Mô Tả</label>
       <div class="col-sm-4">
-        <textarea class="form-control" id="moTa" placeholder="Mô Tả" ng-model="newTypeAccessory.moTa"></textarea>
+        <textarea
+          class="form-control"
+          id="moTa"
+          name="moTa"
+          placeholder="Mô Tả"
+          ng-model="newTypeAccessory.moTa"
+          ng-maxlength="255"></textarea>
+        <div class="text-danger" ng-show="loaiPhuTungForm.moTa.$touched && loaiPhuTungForm.moTa.$invalid">
+          <small ng-show="loaiPhuTungForm.moTa.$error.maxlength">Tối đa 255 ký tự.</small>
+        </div>
       </div>
     </div>
 
@@ -26,7 +40,17 @@
       <!-- Ghi Chú -->
       <label for="ghiChu" class="col-sm-2 col-form-label">Ghi Chú</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" id="ghiChu" placeholder="Ghi Chú" ng-model="newTypeAccessory.ghiChu" />
+        <input
+          type="text"
+          class="form-control"
+          id="ghiChu"
+          name="ghiChu"
+          placeholder="Ghi Chú"
+          ng-model="newTypeAccessory.ghiChu"
+          ng-maxlength="255" />
+        <div class="text-danger" ng-show="loaiPhuTungForm.ghiChu.$touched && loaiPhuTungForm.ghiChu.$invalid">
+          <small ng-show="loaiPhuTungForm.ghiChu.$error.maxlength">Tối đa 255 ký tự.</small>
+        </div>
       </div>
     </div>
 
@@ -34,7 +58,10 @@
       <button type="submit" class="btn btn-primary me-2" ng-disabled="loaiPhuTungForm.$invalid">
         {{ isEditMode ? "Cập Nhật Loại Phụ Tùng" : "Thêm Loại Phụ Tùng" }}
       </button>
-      <button type="button" class="btn btn-secondary" ng-click="newTypeAccessory = {}; isEditMode = false;">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        ng-click="newTypeAccessory = {}; isEditMode = false; loaiPhuTungForm.$setPristine(); loaiPhuTungForm.$setUntouched();">
         Reset
       </button>
     </div>
