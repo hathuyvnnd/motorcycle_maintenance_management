@@ -1,4 +1,29 @@
 var appEmployee = angular.module("myApp", ["ngRoute"]);
+appEmployee.factory("AuthInterceptor", [
+    "$q", "$window", function($q, $window) {
+      return {
+        request: function(config) {
+          const token = sessionStorage.getItem("token");
+          if (token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = "Bearer " + token;
+            console.log("Staff: token added to header",token);
+          }
+          return config;
+        },
+        responseError: function(rejection) {
+          if (rejection.status === 401) {
+            $window.location.href = "/views/dangnhap.html";
+          }
+          return $q.reject(rejection);
+        }
+      };
+    }
+  ]);
+  
+  appEmployee.config(["$httpProvider", function($httpProvider) {
+    $httpProvider.interceptors.push("AuthInterceptor");
+  }]);
 appEmployee.config(function ($routeProvider) {
 $routeProvider
   .when("/", {
@@ -44,11 +69,23 @@ $routeProvider
     templateUrl: "/employee/content/lichhenchuahoantat.html",
     controller: "lHChuaHoanTatController",
   })
+  .when("/logout", {
+    templateUrl: "index.html",
+    controller: "LogoutController",
+  })
   // .otherwise({
   //   redirectTo: "/",
   // });
 });
-f.controller("laman", function ($http, $scope) {
+appEmployee.controller("laman", function ($http, $scope) {
+    $scope.logout = function () {
+        // Xóa token và các thông tin liên quan
+        sessionStorage.clear();      // hoặc: sessionStorage.removeItem("token"); v.v...
+        localStorage.clear();
+    
+        // Điều hướng về trang chủ
+        window.location.href = "/";
+    };
 $scope.lichhen = []; // Dữ liệu lich hen
 localStorage.setItem("idNhanVien", "NV001");
 $scope.isSidebarHidden = false;
@@ -117,7 +154,7 @@ $scope.chucNangList = [
         console.warn("Chưa có ID nhân viên trong localStorage");
     }
 });
-app.filter('vnd', function () {
+appEmployee.filter('vnd', function () {
     return function (input) {
       if (isNaN(input)) return input;
       return parseInt(input).toLocaleString('vi-VN') + 'đ';
@@ -316,7 +353,7 @@ app.filter('vnd', function () {
 //    };
 //});
 
-appEmployee.controller("lichHenController", function ($scope, $http, $rootScope) {
+appEmployee.controller("lichHenController", function ($scope, $http, $rootScope, $q) {
     $scope.appointments = [];
     $scope.selectedAppointment = null;
     $scope.panelTemplate = ""; // Load giao diện modal phù hợp
@@ -895,7 +932,7 @@ $scope.taoHoaDon = function () {
     console.log("tesst", $scope.tesst);
     $scope.loadAppointments();
     $scope.loadDichVu = function () {
-            $http.get("http://localhost:8081/api/admin/dichvu")
+            $http.get("http://localhost:8081/api/staff/phieu-dich-vu/get-all")
                 .then(function (response) {
                     if (response.data) {
                         console.log("da goi api lay dich vu");
@@ -910,7 +947,7 @@ $scope.taoHoaDon = function () {
                 });
         };
     $scope.loadPhuTung = function () {
-        $http.get("http://localhost:8081/api/admin/phutung")
+        $http.get("http://localhost:8081/api/staff/phieu-dich-vu/get-all-phu-tung")
             .then(function (response) {
                 if (response.data) {
                     console.log("da goi api lay phu tung");
@@ -1028,7 +1065,7 @@ appEmployee.controller("TaoLichHenController", function ($scope, $http) {
 
     // Hàm tải danh sách dịch vụ
     $scope.loadDichVu = function () {
-        $http.get("http://localhost:8081/api/admin/dichvu")
+        $http.get("http://localhost:8081/api/staff/phieu-dich-vu/get-all")
             .then(function (response) {
                 if (response.data) {
                     $scope.dichVuList = response.data; // Gán danh sách dịch vụ vào scope
@@ -1043,7 +1080,7 @@ appEmployee.controller("TaoLichHenController", function ($scope, $http) {
 
     $scope.loadDichVu(); // Tải danh sách dịch vụ khi khởi tạo controller
 });
-app.directive('fileModel', ['$parse', function ($parse) {
+appEmployee.directive('fileModel', ['$parse', function ($parse) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
@@ -1058,7 +1095,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
       }
     };
   }]);
-app.controller("thongTinStaffController", function ($scope, $http) {
+  appEmployee.controller("thongTinStaffController", function ($scope, $http) {
     $scope.previewUrl = null;
     $scope.selectedFileName = "";
     
@@ -1141,60 +1178,41 @@ app.controller("thongTinStaffController", function ($scope, $http) {
 });
 
 
-  app.controller("doiMatKhauStaffController", function ($scope, $http, $rootScope) {
+appEmployee.controller("doiMatKhauStaffController", function ($scope, $http, $rootScope) {
     $scope.matKhauMoi = "";
     $scope.xacNhanMatKhauMoi = "";
     $scope.loiDoiMatKhau = "";
     $scope.doiMatKhauThanhCong = "";
 
     $scope.doiMatKhau = function () {
-        $scope.loiDoiMatKhau = "";
-        $scope.doiMatKhauThanhCong = "";
+      
     
-        if (!$scope.matKhauCu || !$scope.matKhauMoi || !$scope.xacNhanMatKhauMoi) {
-            $scope.loiDoiMatKhau = "Vui lòng nhập đầy đủ thông tin.";
-            return;
-        }
-    
-        if ($scope.matKhauMoi !== $scope.xacNhanMatKhauMoi) {
-            $scope.loiDoiMatKhau = "Mật khẩu mới và xác nhận không trùng khớp.";
-            return;
-        }
-    
-        const idTaiKhoan = "0912345678"; // hoặc lấy từ $rootScope.currentUser.taiKhoanNV
+        const idTaiKhoan = sessionStorage.getItem("idTaiKhoan");
+        console.log("idtaikhoan lay tu ss", idTaiKhoan);
     
         // Bước 1: Lấy tài khoản để xác minh mật khẩu cũ
-        $http.get("http://localhost:8081/api/staff/doi-mat-khau", {
-            params: { id: idTaiKhoan }
+        $http.put("http://localhost:8081/api/staff/doi-mat-khau/doi", {
+            id: idTaiKhoan,
+            matKhauCu: $scope.matKhauCu,
+            matKhauMoi: $scope.matKhauMoi
         }).then(function (res) {
-            const taiKhoan = res.data.result;
-            if (!taiKhoan || taiKhoan.matKhau !== $scope.matKhauCu) {
-                $scope.loiDoiMatKhau = "Mật khẩu cũ không chính xác.";
+            const msg = res.data.message;
+            if (msg === "Mật khẩu cũ không chính xác.") {
+                $scope.loiDoiMatKhau = msg;
                 return;
             }
-    
-            // Bước 2: Gọi API đổi mật khẩu
-            $http.put("http://localhost:8081/api/staff/doi-mat-khau", null, {
-                params: {
-                    id: idTaiKhoan,
-                    mk: $scope.matKhauMoi
-                }
-            }).then(function () {
-                $scope.doiMatKhauThanhCong = "Đổi mật khẩu thành công!";
-                $scope.matKhauCu = "";
-                $scope.matKhauMoi = "";
-                $scope.xacNhanMatKhauMoi = "";
-            }).catch(function () {
-                $scope.loiDoiMatKhau = "Đổi mật khẩu thất bại!";
-            });
-    
+        
+            $scope.doiMatKhauThanhCong = msg || "Đổi mật khẩu thành công!";
+            $scope.matKhauCu = "";
+            $scope.matKhauMoi = "";
+            $scope.xacNhanMatKhauMoi = "";
         }).catch(function () {
-            $scope.loiDoiMatKhau = "Không thể xác minh mật khẩu cũ.";
+            $scope.loiDoiMatKhau = "Có lỗi xảy ra khi đổi mật khẩu.";
         });
     };
     
 });
-app.controller("traCuuPhieuGhiNhanController", function ($scope, $http) {
+appEmployee.controller("traCuuPhieuGhiNhanController", function ($scope, $http) {
     // $rootScope.pageTitle = "Tra cứu Phiếu",
     $scope.keyword = "";
     $scope.appointments = [];
@@ -1223,7 +1241,7 @@ app.controller("traCuuPhieuGhiNhanController", function ($scope, $http) {
     };
 
 });
-app.controller('traCuuHoaDonController', function($scope, $http) {
+appEmployee.controller('traCuuHoaDonController', function($scope, $http) {
     $scope.invoices = [];
     $scope.keyword = '';
     
@@ -1249,7 +1267,7 @@ app.controller('traCuuHoaDonController', function($scope, $http) {
     };
 });
 
-app.controller('lHChoXacNhanController', function($scope, $http) {
+appEmployee.controller('lHChoXacNhanController', function($scope, $http) {
     $http.get('/api/lich-hen/cho-xac-nhan')
     .then(function (response) {
         if (response.data && response.data.result) {
@@ -1321,7 +1339,7 @@ app.controller('lHChoXacNhanController', function($scope, $http) {
     
         console.log("mmm",$scope.lschoxacnhanFiltered );
 });
-app.controller('lHChuaHoanTatController', function($scope, $http) {
+appEmployee.controller('lHChuaHoanTatController', function($scope, $http) {
     $scope.currentPage = 1;
     $scope.pageSize = 10;
     
@@ -1420,13 +1438,13 @@ app.controller('lHChuaHoanTatController', function($scope, $http) {
     console.log("mmm", $scope.lschuahoantatFiltered);
 });
 
-app.filter('startFrom', function () {
+appEmployee.filter('startFrom', function () {
     return function (input, start) {
         if (!input || !input.length) return [];
         return input.slice(start);
     };
 });
-app.controller("homeStaffController", function ($http, $scope) {
+appEmployee.controller("homeStaffController", function ($http, $scope) {
     $scope.thongKeLichHenTheoTuan = function() {
         const today = new Date();
         const startOfWeek = new Date(today);
@@ -1669,4 +1687,8 @@ app.controller("homeStaffController", function ($http, $scope) {
         $scope.phanTramDaHoanThanh = tinhPhanTram(daHoanThanhHomNay, daHoanThanhHomQua);
     };
     
+});
+appEmployee.controller("LogoutController", function ($scope, $location) {
+    AuthService.logout();
+    $location.path("/");
 });

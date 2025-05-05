@@ -26,12 +26,18 @@ public class DangNhapController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody TaiKhoan taikhoanLogin) {
+        System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getIdTaiKhoan());
+        System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getMatKhau());
         TaiKhoan tk = taiKhoanService.findById(taikhoanLogin.getIdTaiKhoan());
-
+        System.out.println("mat khau khi tim kiem" + tk.getMatKhau());
         if (tk != null && passwordEncoder.matches(taikhoanLogin.getMatKhau(),tk.getMatKhau())) {
             String token = jwt.generateToken(tk.getIdTaiKhoan(), tk.getVaiTro());
             return ResponseEntity.ok(new TaiKhoanDN(token, tk.getVaiTro(),tk.getIdTaiKhoan()));
+//            return ResponseEntity.status(400).body("So sanh mat khau thông tin đăng nhập");
+
         }
+
+
         return ResponseEntity.status(401).body("Sai thông tin đăng nhập");
     }
 

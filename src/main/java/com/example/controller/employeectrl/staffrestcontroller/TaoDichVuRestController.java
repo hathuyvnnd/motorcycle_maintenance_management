@@ -22,6 +22,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class TaoDichVuRestController {
  PhieuDichVuCTServiceImpl phieuDichVuCTService;
  PhuTungServiceImpl phuTungServiceImpl;
  PhieuSuDungPTCTImpl phieuSuDungPhuTungCTservice;
+
  @GetMapping("/phieu-dich-vu")
  ApiReponse<PhieuDichVu> findDichVu(@RequestParam String id){
   ApiReponse<PhieuDichVu> reponse = new ApiReponse<>();
@@ -42,6 +44,14 @@ public class TaoDichVuRestController {
   reponse.setResult(pdv);
   return reponse;
  }
+@GetMapping("get-all")
+    public List<DichVu> getAllDichVu() {
+        return dichVuService.findAll();
+    }
+@GetMapping("get-all-phu-tung")
+    public List<PhuTung> getAllPhuTung() {
+        return phuTungServiceImpl.findAll();
+    }
 
  @PostMapping("/tao-phieu")
  public ApiReponse<?> taoPhieu(@RequestBody PhieuDichVuCreateRequest request) {

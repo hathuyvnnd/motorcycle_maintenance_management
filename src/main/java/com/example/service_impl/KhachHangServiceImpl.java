@@ -134,7 +134,7 @@ public class KhachHangServiceImpl implements KhachHangService {
                 .hoTen(hoTen)
                 .diaChi(diaChi)
                 .email(email)
-                .hinhAnh(hinhAnh)
+                // .hinhAnh(hinhAnh)
                 .ngayDangKi(new Date())
                 .build();
 

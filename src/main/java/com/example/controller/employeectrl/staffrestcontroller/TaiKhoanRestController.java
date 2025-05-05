@@ -10,11 +10,13 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.dto.reponse.ApiReponse;
+import com.example.dto.request.taikhoan.DoiMatKhauRequest;
 import com.example.model.LichHen;
 import com.example.model.NhanVien;
 import com.example.model.TaiKhoan;
@@ -41,6 +44,7 @@ import lombok.experimental.FieldDefaults;
 public class TaiKhoanRestController {
     TaiKhoanServiceImpl tksv;
     NhanVienServiceImpl nvsv;
+     PasswordEncoder passwordEncoder;
     @GetMapping
     ApiReponse<TaiKhoan> findTaiKhoanByIdNhanVien(@RequestParam String id){
         ApiReponse<TaiKhoan> reponse = new ApiReponse<>();
@@ -54,6 +58,29 @@ public class TaiKhoanRestController {
         reponse.setResult(tksv.doiMatKhauStaff(id, mk));
         return reponse;
     }
+    @PutMapping("/doi")
+public ApiReponse<?> doiMatKhauStaff(@RequestBody DoiMatKhauRequest request) {
+    ApiReponse<TaiKhoan> response = new ApiReponse<>();
+    TaiKhoan tk = tksv.findById(request.getId());
+
+    if (tk == null) {
+        response.setMessage("Không tìm thấy tài khoản.");
+        return response;
+    }
+
+    if (!passwordEncoder.matches(request.getMatKhauCu(), tk.getMatKhau())) {
+        response.setMessage("Mật khẩu cũ không chính xác.");
+        return response;
+    }
+
+    String encodedNewPassword = passwordEncoder.encode(request.getMatKhauMoi());
+    tk.setMatKhau(encodedNewPassword);
+    tksv.update1(tk);
+    response.setResult(tk);
+    response.setMessage("Đổi mật khẩu thành công.");
+    return response;
+}
+
         private final String UPLOAD_DIR = "src/main/resources/static/images/nhan-vien/";
 
         @PostMapping("/upload-image")

@@ -323,7 +323,7 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
     };
 }]);
 
-app.controller("DangNhapController", function ($scope, $http, $location,$rootScope, AuthService) {
+app.controller("DangNhapController", function ($scope, $http, $location,$rootScope,$window, AuthService) {
 
     $scope.dangNhap = function () {
         const formData = {
@@ -339,11 +339,13 @@ app.controller("DangNhapController", function ($scope, $http, $location,$rootSco
                 $rootScope.isLoggedIn = true;
                 $rootScope.idTaiKhoan = response.data.idTaiKhoan;
                 $rootScope.vaiTro = response.data.vaiTro;
-
+                console.log("TOKEN:", sessionStorage.getItem("token"));
+                console.log("VAI TRÒ:", sessionStorage.getItem("vaiTro"));
+                console.log("ID TÀI KHOẢN:", sessionStorage.getItem("idTaiKhoan"));
                 if (response.data.vaiTro === 'Admin') {
                     $location.path("/statistics");
                 } else if (response.data.vaiTro === 'Nhân viên') {
-                    $location.path("/hoa-don");
+                    $window.location.href = "/giaodien/nhanvien";
                 } else if (response.data.vaiTro === 'Khách hàng') {
                     $location.path("/");
                 }

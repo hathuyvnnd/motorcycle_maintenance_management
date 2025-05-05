@@ -1242,7 +1242,7 @@ appAdmin.controller("InvoiceController", function ($scope, HoaDonService) {
 // app.controller("StatisticsController", function ($scope) {
 //   $scope.pageTitle = "Thống kê";
 // });
-app.controller("StatisticsController", [
+appAdmin.controller("StatisticsController", [
   "$scope",
   "$http",
   function ($scope, $http) {
@@ -1302,7 +1302,7 @@ app.controller("StatisticsController", [
     };
   },
 ]);
-app.filter("sumByKey", function () {
+appAdmin.filter("sumByKey", function () {
   return function (data, key) {
     if (!angular.isArray(data) || !key) {
       return 0;
@@ -1310,7 +1310,4 @@ app.filter("sumByKey", function () {
     return data.reduce(function (sum, item) {
       return sum + (parseFloat(item[key]) || 0);
     }, 0);
-  };
-appAdmin.controller("StatisticsController", function ($scope) {
-  $scope.pageTitle = "Thống kê";
-});
+  }});
