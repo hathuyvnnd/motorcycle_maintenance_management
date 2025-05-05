@@ -208,7 +208,7 @@
             <tr>
               <th scope="col">STT</th>
               <th scope="col">ID Tài Khoản</th>
-              <th scope="col">Mật Khẩu</th>
+              <!-- <th scope="col">Mật Khẩu</th> -->
               <th scope="col">Vai Trò</th>
               <th scope="col">Trạng Thái</th>
             </tr>
@@ -217,7 +217,7 @@
             <tr ng-repeat="account in getPaginatedCustomerAccounts() track by $index">
               <th scope="row">{{ $index + 1 + (currentPageCustomer - 1) * pageSizeCustomer }}</th>
               <td>{{ account.idTaiKhoan }}</td>
-              <td>{{ account.matKhau }}</td>
+              <!-- <td>{{ account.matKhau }}</td> -->
               <td>{{ account.vaiTro }}</td>
               <td>{{ account.trangThai ? 'Hoạt động' : 'Không hoạt động' }}</td>
             </tr>

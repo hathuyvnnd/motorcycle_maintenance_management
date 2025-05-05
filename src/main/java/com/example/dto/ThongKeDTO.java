@@ -2,13 +2,13 @@ package com.example.dto;
 
 import java.time.LocalDate;
 
-public class RevenueStatsDTO {
+public class ThongKeDTO {
     private String idHoaDon;
     private String hoTen;
     private LocalDate ngayTao;
     private Double tongTien;
 
-    public RevenueStatsDTO(String idHoaDon, String hoTen, LocalDate ngayTao, Double tongTien) {
+    public ThongKeDTO(String idHoaDon, String hoTen, LocalDate ngayTao, Double tongTien) {
         this.idHoaDon = idHoaDon;
         this.hoTen = hoTen;
         this.ngayTao = ngayTao;

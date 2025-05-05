@@ -5,7 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.example.dto.RevenueStatsDTO;
+import com.example.dto.ThongKeDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class RevenueStatsRepository {
+public class ThongKeDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
-    public Page<RevenueStatsDTO> findRevenueStatsByDateRange(LocalDate startDate, LocalDate endDate, int page,
+    public Page<ThongKeDTO> findRevenueStatsByDateRange(LocalDate startDate, LocalDate endDate, int page,
             int size) {
         // Tạo StoredProcedureQuery
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("ThongKeDoanhThu");
@@ -45,7 +45,7 @@ public class RevenueStatsRepository {
         List<Object[]> resultList = query.getResultList();
 
         // Ánh xạ kết quả sang DTO
-        List<RevenueStatsDTO> dtos = resultList.stream().map(result -> new RevenueStatsDTO(
+        List<ThongKeDTO> dtos = resultList.stream().map(result -> new ThongKeDTO(
                 (String) result[0], // IdHoaDon
                 (String) result[3], // HoTen
                 ((java.sql.Date) result[1]).toLocalDate(), // NgayTao
