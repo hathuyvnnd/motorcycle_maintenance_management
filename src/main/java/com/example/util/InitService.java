@@ -43,7 +43,7 @@ public class InitService {
                     System.out.println("🔐 Sau mã hóa - ID: " + tk.getIdTaiKhoan() + ", encoded: " + encoded);
 
                     tk.setMatKhau(encoded);
-                    taiKhoanService.update1(tk);
+                    taiKhoanService.update(tk);
 
                     // Kiểm tra lại sau update
                     TaiKhoan tkCheck = taiKhoanService.findById(tk.getIdTaiKhoan());

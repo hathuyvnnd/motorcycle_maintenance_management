@@ -30,6 +30,7 @@ public class DichVuAdminAPI {
 
     // Đường dẫn lưu file ảnh
     private final String uploadDir = "C:/TN/Workspace/MotorBike/motorcycle_maintenance_management/src/main/resources/static/images/dich_vu/";
+    // String uploadDir = "src/main/resources/static/images/";
 
     // 1. Lấy tất cả DichVu
     @GetMapping

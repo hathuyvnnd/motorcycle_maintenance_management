@@ -115,7 +115,7 @@
         <tr ng-repeat="employee in getPaginatedData()">
           <th scope="row">{{ $index + 1 + (currentPage - 1) * pageSize }}</th>
           <td>{{ employee.idNhanVien }}</td>
-          <td>{{ employee.taiKhoanNV.idTaiKhoan }}</td>
+          <td>{{ employee.taiKhoanNV}}</td>
           <td>{{ employee.ten }}</td>
           <!-- <td>{{ employee.soDienThoai }}</td> -->
           <td>{{ employee.email }}</td>

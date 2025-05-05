@@ -29,8 +29,6 @@ public class DangNhapController {
     public ResponseEntity<?> login(@RequestBody TaiKhoan taikhoanLogin) {
         System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getIdTaiKhoan());
         System.out.println("Mật khẩu nhận từ client: " + taikhoanLogin.getMatKhau());
-        System.out.println("TK Login" + taikhoanLogin.getIdTaiKhoan());
-        System.out.println("MK Login" + taikhoanLogin.getMatKhau());
         TaiKhoan tk = taiKhoanService.findById(taikhoanLogin.getIdTaiKhoan());
         System.out.println("mat khau khi tim kiem" + tk.getMatKhau());
         if (tk != null && passwordEncoder.matches(taikhoanLogin.getMatKhau(),tk.getMatKhau())) {

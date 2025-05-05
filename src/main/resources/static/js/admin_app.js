@@ -35,6 +35,14 @@ appAdmin.controller("MainController", function ($scope) {
   $scope.toggleSidebar = function () {
     $scope.isSidebarHidden = !$scope.isSidebarHidden;
   };
+  $scope.logout = function () {
+    // Xóa token và các thông tin liên quan
+    sessionStorage.clear();      // hoặc: sessionStorage.removeItem("token"); v.v...
+    localStorage.clear();
+
+    // Điều hướng về trang chủ
+    window.location.href = "/";
+};
 });
 
 appAdmin.config(function ($routeProvider) {
@@ -142,6 +150,7 @@ appAdmin.controller("EmployeeController", function ($scope, NhanVienService, Acc
     NhanVienService.getAllNhanVien().then(
       function (response) {
         $scope.employees = response.data;
+        console.log("danh sach nhan vien",$scope.employees );
         $scope.totalItems = $scope.employees.length;
       },
       function (error) {
