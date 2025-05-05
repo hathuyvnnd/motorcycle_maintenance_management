@@ -1,6 +1,6 @@
 package com.example.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 @AllArgsConstructor
@@ -46,7 +42,8 @@ public class LichHen {
     @Column(name = "BienSoXe")
     private String bienSoXe;
 
-    @OneToMany(mappedBy = "idLichHen")
+    @OneToMany(mappedBy = "idLichHen", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
     Set<LichHenCT> lichHenCTList;
 
     @OneToOne(mappedBy = "lichHen")

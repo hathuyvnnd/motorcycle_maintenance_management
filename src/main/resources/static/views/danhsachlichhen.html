@@ -1,0 +1,51 @@
+<h2>Danh sách Lịch Hẹn</h2>
+<table class="table table-bordered mt-3 text-center">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Biển Số Xe</th>
+        <th>Loại Xe</th>
+        <th>Thời Gian</th>
+        <th>Trạng Thái</th>
+        <th>Phiếu GNX</th>
+        <th>Hành Động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="lh in dsLichHen">
+        <td>{{lh.idLichHen}}</td>
+        <td>{{lh.bienSoXe}}</td>
+        <td>{{lh.idLoaiXe}}</td>
+        <td>{{lh.thoiGian | date:'dd/MM/yyyy'}}</td>
+        <td>{{lh.trangThai}}</td>
+        <td>{{lh.phieuGNX.idPhieuGNX}}</td>
+        <td>
+            <button class="btn btn-outline-success btn-sm text-black">
+            <a class="text-black text-decoration-none" ng-href="#!/tinhtrangxe/{{lh.phieuGNX.idPhieuGNX}}">
+                Tình Trạng Xe
+            </a>
+            </button>
+<!--            <button ng-click="hienThiChiTiet(lh)">Hiển thị Chi Tiết</button>-->
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Hiển thị chi tiết -->
+<div ng-if="lichHenDuocChon">
+    <h4>Chi tiết lịch hẹn: {{lichHenDuocChon.idLichHen}}</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID Dịch Vụ</th>
+            <th>Ghi chú</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="ct in dsChiTiet">
+            <td>{{ct.idDichVu.tenDichVu}}</td>
+            <td>{{ct.ghiChu}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

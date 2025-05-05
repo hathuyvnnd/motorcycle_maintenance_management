@@ -82,6 +82,10 @@ app.config(function ($routeProvider) {
       templateUrl: "views/tinhtrangxe.html",
       controller: "TinhTrangXeController",
     })
+      .when("/danhsachlichhen", {
+        templateUrl: "views/danhsachlichhen.html",
+        controller: "DanhSachLichHenController",
+      })
     .when("/timkiem/:keyword", {
       templateUrl: "views/timkiem.html",
       controller: "TimKiemController",
@@ -489,6 +493,21 @@ app.controller("TinhTrangXeController", function ($scope, $http, $routeParams) {
       console.error("Lỗi khi tải tình trạng xe", error);
     });
 });
+
+app.controller("DanhSachLichHenController",function($scope, $http, $routeParams){
+  $scope.dsLichHen = [];
+  $scope.lichHenDuocChon = null;
+
+  $http.get("/api/khachhang/dslichhen").then(function (res) {
+    $scope.dsLichHen = res.data;
+  });
+
+  $scope.hienThiChiTiet = function (lichHen) {
+    // Nếu dữ liệu chưa có chi tiết, có thể fetch từ server nếu lazy-loading
+    $scope.lichHenDuocChon = lichHen;
+  };
+
+})
 
 /////////////////////////////////////////////////////////////////
 //Hàm tìm kiếm

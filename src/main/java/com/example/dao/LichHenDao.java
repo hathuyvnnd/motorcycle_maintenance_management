@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.dto.reponse.LichHenResponse;
+import com.example.model.KhachHang;
 import com.example.model.LichHen;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,4 +51,6 @@ public interface LichHenDao extends JpaRepository<LichHen, String> {
 
 
     List<LichHen> findByThoiGianBetween(Date start, Date end);
+    List<LichHen> findLichHenByIdKhachHang(KhachHang kh);
+    LichHen findLichHenByIdLichHen(String id);
 }

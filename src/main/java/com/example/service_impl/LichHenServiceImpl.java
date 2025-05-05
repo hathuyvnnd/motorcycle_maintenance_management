@@ -8,6 +8,7 @@ import com.example.dto.request.lichhen.LichHenUpdateRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.mapper.LichHenMapper;
+import com.example.model.KhachHang;
 import com.example.model.LichHen;
 import com.example.model.LichHenCT;
 import com.example.service.LichHenService;
@@ -237,6 +238,8 @@ public class LichHenServiceImpl implements LichHenService {
     return dao.findByTrangThai("Chờ Xác Nhận");
     }
 
+
+
     public List<LichHen> layTatCaLichHenNgoaiTrangThaiChinh() {
         List<String> excludedStatuses = Arrays.asList("Chờ xác nhận", "Đã xác nhận", "Hoàn tất","Hoàn thành");
     List<LichHen> lichHens = dao.findByTrangThaiNotIn(excludedStatuses);
@@ -258,6 +261,15 @@ public Boolean updateNgay(String id, Date ngay){
     dao.save(lh);
     return true;
 }
-    
+
+    @Override
+    public List<LichHen> getLichHenByKh(KhachHang kh) {
+        return dao.findLichHenByIdKhachHang(kh);
+    }
+
+    @Override
+    public LichHen getLichHenById(String id) {
+        return dao.findLichHenByIdLichHen(id);
+    }
 
 }

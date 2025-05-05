@@ -86,9 +86,9 @@ appAdmin.config(function ($routeProvider) {
     .when("/index", {
       redirectTo: "/statistics",
     })
-    .otherwise({
-      redirectTo: "/index/statistics",
-    });
+    // .otherwise({
+    //   redirectTo: "/index/statistics",
+    // });
 });
 
 // ============== Service cho NhanVien ==============

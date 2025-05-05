@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -32,6 +33,7 @@ public class LichHenCT {
 
     @ManyToOne
     @JoinColumn(name = "IdLichHen")
+    @JsonManagedReference
     private LichHen idLichHen;
 
     @Column(name = "GhiChu")

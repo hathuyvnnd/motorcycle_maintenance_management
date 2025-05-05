@@ -51,7 +51,7 @@ public class PhieuDichVuCTServiceImpl implements PhieuDichVuCTService {
 
     @Override
     public List<PhieuDichVuCT> getPhieuDichVuCTByPDV(PhieuDichVu phieuDichVu) {
-        return List.of();
+        return dao.findByPhieuDichVu(phieuDichVu);
     }
 
     @Override
