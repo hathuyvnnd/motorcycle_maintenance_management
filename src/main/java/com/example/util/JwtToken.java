@@ -27,4 +27,17 @@ public class JwtToken {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+            Date exp = claims.getExpiration();
+            return exp.after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
