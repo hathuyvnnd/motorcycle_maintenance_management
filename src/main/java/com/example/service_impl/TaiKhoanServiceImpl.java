@@ -89,9 +89,9 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     public void update(TaiKhoan taiKhoan) {
         if (taiKhoanDao.existsById(taiKhoan.getIdTaiKhoan())) {
             // Mã hóa mật khẩu nếu được cung cấp
-            if (taiKhoan.getMatKhau() != null && !taiKhoan.getMatKhau().isEmpty()) {
-                taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
-            }
+//            if (taiKhoan.getMatKhau() != null && !taiKhoan.getMatKhau().isEmpty()) {
+//                taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
+//            }
             // Chuyển đổi đối tượng sang lớp con tương ứng dựa vào giá trị vaiTro
             if ("Nhân viên".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanNhanVien)) {
                 TaiKhoanNhanVien tkNV = new TaiKhoanNhanVien();
