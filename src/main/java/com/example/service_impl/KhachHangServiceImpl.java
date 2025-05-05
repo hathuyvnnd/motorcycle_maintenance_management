@@ -14,6 +14,7 @@ import com.example.service.KhachHangService;
 import com.example.service.NhanVienService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class KhachHangServiceImpl implements KhachHangService {
     private KhachHangDao khachHangDao;
     @Autowired
     TaiKhoanDao tkDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // // Constructor injection
     // public KhachHangServiceImpl(KhachHangDao khachHangDao) {
@@ -113,11 +116,12 @@ public class KhachHangServiceImpl implements KhachHangService {
         if (tkDao.existsById(soDienThoai)) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
+        // Mã hóa mật khẩu trước khi lưu
+        String encodedPassword = passwordEncoder.encode(matKhau);
         // Tạo tài khoản khách hàng (sử dụng entity con để đảm bảo phân biệt VaiTro)
         TaiKhoanKhachHang taiKhoanKH = TaiKhoanKhachHang.builder()
                 .idTaiKhoan(soDienThoai)
-                .matKhau(matKhau)
+                .matKhau(encodedPassword)
                 .trangThai(true)
                 .build();
 
@@ -142,4 +146,8 @@ public class KhachHangServiceImpl implements KhachHangService {
     public KhachHang getByEmail(String email){
         return khachHangDao.findKhachHangByEmail(email);
     }
+
+    @Override
+    public KhachHang getByTaiKhoan(TaiKhoan tk) {return khachHangDao.findKhachHangByTaiKhoanKH(tk);}
+
 }

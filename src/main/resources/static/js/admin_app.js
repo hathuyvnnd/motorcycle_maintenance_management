@@ -1,13 +1,13 @@
-var app = angular.module("megaviaApp", ["ngRoute"]);
+var appAdmin = angular.module("megaviaApp", ["ngRoute"]);
 
-app.controller("MainController", function ($scope) {
+appAdmin.controller("MainController", function ($scope) {
   $scope.isSidebarHidden = false;
   $scope.toggleSidebar = function () {
     $scope.isSidebarHidden = !$scope.isSidebarHidden;
   };
 });
 
-app.config(function ($routeProvider) {
+appAdmin.config(function ($routeProvider) {
   $routeProvider
     .when("/statistics", {
       templateUrl: "admin/views/statistics.html",
@@ -54,7 +54,7 @@ app.config(function ($routeProvider) {
 });
 
 // ============== Service cho NhanVien ==============
-app.factory("NhanVienService", function ($http) {
+appAdmin.factory("NhanVienService", function ($http) {
   var baseUrl = "/api/admin/nhanvien";
   return {
     // 1. Lấy tất cả nhân viên
@@ -95,7 +95,7 @@ app.factory("NhanVienService", function ($http) {
 });
 
 // ============== Controller cho trang quản lý nhân viên ==============
-app.controller("EmployeeController", function ($scope, NhanVienService, AccountService) {
+appAdmin.controller("EmployeeController", function ($scope, NhanVienService, AccountService) {
   $scope.pageTitle = "Quản lý nhân viên";
   $scope.employees = [];
   $scope.newEmployee = { taiKhoanNV: {} };
@@ -269,7 +269,7 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
 });
 
 // ============== Service cho Customer ==============
-app.factory("CustomerService", function ($http) {
+appAdmin.factory("CustomerService", function ($http) {
   var baseUrl = "/api/admin/khachhang";
   return {
     // 1. Lấy tất cả khách hàng
@@ -283,7 +283,7 @@ app.factory("CustomerService", function ($http) {
   };
 });
 // ============== Controller cho Customer ==============
-app.controller("CustomerController", function ($scope, CustomerService) {
+appAdmin.controller("CustomerController", function ($scope, CustomerService) {
   $scope.customers = [];
   $scope.newCustomer = { taiKhoanKH: {} };
   $scope.isEditMode = false;
@@ -324,7 +324,7 @@ app.controller("CustomerController", function ($scope, CustomerService) {
   $scope.getAllCustomers();
 });
 // ============== Service cho Account ==============
-app.factory("AccountService", function ($http) {
+appAdmin.factory("AccountService", function ($http) {
   var baseUrl = "/api/admin/taikhoan";
   return {
     // 1. Lấy tất cả tài khoản
@@ -355,7 +355,7 @@ app.factory("AccountService", function ($http) {
 });
 
 // ============== Controller cho Account ==============
-app.controller("AccountController", function ($scope, AccountService) {
+appAdmin.controller("AccountController", function ($scope, AccountService) {
   $scope.pageTitle = "Quản lý tài khoản";
   $scope.accounts = [];
   // Danh sách tài khoản theo vai trò
@@ -572,7 +572,7 @@ app.controller("AccountController", function ($scope, AccountService) {
 });
 
 // ============== Service cho Dịch vụ ==============
-app.factory("DichVuService", function ($http) {
+appAdmin.factory("DichVuService", function ($http) {
   var baseUrl = "/api/admin/dichvu";
   return {
     // 1. Lấy tất cả dịch vụ
@@ -613,7 +613,7 @@ app.factory("DichVuService", function ($http) {
 });
 
 // ============== Controller cho Dịch vụ ==============
-app.controller("ServiceController", function ($scope, DichVuService) {
+appAdmin.controller("ServiceController", function ($scope, DichVuService) {
   $scope.pageTitle = "Quản lý dịch vụ";
   $scope.services = [];
   $scope.newService = { trangThai: true };
@@ -744,7 +744,7 @@ app.controller("ServiceController", function ($scope, DichVuService) {
   $scope.getAllServices();
 });
 // ============== Service cho Loại phụ tùng ==============
-app.factory("LoaiPhuTungService", function ($http) {
+appAdmin.factory("LoaiPhuTungService", function ($http) {
   var baseUrl = "/api/admin/loaiphutung";
   return {
     getAllLoaiPT: function () {
@@ -770,7 +770,7 @@ app.factory("LoaiPhuTungService", function ($http) {
   };
 });
 // ============== Controller cho Loại Phụ tùng ==============
-app.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) {
+appAdmin.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) {
   $scope.pageTitle = "Quản lý loại phụ tùng";
   $scope.type_accessorys = [];
   $scope.newTypeAccessory = {};
@@ -869,7 +869,7 @@ app.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) 
   $scope.getAllTypeAccessorys();
 });
 // ============== Service cho Phụ tùng ==============
-app.factory("PhuTungService", function ($http) {
+appAdmin.factory("PhuTungService", function ($http) {
   var baseUrl = "/api/admin/phutung";
   return {
     // 1. Lấy tất cả phụ tùng
@@ -910,7 +910,7 @@ app.factory("PhuTungService", function ($http) {
 });
 
 // ============== Controller cho Phụ tùng ==============
-app.controller("AccessoryController", function ($scope, PhuTungService, DichVuService, LoaiPhuTungService) {
+appAdmin.controller("AccessoryController", function ($scope, PhuTungService, DichVuService, LoaiPhuTungService) {
   $scope.pageTitle = "Quản lý phụ tùng";
   $scope.accessorys = [];
   $scope.newAccessory = { tinhTrang: true };
@@ -1114,7 +1114,7 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
 });
 
 // ============== Service cho Booking ==============
-app.factory("LichHenService", function ($http) {
+appAdmin.factory("LichHenService", function ($http) {
   var baseUrl = "/api/admin/lich_hen";
   return {
     // Lấy tất cả lịch hẹn
@@ -1124,7 +1124,7 @@ app.factory("LichHenService", function ($http) {
   };
 });
 // ============== Controller cho Booking ==============
-app.controller("BookingController", function ($scope, LichHenService) {
+appAdmin.controller("BookingController", function ($scope, LichHenService) {
   $scope.bookings = [];
   $scope.newBooking = {};
   // $scope.isEditMode = false;
@@ -1165,7 +1165,7 @@ app.controller("BookingController", function ($scope, LichHenService) {
   $scope.getAllLichHen();
 });
 // ============== Service cho hoá đơn ==============
-app.factory("HoaDonService", function ($http) {
+appAdmin.factory("HoaDonService", function ($http) {
   var baseUrl = "/api/admin/hoa_don";
   return {
     // Lấy tất cả hoá đơn
@@ -1175,7 +1175,7 @@ app.factory("HoaDonService", function ($http) {
   };
 });
 // ============== Controller cho hoá đơn ==============
-app.controller("InvoiceController", function ($scope, HoaDonService) {
+appAdmin.controller("InvoiceController", function ($scope, HoaDonService) {
   $scope.invoices = [];
   $scope.newInvoice = {};
   // $scope.isEditMode = false;
@@ -1215,6 +1215,6 @@ app.controller("InvoiceController", function ($scope, HoaDonService) {
   };
   $scope.getAllHoaDon();
 });
-app.controller("StatisticsController", function ($scope) {
+appAdmin.controller("StatisticsController", function ($scope) {
   $scope.pageTitle = "Thống kê";
 });
