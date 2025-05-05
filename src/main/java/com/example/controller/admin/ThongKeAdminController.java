@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.RevenueStatsDTO;
-import com.example.service.RevenueStatsService;
+import com.example.dto.ThongKeDTO;
+import com.example.service.ThongKeService;
 
 @RestController
 @RequestMapping("/api/revenue-stats")
-public class RevenueStatsController {
+public class ThongKeAdminController {
 
     @Autowired
-    private RevenueStatsService revenueStatsService;
+    private ThongKeService revenueStatsService;
 
     @GetMapping
-    public Page<RevenueStatsDTO> getRevenueStats(
+    public Page<ThongKeDTO> getRevenueStats(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(value = "page", defaultValue = "1") int page,
