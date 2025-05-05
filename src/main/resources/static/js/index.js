@@ -1,28 +1,31 @@
-var app = angular.module("megavia", ["ngRoute","megaviaApp","myApp"]);
+var app = angular.module("megavia", ["ngRoute", "megaviaApp", "myApp"]);
 app.factory("AuthInterceptor", ["$q", "$window", "AuthService", function ($q, $window, AuthService) {
     return {
         request: function (config) {
             const token = sessionStorage.getItem("token");
-            const vaiTro = sessionStorage.getItem("vaiTro");
             if (token) {
                 config.headers.Authorization = "Bearer " + token;
+                console.log("Token added to header: Bearer " + token);
+            } else {
+                console.log("No token found in sessionStorage");
             }
             return config;
         },
         responseError: function (rejection) {
-            // Nếu server trả về lỗi 401 (Unauthorized), nghĩa là token không hợp lệ hoặc hết hạn
             if (rejection.status === 401) {
-                // Gọi hàm logout và chuyển hướng người dùng về trang đăng nhập
                 AuthService.logout();
                 $window.location.href = '/views/dangnhap.html';
+            } else if (rejection.status === 403) {
+                alert("Bạn không có quyền truy cập vào tài nguyên này!");
             }
             return $q.reject(rejection);
         }
     };
 }]);
-app.config(function ($httpProvider) {
+
+app.config(["$httpProvider", function ($httpProvider) {
     $httpProvider.interceptors.push("AuthInterceptor");
-});
+}]);
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/", {
@@ -323,7 +326,7 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
     };
 }]);
 
-app.controller("DangNhapController", function ($scope, $http, $location,$rootScope, AuthService) {
+app.controller("DangNhapController", function ($scope, $http,$window, $location,$rootScope, AuthService) {
 
     $scope.dangNhap = function () {
         const formData = {
@@ -341,7 +344,7 @@ app.controller("DangNhapController", function ($scope, $http, $location,$rootSco
                 $rootScope.vaiTro = response.data.vaiTro;
 
                 if (response.data.vaiTro === 'Admin') {
-                    $location.path("/statistics");
+                    $window.location.href = "/admin";
                 } else if (response.data.vaiTro === 'Nhân viên') {
                     $location.path("/hoa-don");
                 } else if (response.data.vaiTro === 'Khách hàng') {

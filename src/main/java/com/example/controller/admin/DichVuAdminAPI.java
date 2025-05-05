@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,18 +33,21 @@ public class DichVuAdminAPI {
 
     // 1. Lấy tất cả DichVu
     @GetMapping
+    @PreAuthorize("hasAuthority('Admin')")
     public List<DichVu> getAllDichVu() {
         return dichVuService.findAll();
     }
 
     // 2. Lấy 1 DichVu theo ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public DichVu getOne(@PathVariable String id) {
         return dichVuService.findById(id);
     }
 
     // 3. Thêm mới DichVu (kèm file)
     @PostMapping("/upload")
+    @PreAuthorize("hasAuthority('Admin')")
     public DichVu create(@RequestPart("dichVu") DichVu dv,
             @RequestPart("file") MultipartFile file) throws IOException {
         // Xử lý lưu file vào thư mục images
@@ -58,6 +62,7 @@ public class DichVuAdminAPI {
 
     // 4a. Cập nhật dịch vụ KHÔNG kèm file
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public DichVu update(@PathVariable String id, @RequestBody DichVu dv) {
         dv.setIdDichVu(id);
         dichVuService.update(dv);
@@ -66,6 +71,7 @@ public class DichVuAdminAPI {
 
     // 4b. Cập nhật dịch vụ CÓ kèm file
     @PutMapping("/updateWithFile/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public DichVu updateWithFile(
             @PathVariable String id,
             @RequestPart("dichVu") DichVu dv,
@@ -91,6 +97,7 @@ public class DichVuAdminAPI {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public void delete(@PathVariable String id) {
         dichVuService.deleteById(id);
     }

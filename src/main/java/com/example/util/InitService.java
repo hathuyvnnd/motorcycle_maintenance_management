@@ -22,10 +22,18 @@ public class InitService {
         List<TaiKhoan> danhSach = taiKhoanService.findAll();
         for (TaiKhoan tk : danhSach) {
             String rawPassword = tk.getMatKhau();
+            System.out.println("📌 Trước mã hóa - ID: " + tk.getIdTaiKhoan() + ", raw: " + rawPassword);
+
             if (!rawPassword.startsWith("$2a$")) {
                 String encoded = passwordEncoder.encode(rawPassword);
+                System.out.println("🔐 Sau mã hóa - ID: " + tk.getIdTaiKhoan() + ", encoded: " + encoded);
+
                 tk.setMatKhau(encoded);
                 taiKhoanService.update(tk);
+
+                // Kiểm tra lại sau update
+                TaiKhoan tkCheck = taiKhoanService.findById(tk.getIdTaiKhoan());
+                System.out.println("📦 DB lưu lại - ID: " + tkCheck.getIdTaiKhoan() + ", mật khẩu: " + tkCheck.getMatKhau());
             }
         }
         System.out.println("✅ Đã mã hóa các mật khẩu chưa mã hóa.");

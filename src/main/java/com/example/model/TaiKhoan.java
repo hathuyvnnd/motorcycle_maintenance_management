@@ -27,7 +27,7 @@ public class TaiKhoan {
     private String idTaiKhoan;
 
     @Column(name = "MatKhau", length = 100)
-    @JsonIgnore
+//    @JsonIgnore
     private String matKhau;
 
     @Column(name = "TrangThai")
