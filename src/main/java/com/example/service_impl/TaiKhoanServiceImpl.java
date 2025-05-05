@@ -156,7 +156,7 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     }
 
     @Override
-    public TaiKhoan findByIdTaiKhoan(String id){return taiKhoanDao.findTaiKhoanByIdTaiKhoan(id); }
-
-
+    public TaiKhoan findByIdTaiKhoan(String id) {
+        return taiKhoanDao.findTaiKhoanByIdTaiKhoan(id);
+    }
 }
