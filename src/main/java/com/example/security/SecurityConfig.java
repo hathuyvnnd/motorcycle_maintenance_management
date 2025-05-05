@@ -34,8 +34,8 @@ public class SecurityConfig {
                         .requestMatchers("/","/#!/",
                                 "/views/**","/index.html",
                                 "/js/**", "/css/**",
-                                "/images/**",
-                                "/api/auth/login","/api/dangky",
+                                "/images/**","/timkiem/**",
+                                "/api/auth/login","/dangnhap","/api/dangky",
                                 "/api/khachhang/loaiphutung","/api/khachhang/dichvu","/api/khachhang/forgot-password",
                                 "/admin/**","/employee/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("Admin")

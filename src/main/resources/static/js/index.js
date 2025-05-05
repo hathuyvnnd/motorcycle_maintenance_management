@@ -2,8 +2,9 @@ var app = angular.module("megavia", ["ngRoute", "megaviaApp", "myApp"]);
 app.factory("AuthInterceptor", [
   "$q",
   "$window",
+  "$location",
   "AuthService",
-  function ($q, $window, AuthService) {
+  function ($q, $window,$location, AuthService) {
     return {
       request: function (config) {
         const token = sessionStorage.getItem("token");
@@ -16,12 +17,14 @@ app.factory("AuthInterceptor", [
         return config;
       },
       responseError: function (rejection) {
-        if (rejection.status === 401) {
-          AuthService.logout();
-          $window.location.href = "/views/dangnhap.html";
-        } else if (rejection.status === 403) {
+        // if (rejection.status === 401) {
+        //   AuthService.logout();
+        //   $location.path("/dangnhap");
+        // }
+         if (rejection.status === 403 || rejection.status === 401) {
           alert("Bạn không có quyền truy cập vào tài nguyên này!");
-          $window.location.href = "/views/dangnhap.html";
+          AuthService.logout();
+           $location.path("/dangnhap");
         }
         return $q.reject(rejection);
       },
