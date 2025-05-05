@@ -37,10 +37,11 @@ public class PhieuDichVuController {
 //        return pdvService.getAllDichVus();
 //    }
 
-    // @GetMapping("/api/lichsu")
-    // public List<PhieuDichVu> getPDVByKH(@RequestParam("idKhachHang") String idKhachHang) {
-    //     return pdvService.getListPDVByKh(idKhachHang);
-    // }
+    @GetMapping("/phieudichvu")
+    public PhieuDichVu getPhieuDichVuByHD(@RequestParam("idPhieuDichVu") String idPhieuDichVu){
+        return pdvService.getByIdPDV(idPhieuDichVu);
+        }
+
     @GetMapping("/chitiet")
 public ResponseEntity<?> getChiTietDV(@RequestParam("idPhieuDichVu") String idPhieuDichVu) {
     try {
