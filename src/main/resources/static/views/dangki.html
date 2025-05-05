@@ -54,11 +54,6 @@
                 <span ng-show="dangKyForm.email.$error.email">Email không hợp lệ.</span>
             </div>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Hình ảnh URL:</label>
-            <input type="text" class="form-control" ng-model="khachHang.hinhAnh" name="hinhAnh">
-        </div>
         <div class="alert alert-success" ng-show="success">{{message}}</div>
         <div class="alert alert-danger" ng-show="!success">{{message}}</div>
         <button type="submit" class="btn btn-primary" ng-disabled="dangKyForm.$invalid">Đăng Ký</button>

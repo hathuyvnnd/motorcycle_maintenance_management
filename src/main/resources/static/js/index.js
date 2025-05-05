@@ -290,7 +290,6 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
                 hoTen: $scope.khachHang.hoTen,
                 diaChi: $scope.khachHang.diaChi,
                 email: $scope.khachHang.email,
-                hinhAnh: $scope.khachHang.hinhAnh
             };
 
             // Gửi yêu cầu đăng ký
