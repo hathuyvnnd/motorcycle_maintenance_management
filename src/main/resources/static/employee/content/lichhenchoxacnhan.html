@@ -1,0 +1,45 @@
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div>
+    <h4 class="mt-4">Lịch Hẹn Đang Chờ Xác Nhận</h4>
+    <div class="row mb-2">
+        <div class="input-group">
+            <!-- <input type="date" class="form-control" ng-model="ngayChon" />
+            <button class="btn btn-primary" ng-click="timLichTheoNgay()">Lọc lịch hẹn</button> -->
+            <input type="date" class="form-control" ng-model="ngayChon" ng-change="timLichTheoNgay()"/> 
+            <!-- <label for="datePicker">Chọn ngày:</label> -->
+            <!-- <input type="text" class="form-control" id="datePicker" ng-model="ngayChon" ng-change="timLichTheoNgay()"> -->
+        </div>
+    </div>
+    <h4 class="mt-4">Lịch Hẹn</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+        <th>Mã Số</th>
+            <th>Ngày</th>
+            <th>Bảng Số Xe</th>
+            <th>Tên</th>
+            <th>Trạng Thái</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="choxacnhan in lschoxacnhanFiltered |orderBy:'thoiGian'">
+            <td>{{ choxacnhan.idLichHen }}</td>
+            <td>{{ choxacnhan.thoiGian | date:'dd/MM/yyyy' }}</td>
+            <td>{{ choxacnhan.bienSoXe }}</td>
+            <td>{{ choxacnhan.tenKhachHang }}</td>
+            <td>{{ choxacnhan.trangThai }}</td>
+            <td> <a ng-click="xacNhanLichHen(choxacnhan)" class="text-secondary"> Xác nhận</a></td>
+        </tr>
+        <tr ng-if="choxacnhan.length === 0">
+            <td colspan="4" class="text-center text-dark-emphasis">Không có phiếu ghi nhận nào.</td>
+        </tr>
+        </tbody>
+    </table>      
+</div>

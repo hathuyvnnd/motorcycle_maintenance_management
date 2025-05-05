@@ -2,6 +2,7 @@ package com.example.service_impl;
 
 import com.example.dao.PhieuGhiNhanTinhTrangXeDao;
 import com.example.dto.request.tinhtrangxe.CreateTinhTrangXeRequest;
+import com.example.dto.request.tinhtrangxe.UpdateTinhTrangRequest;
 import com.example.exception.AppException;
 import com.example.exception.ErrorCode;
 import com.example.model.HoaDon;
@@ -15,10 +16,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @Service
 public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService {
     PhieuGhiNhanTinhTrangXeDao dao;
@@ -85,5 +87,26 @@ public class PhieuTinhTrangServiceImpl implements PhieuGhiNhanTinhTrangXeService
         PhieuGhiNhanTinhTrangXe pttx = mapper.toPhieuTinhTrangXe(request);
         return dao.save(pttx);
     }
+    public PhieuGhiNhanTinhTrangXe findPhieuByLichHen(String lichHen){
+        return dao.findByLichHen_IdLichHen(lichHen);
+    }
+
+    @Override
+    public List<PhieuGhiNhanTinhTrangXe> searchByBienSoXeKeyword(String keyword) {
+        // TODO Auto-generated method stub
+        return dao.searchByBienSoXeKeyword(keyword);
+    }
+    @Override
+    public PhieuGhiNhanTinhTrangXe updateGhiChu(UpdateTinhTrangRequest request){
+        PhieuGhiNhanTinhTrangXe entity = dao.findByLichHen_IdLichHen(request.getIdLichHen());
+        if (entity == null) {
+            throw new RuntimeException("Không tìm thấy phiếu GNX cho lịch hẹn này!");
+        }
+    
+        mapper.updatePhieuTinhTrangXe(request, entity); // Dùng mapper update vào entity cũ
+        return dao.save(entity);
+    }
+   
+
 
 }

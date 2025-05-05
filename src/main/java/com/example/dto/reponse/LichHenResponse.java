@@ -18,4 +18,5 @@ public class LichHenResponse {
     String ghiChu;
     String dichVu;
     String tenKhachHang;
+    String soDienThoai;
 }

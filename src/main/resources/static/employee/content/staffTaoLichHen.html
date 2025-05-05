@@ -1,20 +1,20 @@
-
-
-<div ng-controller="TaoLichHenController">
+<div>
     <h2 class="mb-4">Tạo Lịch Hẹn Mới</h2>
 
     <!-- Nhập số điện thoại -->
     <div class="mb-3">
         <label class="form-label">Số điện thoại</label>
-        <input type="tel" class="form-control" ng-model="phone" placeholder="Nhập số điện thoại" required>
-        <button class="btn btn-primary mt-2" ng-click="checkPhone()">Kiểm tra</button>
+        <div class="input-group">
+            <input type="tel" class="form-control" ng-model="phone" placeholder="Nhập số điện thoại" required>
+            <button class="btn btn-primary" ng-click="checkPhone()">Kiểm tra</button>
+        </div>
     </div>
 
     <!-- Nhập tên khách hàng (Tự động điền nếu có tài khoản) -->
     <div class="mb-3">
         <label class="form-label">Tên khách hàng</label>
         <input type="text" class="form-control" ng-model="tenKhachHang" placeholder="Nhập tên khách hàng"
-               ng-disabled="customerExists"> <!-- Nếu có tài khoản thì khóa -->
+               ng-disabled="customerExists">
     </div>
 
     <!-- Chọn loại xe -->
@@ -43,5 +43,35 @@
         <textarea class="form-control" ng-model="moTa" rows="3" placeholder="Mô tả sơ bộ tình trạng xe..."></textarea>
     </div>
 
-    <button class="btn btn-success" ng-click="taoLichHen()">Lưu Lịch Hẹn</button>
+    <div class="mb-3">
+        <label class="form-label">Chọn dịch vụ</label>
+        <div class="input-group">
+            <select ng-model="selectedService" class="form-select" ng-options="dichVu as dichVu.tenDichVu for dichVu in dichVuList track by dichVu.idDichVu">
+                <option value="">-- Chọn dịch vụ --</option>
+            </select>
+            <button class="btn btn-primary" ng-click="addService()">Thêm</button>
+        </div>
+    </div>
+
+    <h5>Dịch vụ đã chọn</h5>
+    <table class="table table-bordered mt-3" ng-if="services.length">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên dịch vụ</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="service in services track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{ service.tenDichVu }}</td>
+            <td><button class="btn btn-danger btn-sm" ng-click="removeService($index)">Xóa</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-center" ng-if="services.length === 0">Chưa có dịch vụ nào được thêm</p>
+
+    <!-- Nút tạo lịch hẹn -->
+    <button class="btn btn-success mt-3" ng-click="taoLichHen()">Tạo Lịch Hẹn</button>
 </div>

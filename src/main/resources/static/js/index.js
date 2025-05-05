@@ -2,9 +2,8 @@ var app = angular.module("megavia", ["ngRoute", "megaviaApp", "myApp"]);
 app.factory("AuthInterceptor", [
   "$q",
   "$window",
-  "$location",
   "AuthService",
-  function ($q, $window,$location, AuthService) {
+  function ($q, $window, AuthService) {
     return {
       request: function (config) {
         const token = sessionStorage.getItem("token");
@@ -17,14 +16,12 @@ app.factory("AuthInterceptor", [
         return config;
       },
       responseError: function (rejection) {
-        // if (rejection.status === 401) {
-        //   AuthService.logout();
-        //   $location.path("/dangnhap");
-        // }
-         if (rejection.status === 403 || rejection.status === 401) {
-          alert("Bạn không có quyền truy cập vào tài nguyên này!");
+        if (rejection.status === 401) {
           AuthService.logout();
-           $location.path("/dangnhap");
+          $window.location.href = "/views/dangnhap.html";
+        } else if (rejection.status === 403) {
+          alert("Bạn không có quyền truy cập vào tài nguyên này!");
+          $window.location.href = "/views/dangnhap.html";
         }
         return $q.reject(rejection);
       },
@@ -363,9 +360,8 @@ app.controller("DangNhapController", function ($scope, $http, $window, $location
 
         if (response.data.vaiTro === "Admin") {
           $window.location.href = "/admin";
-          window.location.href = "/admin";
         } else if (response.data.vaiTro === "Nhân viên") {
-          $location.path("/hoa-don");
+            $window.location.href = "/giaodien/nhanvien";
         } else if (response.data.vaiTro === "Khách hàng") {
           $location.path("/");
         }
