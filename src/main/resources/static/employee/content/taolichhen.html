@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div>
     <h4 class="mt-4">Tìm lịch</h4>
     <div class="row mb-2">
@@ -41,6 +43,9 @@
                         <li ng-if="canEditAppointment(appointment.trangThai)">
                             <a class="dropdown-item" ng-click="openModalThayDoi(appointment)">Chỉnh sửa</a>
                           </li>
+                          <li>
+                            <a class="dropdown-item text-danger" ng-click="huyLichHen(appointment)">❌ Hủy lịch hẹn</a>
+                        </li>
                           
                     </ul>
                 </div>

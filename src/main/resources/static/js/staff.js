@@ -869,7 +869,34 @@ $scope.taoHoaDon = function () {
                 });
                 $scope.closeModal();
     };
-    
+    $scope.huyLichHen = function(appointment) {
+        Swal.fire({
+            title: 'Bạn có chắc muốn hủy lịch hẹn?',
+            text: "Thao tác này sẽ cập nhật trạng thái lịch hẹn thành 'Đã hủy'.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hủy lịch',
+            cancelButtonText: 'Không',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gọi API cập nhật trạng thái
+                $http.put("http://localhost:8081/api/lich-hen/update-trang-thai", {
+                    idLichHen: appointment.idLichHen,
+                    trangThai: "Đã hủy"
+                }).then(function (response) {
+                    Swal.fire('✅ Đã hủy!', response.data.message, 'success');
+                    $scope.loadAppointments(); // refresh danh sách
+                }).catch(function (error) {
+                    console.error("Lỗi khi cập nhật trạng thái:", error);
+                    Swal.fire('❌ Lỗi!', 'Không thể cập nhật trạng thái.', 'error');
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Không làm gì nếu người dùng hủy
+                console.log("Người dùng đã hủy thao tác.");
+            }
+        });
+    };
     $scope.hoanTatSuaChua = function () {
         if (!$scope.selectedAppointment || !$scope.selectedAppointment.idLichHen) {
             alert("Không có lịch hẹn để cập nhật.");
@@ -1417,7 +1444,35 @@ appEmployee.controller('lHChuaHoanTatController', function($scope, $http) {
             }
         });
     };
-    
+    $scope.huyLichHen = function(lich) {
+        const appointmentId = lich.idLichHen;
+        Swal.fire({
+            title: 'Bạn có chắc muốn hủy lịch hẹn?',
+            text: "Thao tác này sẽ cập nhật trạng thái lịch hẹn thành 'Đã hủy'.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hủy lịch',
+            cancelButtonText: 'Không',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gọi API cập nhật trạng thái
+                $http.put("http://localhost:8081/api/lich-hen/update-trang-thai", {
+                    idLichHen: appointmentId,
+                    trangThai: "Đã hủy"
+                }).then(function (response) {
+                    Swal.fire('✅ Đã hủy!', response.data.message, 'success');
+                    lich.trangThai = "Đã hủy";
+                }).catch(function (error) {
+                    console.error("Lỗi khi cập nhật trạng thái:", error);
+                    Swal.fire('❌ Lỗi!', 'Không thể cập nhật trạng thái.', 'error');
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Không làm gì nếu người dùng hủy
+                console.log("Người dùng đã hủy thao tác.");
+            }
+        });
+    };
     $scope.changePage = function(pageNum, $event) {
         $event.preventDefault();
         $scope.currentPage = pageNum;

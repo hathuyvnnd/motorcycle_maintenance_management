@@ -35,7 +35,7 @@
             <td>{{ chuahoantat.bienSoXe }}</td>
             <td>{{ chuahoantat.tenKhachHang }}</td>
             <td>{{ chuahoantat.trangThai }}</td>
-            <td> <a ng-click="confirmAppointment(chuahoantat)" class="text-secondary"> Xác nhận</a></td>
+            <td> <a ng-click="confirmAppointment(chuahoantat)" class="text-secondary"> Xác nhận</a> <a ng-click="huyLichHen(chuahoantat)" class="text-danger"> Hủy</a></td>
         </tr>
         <tr ng-if="chuahoantat.length === 0">
             <td colspan="4" class="text-center text-dark-emphasis">Không có phiếu ghi nhận nào.</td>

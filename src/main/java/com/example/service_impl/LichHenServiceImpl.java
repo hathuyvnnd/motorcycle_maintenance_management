@@ -238,7 +238,7 @@ public class LichHenServiceImpl implements LichHenService {
     }
 
     public List<LichHen> layTatCaLichHenNgoaiTrangThaiChinh() {
-        List<String> excludedStatuses = Arrays.asList("Chờ xác nhận", "Đã xác nhận", "Hoàn tất","Hoàn thành");
+        List<String> excludedStatuses = Arrays.asList("Chờ xác nhận", "Đã xác nhận", "Hoàn tất","Hoàn thành","Đã hủy");
     List<LichHen> lichHens = dao.findByTrangThaiNotIn(excludedStatuses);
 
     // List<LichHen> filteredLichHen = lslh.stream()
