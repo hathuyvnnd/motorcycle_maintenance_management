@@ -32,10 +32,10 @@ public class PhieuDichVuController {
 
     @Autowired
     PhieuSuDungPhuTungCTService psdptService;
-    @GetMapping("/lichsu")
-    public List<PhieuDichVu> getListPDV() {
-        return pdvService.getAllDichVus();
-    }
+//    @GetMapping("/lichsu")
+//    public List<PhieuDichVu> getListPDV() {
+//        return pdvService.getAllDichVus();
+//    }
 
     // @GetMapping("/api/lichsu")
     // public List<PhieuDichVu> getPDVByKH(@RequestParam("idKhachHang") String idKhachHang) {
