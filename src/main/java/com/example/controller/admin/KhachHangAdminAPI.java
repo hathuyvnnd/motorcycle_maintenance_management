@@ -13,7 +13,7 @@ import com.example.service.KhachHangService;
 
 @RestController
 @RequestMapping("/api/admin/khachhang")
-public class KhachHangAdminController {
+public class KhachHangAdminAPI {
     @Autowired
     private KhachHangService khachHangService;
 

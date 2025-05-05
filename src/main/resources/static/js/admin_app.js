@@ -159,8 +159,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
           $scope.newEmployee = { taiKhoanNV: {} };
           $scope.file = null;
           document.getElementById("profileImage").value = "";
-          // Reload trang sau khi thêm mới thành công
-          // window.location.reload();
+          $scope.employeeForm.$setPristine();
+          $scope.employeeForm.$setUntouched();
         },
         function (err) {
           console.error("Lỗi khi thêm nhân viên:", err);
@@ -177,7 +177,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
             $scope.isEditMode = false;
             $scope.file = null;
             document.getElementById("profileImage").value = "";
-            // window.location.reload();
+            $scope.employeeForm.$setPristine();
+            $scope.employeeForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật nhân viên:", err);
@@ -190,6 +191,8 @@ app.controller("EmployeeController", function ($scope, NhanVienService, AccountS
             $scope.getAllEmployees();
             $scope.newEmployee = { taiKhoanNV: {} };
             $scope.isEditMode = false;
+            $scope.employeeForm.$setPristine();
+            $scope.employeeForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật nhân viên:", err);
@@ -478,6 +481,8 @@ app.controller("AccountController", function ($scope, AccountService) {
           function (res) {
             $scope.getAllAccounts();
             $scope.newAccountEmployee = {};
+            $scope.employeeForm.$setPristine();
+            $scope.employeeForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi thêm tài khoản nhân viên:", err);
@@ -489,6 +494,8 @@ app.controller("AccountController", function ($scope, AccountService) {
             $scope.getAllAccounts();
             $scope.newAccountEmployee = {};
             $scope.isEditModeEmployee = false;
+            $scope.employeeForm.$setPristine();
+            $scope.employeeForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật tài khoản nhân viên:", err);
@@ -675,6 +682,8 @@ app.controller("ServiceController", function ($scope, DichVuService) {
           $scope.newService = {};
           $scope.file = null;
           document.getElementById("profileImage").value = "";
+          $scope.serviceForm.$setPristine();
+          $scope.serviceForm.$setUntouched();
         },
         function (err) {
           console.error("Lỗi khi thêm dịch vụ:", err);
@@ -691,6 +700,8 @@ app.controller("ServiceController", function ($scope, DichVuService) {
             $scope.isEditMode = false;
             $scope.file = null;
             document.getElementById("profileImage").value = "";
+            $scope.serviceForm.$setPristine();
+            $scope.serviceForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật dịch vụ:", err);
@@ -703,6 +714,8 @@ app.controller("ServiceController", function ($scope, DichVuService) {
             $scope.getAllServices();
             $scope.newService = {};
             $scope.isEditMode = false;
+            $scope.serviceForm.$setPristine();
+            $scope.serviceForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật dịch vụ:", err);
@@ -816,6 +829,8 @@ app.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) 
         function (res) {
           $scope.getAllTypeAccessorys();
           $scope.newTypeAccessory = {};
+          $scope.loaiPhuTungForm.$setPristine();
+          $scope.loaiPhuTungForm.$setUntouched();
         },
         function (err) {
           console.error("Lỗi khi thêm loại phụ tùng:", err);
@@ -828,6 +843,8 @@ app.controller("TypeAccessoryController", function ($scope, LoaiPhuTungService) 
           $scope.getAllTypeAccessorys();
           $scope.newTypeAccessory = {};
           $scope.isEditMode = false;
+          $scope.loaiPhuTungForm.$setPristine();
+          $scope.loaiPhuTungForm.$setUntouched();
         },
         function (err) {
           console.error("Lỗi khi cập nhật loại phụ tùng:", err);
@@ -971,8 +988,10 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
         function (res) {
           $scope.getAllAccessorys();
           $scope.newAccessory = {};
-          $scope.file = null;
-          document.getElementById("profileImage").value = "";
+          $scope.file = null; //Xóa dữ liệu trong form thêm phụ tùng, chuẩn bị cho lần nhập tiếp theo.
+          document.getElementById("profileImage").value = ""; //Reset lại biến chứa file hình ảnh hoặc tài liệu đính kèm
+          $scope.accessoryForm.$setPristine();
+          $scope.accessoryForm.$setUntouched();
         },
         function (err) {
           console.error("Lỗi khi thêm phụ tùng:", err);
@@ -989,6 +1008,8 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
             $scope.isEditMode = false;
             $scope.file = null;
             document.getElementById("profileImage").value = "";
+            $scope.accessoryForm.$setPristine();
+            $scope.accessoryForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật phụ tùng:", err);
@@ -1001,6 +1022,8 @@ app.controller("AccessoryController", function ($scope, PhuTungService, DichVuSe
             $scope.getAllAccessorys();
             $scope.newAccessory = {};
             $scope.isEditMode = false;
+            $scope.accessoryForm.$setPristine();
+            $scope.accessoryForm.$setUntouched();
           },
           function (err) {
             console.error("Lỗi khi cập nhật phụ tùng:", err);
@@ -1215,6 +1238,77 @@ app.controller("InvoiceController", function ($scope, HoaDonService) {
   };
   $scope.getAllHoaDon();
 });
-app.controller("StatisticsController", function ($scope) {
-  $scope.pageTitle = "Thống kê";
+
+// app.controller("StatisticsController", function ($scope) {
+//   $scope.pageTitle = "Thống kê";
+// });
+app.controller("StatisticsController", [
+  "$scope",
+  "$http",
+  function ($scope, $http) {
+    $scope.revenueStats = {
+      startDate: new Date(), // Lấy ngày hiện tại động
+      endDate: new Date(), /// Lấy ngày hiện tại động
+      results: [],
+      currentPage: 1,
+      totalPages: 0,
+      pages: [],
+    };
+    $scope.isSubmitted = false; // Biến để kiểm soát trạng thái gửi form
+    $scope.isDateValid = true; // Biến kiểm tra ngày hợp lệ
+
+    $scope.getRevenueStats = function (page) {
+      if (!page) page = 1;
+      var startDate = $scope.revenueStats.startDate ? $scope.revenueStats.startDate.toISOString().split("T")[0] : "";
+      var endDate = $scope.revenueStats.endDate ? $scope.revenueStats.endDate.toISOString().split("T")[0] : "";
+
+      // Kiểm tra nếu startDate lớn hơn endDate
+      if (startDate && endDate && startDate > endDate) {
+        $scope.isDateValid = false;
+        return; // Không thực hiện gọi API nếu ngày không hợp lệ
+      }
+      $scope.isDateValid = true;
+      $scope.isSubmitted = true;
+
+      $http
+        .get("/api/revenue-stats", {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            page: page,
+            size: 10,
+          },
+        })
+        .then(
+          function (response) {
+            $scope.revenueStats.results = response.data.content;
+            $scope.revenueStats.currentPage = response.data.number + 1;
+            $scope.revenueStats.totalPages = response.data.totalPages;
+            $scope.revenueStats.pages = [];
+            for (var i = 1; i <= response.data.totalPages; i++) {
+              $scope.revenueStats.pages.push(i);
+            }
+          },
+          function (error) {
+            console.error("Lỗi khi lấy số liệu doanh thu:", error);
+          }
+        );
+      // Kiểm tra ngày khi thay đổi input
+      $scope.$watchGroup(["revenueStats.startDate", "revenueStats.endDate"], function (newValues) {
+        var startDate = newValues[0] ? new Date(newValues[0]) : null;
+        var endDate = newValues[1] ? new Date(newValues[1]) : null;
+        $scope.isDateValid = !(startDate && endDate && startDate > endDate);
+      });
+    };
+  },
+]);
+app.filter("sumByKey", function () {
+  return function (data, key) {
+    if (!angular.isArray(data) || !key) {
+      return 0;
+    }
+    return data.reduce(function (sum, item) {
+      return sum + (parseFloat(item[key]) || 0);
+    }, 0);
+  };
 });

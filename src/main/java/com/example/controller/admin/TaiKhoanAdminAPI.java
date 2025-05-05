@@ -16,10 +16,9 @@ import com.example.service.TaiKhoanService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/admin/taikhoan")
-public class TaiKhoanAdminController {
+public class TaiKhoanAdminAPI {
     @Autowired
     private TaiKhoanService taiKhoanService;
 

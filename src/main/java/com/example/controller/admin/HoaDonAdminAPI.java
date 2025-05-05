@@ -11,7 +11,7 @@ import com.example.service.HoaDonService;
 
 @RestController
 @RequestMapping("/api/admin/hoa_don")
-public class HoaDonAdminController {
+public class HoaDonAdminAPI {
     @Autowired
     private HoaDonService hoaDonService;
 

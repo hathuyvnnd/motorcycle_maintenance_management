@@ -30,6 +30,7 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Autowired
     SendMail sendMail;
+
     @Override
     public List<TaiKhoan> findAll() {
         return taiKhoanDao.findAll();
@@ -43,9 +44,10 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     @Override
     public TaiKhoan create(TaiKhoan taiKhoan) {
-        // Sinh ID tự động
-        // String newId = generateNewId();
-        // taiKhoan.setIdTaiKhoan(newId);
+        // Mã hóa mật khẩu trước khi lưu
+        if (taiKhoan.getMatKhau() != null && !taiKhoan.getMatKhau().isEmpty()) {
+            taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
+        }
 
         // Chuyển đổi đối tượng sang lớp con tương ứng dựa vào giá trị vaiTro
         if ("Nhân viên".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanNhanVien)) {
@@ -86,6 +88,10 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public void update(TaiKhoan taiKhoan) {
         if (taiKhoanDao.existsById(taiKhoan.getIdTaiKhoan())) {
+            // Mã hóa mật khẩu nếu được cung cấp
+            if (taiKhoan.getMatKhau() != null && !taiKhoan.getMatKhau().isEmpty()) {
+                taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
+            }
             // Chuyển đổi đối tượng sang lớp con tương ứng dựa vào giá trị vaiTro
             if ("Nhân viên".equalsIgnoreCase(taiKhoan.getVaiTro()) && !(taiKhoan instanceof TaiKhoanNhanVien)) {
                 TaiKhoanNhanVien tkNV = new TaiKhoanNhanVien();
@@ -117,7 +123,7 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 
     //////////////////// Hàm tạo mật khẩu random////////////////////////////////////
     @Override
-    public String randomPassword(int length){
+    public String randomPassword(int length) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);
@@ -128,11 +134,12 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         return sb.toString();
     }
 
-    ///////////////////Hàm reset mật khẩu Tài Khoản Khách Hàng qua email/////////////
+    /////////////////// Hàm reset mật khẩu Tài Khoản Khách Hàng qua
+    /////////////////// email/////////////
     @Override
-    public boolean resetPasswordByEmail(String email){
+    public boolean resetPasswordByEmail(String email) {
         KhachHang kh = khDao.findKhachHangByEmail(email);
-        if(kh == null){
+        if (kh == null) {
             return false;
         }
         TaiKhoan tk = kh.getTaiKhoanKH();
@@ -143,7 +150,7 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         taiKhoanDao.save(tk);
 
         // Gửi email HTML với mật khẩu mới
-        sendMail.sendPasword(kh.getEmail(),newPassword);
+        sendMail.sendPasword(kh.getEmail(), newPassword);
         return true;
 
     }
