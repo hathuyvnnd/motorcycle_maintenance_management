@@ -31,9 +31,9 @@ public class DangNhapController {
         System.out.println("MK Login" + taikhoanLogin.getMatKhau());
         TaiKhoan tk = taiKhoanService.findById(taikhoanLogin.getIdTaiKhoan());
 
-        if (tk != null && passwordEncoder.matches(taikhoanLogin.getMatKhau(),tk.getMatKhau())) {
+        if (tk != null && passwordEncoder.matches(taikhoanLogin.getMatKhau(), tk.getMatKhau())) {
             String token = jwt.generateToken(tk.getIdTaiKhoan(), tk.getVaiTro());
-            return ResponseEntity.ok(new TaiKhoanDN(token, tk.getVaiTro(),tk.getIdTaiKhoan()));
+            return ResponseEntity.ok(new TaiKhoanDN(token, tk.getVaiTro(), tk.getIdTaiKhoan()));
         }
         return ResponseEntity.status(401).body("Sai thông tin đăng nhập");
     }
