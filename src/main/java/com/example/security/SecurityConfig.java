@@ -28,7 +28,7 @@ public class SecurityConfig {
                                 "/js/**", "/css/**",
                                 "/images/**",
                                 "/api/auth/login","/api/dangky",
-                                "/api/khachhang/loaiphutung","/api/khachhang/dichvu",
+                                "/api/khachhang/loaiphutung","/api/khachhang/dichvu","/api/khachhang/forgot-password",
                                 "/admin/**","/employee/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("Admin")
                         .requestMatchers("/api/staff/**").hasAuthority("Nhân viên")

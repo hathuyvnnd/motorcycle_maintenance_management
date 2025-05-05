@@ -14,7 +14,7 @@ app.factory("AuthInterceptor", ["$q", "$window", "AuthService", function ($q, $w
             if (rejection.status === 401) {
                 // Gọi hàm logout và chuyển hướng người dùng về trang đăng nhập
                 AuthService.logout();
-                $window.location.href = '/views/dangnhap.html';
+                $window.location.href = "/views/dangnhap.html";
             }
             return $q.reject(rejection);
         }
@@ -54,9 +54,9 @@ app.config(function ($routeProvider) {
             templateUrl: "views/quenmatkhau.html",
             controller: "QuenMatKhauController",
         })
-        .when("/hoadon/:idHoaDon", {
-            templateUrl: "views/hoadon.html",
-            controller: "HoaDonController",
+        .when("/phieudichvu/:idPhieuDichVu", {
+            templateUrl: "views/phieudichvu.html",
+            controller: "PhieuDichVuController",
         })
         .when("/dichvuchitiet/:idPhieuDichVu",{
             templateUrl: "views/dichvuchitiet.html",
@@ -74,10 +74,15 @@ app.config(function ($routeProvider) {
             templateUrl: "views/timkiem.html",
             controller: "TimKiemController",
         })
+        .when("/doimatkhau", {
+            templateUrl: "views/doimatkhau.html",
+            controller: "DoiMatKhauController",
+        })
         .when("/logout", {
             controller: "LogoutController",
             template: "",
         });
+
 });
 app.run(["$rootScope", "$location", function ($rootScope, $location) {
     $rootScope.keyword = "";
@@ -136,13 +141,6 @@ app.controller("HomeController", function ($scope, $http, $rootScope) {
         $scope.sortOrder = order;
     };
 
-    // Hàm tìm kiếm
-    // $rootScope.submitSearch = function () {
-    //     console.log("Từ khóa tìm kiếm:", $rootScope.keyword);
-    //     if ($rootScope.keyword) {
-    //         window.location.href = "#!/timkiem/" + $rootScope.keyword;
-    //     }
-    // };
 
     // Thêm Lịch hẹn chi tiết vào local storage
     $scope.dsLichHenCT = JSON.parse(localStorage.getItem("lichhenct")) || [];
@@ -231,7 +229,6 @@ app.controller("DatLichController", function ($scope,$http) {
         const ngayISO = thoiGian.toISOString().split("T")[0];
 
         let lichHenData = {
-            idKhachHang: $scope.form.idKhachHang,
             idLoaiXe: $scope.form.idLoaiXe,
             bienSoXe: $scope.form.bienSoXe,
             thoiGian: ngayISO,
@@ -290,6 +287,7 @@ app.controller("DangKiController", ["$scope", "$http", function ($scope, $http) 
                 hoTen: $scope.khachHang.hoTen,
                 diaChi: $scope.khachHang.diaChi,
                 email: $scope.khachHang.email,
+                vaiTro:"Khách hàng"
             };
 
             // Gửi yêu cầu đăng ký
@@ -341,7 +339,7 @@ app.controller("DangNhapController", function ($scope, $http, $location,$rootSco
                 $rootScope.vaiTro = response.data.vaiTro;
 
                 if (response.data.vaiTro === 'Admin') {
-                    window.location.href = "/admin/index.html";
+                    window.location.href = "/admin";
                 } else if (response.data.vaiTro === 'Nhân viên') {
                     $location.path("/hoa-don");
                 } else if (response.data.vaiTro === 'Khách hàng') {
@@ -391,7 +389,6 @@ app.controller("QuenMatKhauController", function ($scope,$http) {
 //////////////////////////////////////////////////////////////////////
 app.controller("LichSuSuaChuaController", function ($scope, $rootScope, $http) {
     $scope.title = "Lịch Sử Sữa Chữa";
-    // $scope.listPDV=[];
     $scope.listHoaDon=[];
     $scope.currentPage = 1;
     $scope.itemsPerPage = 6;
@@ -399,7 +396,6 @@ app.controller("LichSuSuaChuaController", function ($scope, $rootScope, $http) {
     $scope.ketThuc = "";
     $http.get("/api/khachhang/lichsu").then(function(response){
             $scope.listHoaDon = response.data;
-            // $scope.listPDV = response.data;
             $scope.totalPages = Math.ceil($scope.listHoaDon.length / $scope.itemsPerPage);
             $scope.pageNumbers = Array.from({ length: $scope.totalPages }, (_, i) => i + 1);
         },
@@ -427,19 +423,19 @@ app.controller("LichSuSuaChuaController", function ($scope, $rootScope, $http) {
 
 
 //////////////////////////////////////////////////////////////////////
-app.controller("HoaDonController", function ($scope, $http,$routeParams) {
-    $scope.title = "Hóa Đơn";
+app.controller("PhieuDichVuController", function ($scope, $http,$routeParams) {
+    $scope.title = "Phiếu Dịch Vụ";
 
-    $scope.hoaDon = null; // Không phải danh sách nữa
+    $scope.phieuDichVu = null; // Không phải danh sách nữa
 // Lấy ID từ URL
-    var idHoaDon = $routeParams.idHoaDon;
-    // Gọi API để lấy một đối tượng hóa đơn duy nhất
-    $http.get("/api/khachang/hoadon?idHoaDon="+idHoaDon)
+    var idPhieuDichVu = $routeParams.idPhieuDichVu;
+    // Gọi API để lấy một đối tượng phiếu dịch vụ đơn duy nhất
+    $http.get("/api/khachhang/phieudichvu?idPhieuDichVu="+idPhieuDichVu)
         .then(function (response) {
-            $scope.hoaDon = response.data; // Lưu một đối tượng duy nhất
+            $scope.phieuDichVu = response.data; // Lưu một đối tượng duy nhất
         })
         .catch(function (error) {
-            console.error("Lỗi tải Hóa Đơn", error);
+            console.error("Lỗi tải Phiếu Dịch Vụ", error);
         });
 
 });
@@ -497,6 +493,7 @@ app.controller("LogoutController", function ($scope, $location, AuthService) {
     AuthService.logout();
     $location.path("/");
 });
+
 app.controller("NavbarController", function($scope, $rootScope) {
     $scope.isLoggedIn = $rootScope.isLoggedIn;
     $scope.idTaiKhoan = sessionStorage.getItem("idTaiKhoan");
@@ -510,4 +507,20 @@ app.controller("NavbarController", function($scope, $rootScope) {
         $scope.vaiTro = $rootScope.vaiTro;
     });
 
+});
+app.controller("DoiMatKhauController", function ($scope,$http, $location, AuthService) {
+    $scope.matKhauData ={};
+    $scope.changePassword = function () {
+        $http.post("/api/khachhang/doimatkhau", $scope.matKhauData).then(function (res) {
+            $scope.thongBao = res.data.message;
+            $scope.loi = null;
+            $scope.passwordData = {};
+            $scope.changePassForm.$setPristine();
+            $scope.changePassForm.$setUntouched();
+            $location.path("/");
+        }, function (err) {
+            $scope.loi = err.data.message || "Có lỗi xảy ra!";
+            $scope.thongBao = null;
+        });
+    };
 });
