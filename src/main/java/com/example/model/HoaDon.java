@@ -33,7 +33,7 @@
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
-//    @JsonIdentityReference(alwaysAsId = true)
+   @JsonIdentityReference(alwaysAsId = true)
     // @JsonManagedReference
     private PhieuDichVu phieuDichVuHD;
 
