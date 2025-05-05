@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avatar Upload</title>
+  <link rel="icon" href="/images/logo1.png" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body style="background-color: #f8f9fa">
+
+<div ng-app="app" ng-controller="NhanVienController" class="container mt-5 text-center">
+  <h3>Ảnh đại diện</h3>
+  <div style="position: relative; display: inline-block;">
+    <img ng-src="{{imageUrl}}" class="rounded-circle border" style="width: 200px; height: 200px; object-fit: cover;" />
+    <i class="bi bi-pencil-fill edit-icon" data-bs-toggle="modal" data-bs-target="#avatarModal"></i>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4">
+        <h5 class="text-center mb-3">Cập nhật ảnh đại diện</h5>
+
+        <div class="d-flex justify-content-center">
+          <img ng-src="{{previewUrl || imageUrl}}" class="rounded-circle border"
+               style="width: 180px; height: 180px; object-fit: cover;" />
+        </div>
+
+        <div class="text-center mt-2" ng-if="selectedFileName">
+          <small class="text-muted">{{ selectedFileName }}</small>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 px-3">
+          <button class="btn btn-outline-primary"
+                  onclick="document.getElementById('modalFileInput').click()">Chọn ảnh</button>
+
+          <button class="btn btn-success" ng-click="uploadImage()">Lưu ảnh</button>
+        </div>
+
+        <input type="file" id="modalFileInput" class="d-none" file-model="nhanVien.file"
+               onchange="angular.element(this).scope().previewImage(this)" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS -->
+<style>
+  .edit-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #c7d1dd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+</style>
+
+<!-- AngularJS Script -->
+<script>
+  var app = angular.module("app", []);
+
+  app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
+        element.bind('change', function() {
+          scope.$apply(function(){
+            modelSetter(scope, element[0].files[0]);
+          });
+        });
+      }
+    };
+  }]);
+
+  app.controller("NhanVienController", function($scope, $http) {
+    const nhanVienId = "NV001";
+    $scope.previewUrl = null;
+    $scope.selectedFileName = "";
+
+    // Load avatar ban đầu
+    $http.get("/api/nhanvien/testupload/" + nhanVienId).then(function(response) {
+      const fileName = response.data.hinhAnh;
+      $scope.imageUrl = "/images/" + fileName;
+    });
+
+    // Xem trước ảnh
+    $scope.previewImage = function(input) {
+      const file = input.files[0];
+      if (file) {
+        $scope.previewUrl = URL.createObjectURL(file);
+        $scope.selectedFileName = file.name;
+        $scope.$apply();
+      }
+    };
+
+    // Upload ảnh
+    $scope.uploadImage = function() {
+      if (!$scope.nhanVien || !$scope.nhanVien.file) return alert("Vui lòng chọn ảnh");
+
+      var formData = new FormData();
+      formData.append("file", $scope.nhanVien.file);
+
+      $http.post("/api/nhanvien/testupload/" + nhanVienId + "/upload-avatar", formData, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined },
+      }).then(function(response) {
+        alert(response.data.message);
+        $scope.imageUrl = "/images/" + response.data.fileName;
+        $scope.previewUrl = null;
+        $scope.selectedFileName = "";
+        $scope.nhanVien.file = null;
+        document.getElementById("modalFileInput").value = null;
+        bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+      }, function(error) {
+        alert("Upload thất bại!");
+        console.error("Lỗi upload", error);
+      });
+    };
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -37,10 +37,13 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/api/auth/login","/api/dangky",
                                 "/api/khachhang/loaiphutung","/api/khachhang/dichvu",
-                                "/admin/**","/employee/**").permitAll()
+                                "/admin/**","/giaodien/**","/employee/a.html",
+                                "/api/khachhang/forgot-password","/timkiem/**","/dangnhap"
+                                ).permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("Admin")
-                        .requestMatchers("/api/staff/**").hasAuthority("Nhân viên")
+                        .requestMatchers("/api/staff/**","/staff/**","/test/**","/components/**","/api/lich-hen/**", "/employee/panel/**","/api/admin/phutung","/api/admin/dichvu").hasAuthority("Nhân viên")
                         .requestMatchers("/api/khachhang/**").hasAuthority("Khách hàng")
+                        // .requestMatchers("/staff/**").hasAuthority("Nhân viên")
                         .anyRequest().authenticated()
                 )
                 // [THÊM] Thêm xử lý ngoại lệ ở đây, ngay sau authorizeHttpRequests

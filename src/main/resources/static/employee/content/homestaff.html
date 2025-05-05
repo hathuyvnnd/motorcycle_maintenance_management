@@ -1,0 +1,100 @@
+<img src="../images/sudungtinhnang.png" class="img-fluid w-25 ms-1 me-1" alt="TinhNang" />
+<div class="container">
+  <div class="row g-4 justify-content-center p-5">
+    <div class="col-6 col-md-4 col-xl-2" ng-repeat="item in chucNangList">
+          <a class="text-decoration-none text-dark" ng-href="#!{{item.link}}">
+            <div class="card chuc-nang-card text-center shadow border-0 rounded-4 py-3 h-100">
+              <div class="position-relative">
+                <img ng-src="{{item.icon}}" alt="icon" class="mx-auto d-block rounded-circle shadow-custom-tinhnang" width="50" height="50">
+                <span ng-if="item.isNew"
+                      class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
+                  Mới
+                </span>
+              </div>
+              <div class="mt-2 fw-bold">{{ item.ten }}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+  </div>
+  <h4 class="mt-4">- Thống Kê</h4>
+  <div class="row mt-4">
+    <!-- Card Lịch hẹn hôm nay -->
+    <div class="col-md-4">
+      <div class="card text-white shadow-sm border-0 rounded-4 p-3 lichhen-card1 h-100">
+        <div class="h6">Lịch hẹn hôm nay</div>
+        <div class="d-flex align-items-center justify-content-start mt-2">
+          <div class="display-6 fw-bold">{{ soLichHenHomNay }}</div>
+          <span class="badge bg-white text-primary ms-2">{{ phanTramHomNay }}%</span>
+        </div>
+        <div class="mt-2">
+          <i class="bi bi-eye"></i> Hôm qua: {{ soLichHenHomQua }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Card Lịch hẹn chờ xác nhận -->
+    <div class="col-md-4">
+      <div class="card text-white shadow-sm border-0 rounded-4 p-3 lichhen-card2 h-100">
+        <div class="h6">Chờ xác nhận</div>
+        <div class="d-flex align-items-center justify-content-start mt-2">
+          <div class="display-6 fw-bold">{{ soLichHenChoXacNhan }}</div>
+          <span class="badge bg-white text-danger ms-2">{{ phanTramChoXacNhan }}%</span>
+        </div>
+        <div class="mt-2">
+          <i class="bi bi-eye"></i> Hôm qua: {{ soLichHenChoXacNhanHomQua }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Card Lịch hẹn đã hoàn thành -->
+    <div class="col-md-4">
+      <div class="card text-white shadow-sm border-0 rounded-4 p-3 lichhen-card3 h-100">
+        <div class="h6">Đã hoàn thành</div>
+        <div class="d-flex align-items-center justify-content-start mt-2">
+          <div class="display-6 fw-bold">{{ soLichHenDaHoanThanh }}</div>
+          <span class="badge bg-white text-success ms-2">{{ phanTramHoanThanh }}%</span>
+        </div>
+        <div class="mt-2">
+          <i class="bi bi-eye"></i> Hôm qua: {{ soLichHenHoanThanhHomQua }}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <style>
+    .text-purple {
+        color: #6f42c1; /* Màu tím chuẩn Bootstrap */
+    }
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div class="row mt-4" >
+    <!-- Card Thống Kê Theo Tuần -->
+    <div class="col-md-6">
+        <div class="card shadow-sm rounded-3 mb-4">
+          <div class="card-body">
+            <h5 class="card-title text-primary fw-bold">Thống Kê Theo Tuần</h5>
+            <p class="card-text text-muted">Di chuyển chuột vào các cột để xem chi tiết.</p>
+            <div class="chart-container">
+              <canvas id="lichHenChartTuan"></canvas>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Card Thống Kê Theo Năm -->
+    <div class="col-md-6">
+        <div class="card shadow-sm rounded-3 mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-purple fw-bold" style="color: #6f42c1;">Thống Kê Theo Năm</h5>
+                <p class="card-text text-muted">Di chuyển chuột vào các cột để xem chi tiết.</p>
+                <div class="chart-container">
+                  <canvas id="lichHenChartNam"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+  

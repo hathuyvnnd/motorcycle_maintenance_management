@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "LichHen")
+@Table(name = "LichHen", indexes = @Index(name = "idx_trangThai", columnList = "trangThai"))
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
 // property = "idLichHen")
 public class LichHen {

@@ -17,5 +17,10 @@ public interface PhieuDichVuDAO extends JpaRepository<PhieuDichVu, String> {
     //Lọc Phiếu Dịch Vụ theo từng khách hàng
     @Query("SELECT pdv FROM PhieuDichVu pdv JOIN HoaDon h ON h.phieuDichVuHD.idPhieuDichVu = pdv.idPhieuDichVu WHERE h.khachHang.idKhachHang=?1")
     List<PhieuDichVu> findPhieuDichVuByKhachHangId(String idKhachHang);
-    
+
+    @Query(value = "SELECT TOP 1 IdPhieuDichVu FROM PhieuDichVu ORDER BY IdPhieuDichVu DESC ", nativeQuery = true)
+    String findLastId();
+
+    PhieuDichVu findByPhieuGNX_LichHen_IdLichHen(String idLichHen);
+
 }

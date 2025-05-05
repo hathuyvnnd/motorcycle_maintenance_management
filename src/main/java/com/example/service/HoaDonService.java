@@ -10,4 +10,5 @@ import com.example.model.KhachHang;
 public interface HoaDonService extends CrudService<HoaDon, String> {
 List<HoaDon> hoaDonByKh(KhachHang kh);
 HoaDon getHoaDonById(String idHoaDon);
+List<HoaDon> searchHoaDonByKeyword(String keyword);
 }

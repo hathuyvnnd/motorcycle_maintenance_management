@@ -19,18 +19,22 @@ public class KhachHangCustomerController {
 
     @PostMapping("/dangky")
     public ResponseEntity<?> dangKyKhachHang(@RequestBody KhachHangDTO khachHangDTO) {
+        KhachHang kh = khService.getByEmail(khachHangDTO.getEmail());
         try {
             if (khService.exitsById(khachHangDTO.getSoDienThoai())) {
                 // Nếu tài khoản đã tồn tại, trả về lỗi
                 return ResponseEntity.badRequest().body("Số điện thoại đã được sử dụng.");
+            }
+            if (kh != null) {
+                // Nếu email đã tồn tại, trả về lỗi
+                return ResponseEntity.badRequest().body("Email đã được sử dụng.");
             }
             KhachHang khachHang = khService.dangKyKhachHang(
                     khachHangDTO.getSoDienThoai(),
                     khachHangDTO.getMatKhau(),
                     khachHangDTO.getHoTen(),
                     khachHangDTO.getDiaChi(),
-                    khachHangDTO.getEmail(),
-                    khachHangDTO.getHinhAnh()
+                    khachHangDTO.getEmail()
             );
             return ResponseEntity.ok(khachHang);  // Trả về thông tin khách hàng vừa tạo
         } catch (Exception e) {

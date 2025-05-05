@@ -1,0 +1,20 @@
+<h4>Đổi mật khẩu</h4>
+<form name="changePassForm" ng-submit="changePassword()">
+    <div class="form-group">
+        <label>Mật khẩu hiện tại</label>
+        <input type="password" ng-model="matKhauData.matKhauHienTai" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Mật khẩu mới</label>
+        <input type="password" name="matKhauMoi" ng-model="matKhauData.matKhauMoi" class="form-control"
+               required ng-minlength="8" maxlength="16"/>
+    </div>
+    <div class="text-danger"
+         ng-show="changePassForm.matKhauMoi.$touched && changePassForm.matKhauMoi.$invalid">
+        <span ng-show="changePassForm.matKhauMoi.$error.required">Mật khẩu là bắt buộc.</span>
+        <span ng-show="changePassForm.matKhauMoi.$error.minlength">Mật khẩu phải có ít nhất 8 ký tự.</span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Đổi mật khẩu</button>
+    <p class="mt-2 text-success" ng-if="thongBao">{{thongBao}}</p>
+    <p class="mt-2 text-danger" ng-if="loi">{{loi}}</p>
+</form>

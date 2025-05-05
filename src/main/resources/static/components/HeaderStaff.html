@@ -1,4 +1,26 @@
-<header class="bg-white shadow-sm p-3">
-  <i class="bi bi-list fs-4 me-3" ng-click="toggleSidebar()"></i>
-  <span class="fs-5">Dashboard</span>
+<header class="bg-white shadow-sm p-3 d-flex justify-content-between align-items-center">
+  <!-- Bên trái: icon toggle -->
+  <div class="d-flex align-items-center">
+    <i class="bi bi-list fs-4 me-3" ng-click="toggleSidebar()"></i>
+    <!-- <span class="fs-5" ng-bind="pageTitle">{{pageTitle}}</span> -->
+  </div>
+
+  <!-- Bên phải: thông báo và tài khoản -->
+  <div class="d-flex align-items-center">
+    <!-- Icon thông báo -->
+  
+    <!-- Avatar + Dropdown -->
+    <div class="dropdown">
+      <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <img ng-src="{{imageUrl}}" alt="Avatar" width="32" height="32" class="rounded-circle me-2">
+        <span class="text-dark">{{staff.ten}}</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+        <li><a class="dropdown-item" href="#!nhan-vien-thong-tin">Thông tin cá nhân</a></li>
+        <li><a class="dropdown-item" href="#!doi-mat-khau">Đổi mật khẩu</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-danger" href="" ng-click="logout()">Đăng xuất</a></li>
+      </ul>
+    </div>
+  </div>
 </header>

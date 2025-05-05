@@ -33,7 +33,8 @@ public class HoaDon {
 
     @OneToOne
     @JoinColumn(name = "IdPhieuDichVu", unique = true)
-    // @JsonIdentityReference(alwaysAsId = true)
+
+    @JsonIdentityReference(alwaysAsId = true)
     // @JsonManagedReference
     private PhieuDichVu phieuDichVuHD;
 
@@ -48,5 +49,4 @@ public class HoaDon {
 
     @Column(name = "TongTien")
     private float tongTien;
-
 }

@@ -1,0 +1,68 @@
+<h2 class="mb-4">Phiếu Dịch Vụ</h2>
+<div class="mb-3">
+    <label class="form-label">Biển số xe</label>
+    <input type="text" ng-model="selectedAppointment.bienSoXe" class="form-control" placeholder="Nhập biển số xe">
+</div>
+<div class="mb-3">
+    <label class="form-label">Chọn dịch vụ</label>
+    <div class="input-group">
+        <select ng-model="$root.selectedService" class="form-select" ng-options="dichVu as dichVu.tenDichVu for dichVu in dichVuList track by dichVu.idDichVu">
+            <option value="">-- Chọn dịch vụ --</option>
+        </select>
+        <button class="btn btn-primary" ng-click="addService1()">Thêm</button>
+    </div>
+</div>
+
+<h5>Dịch vụ đã chọn</h5>
+<table class="table table-bordered mt-3" ng-if="dichVuDaChon.length">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Tên dịch vụ</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="dv in dichVuDaChon track by $index">
+        <td>{{$index + 1}}</td>
+        <td>{{ dv.dichVu.tenDichVu }}</td>
+        <td><button class="btn btn-danger btn-sm" ng-click="removeService1($index)">Xóa</button></td>
+    </tr>
+    </tbody>
+</table>
+<p class="text-center" ng-if="dichVuDaChon.length === 0">Chưa có dịch vụ nào được thêm</p>
+
+<div ng-if="showPartsSelection1">
+   <h5 class="mt-4">Chọn phụ tùng</h5>
+   <div class="input-group mb-3">
+        <select ng-model="$root.selectedPart" class="form-select" ng-options="phuTung as phuTung.tenPhuTung for phuTung in phuTungList track by phuTung.idPhuTung">      
+        </select>
+        <input type="number" ng-model="$root.selectedQuantity" class="form-control" placeholder="Số lượng" min="1">
+        <button class="btn btn-primary" ng-click="addPart1()">Thêm</button>
+   </div>
+
+   <h5>Phụ tùng thay thế</h5>
+   <table class="table table-bordered mt-3" ng-if="phuTungDaChon.length">
+       <thead>
+       <tr>
+           <th>#</th>
+           <th>Tên phụ tùng</th>
+           <th>Số lượng</th>
+           <th>Giá</th>
+           <th>Hành động</th>
+       </tr>
+       </thead>
+       <tbody>
+       <tr ng-repeat="parts in phuTungDaChon track by $index">
+           <td>{{$index + 1}}</td>
+           <td>{{ parts.phuTung.tenPhuTung }}</td>
+           <td>{{ parts.soLuong }}</td>
+           <td>{{ parts.soLuong * parts.phuTung.giaPhuTung | currency:'₫'  }}</td>
+           <td><button class="btn btn-danger btn-sm" ng-click="removePart1($index)">Xóa</button></td>
+       </tr>
+       </tbody>
+   </table>
+   <p class="text-center" ng-if="phuTungDaChon.length === 0">Chưa có phụ tùng nào được thêm</p>
+</div>
+
+<button class="btn btn-success mt-3" ng-click="updatePhieuDichVu()">Cập nhật Phiếu Dịch Vụ</button>

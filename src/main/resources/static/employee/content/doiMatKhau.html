@@ -1,0 +1,24 @@
+ <div class="mt-2">
+ <h3>Đổi Mật Khẩu</h3>
+
+  <div class="mb-3">
+    <label class="form-label">Mật khẩu hiện tại</label>
+    <input type="password" class="form-control" ng-model="matKhauCu">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mật khẩu mới</label>
+    <input type="password" class="form-control" ng-model="matKhauMoi">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Xác nhận mật khẩu mới</label>
+    <input type="password" class="form-control" ng-model="xacNhanMatKhauMoi">
+  </div>
+
+  <div class="text-danger" ng-if="loiDoiMatKhau">{{loiDoiMatKhau}}</div>
+  <div class="text-success" ng-if="doiMatKhauThanhCong">{{doiMatKhauThanhCong}}</div>
+
+  <button class="btn btn-primary" ng-click="doiMatKhau()">Đổi mật khẩu</button>
+ 
+</div>

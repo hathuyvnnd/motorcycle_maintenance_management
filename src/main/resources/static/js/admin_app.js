@@ -35,6 +35,14 @@ appAdmin.controller("MainController", function ($scope) {
   $scope.toggleSidebar = function () {
     $scope.isSidebarHidden = !$scope.isSidebarHidden;
   };
+  $scope.logout = function () {
+    // Xóa token và các thông tin liên quan
+    sessionStorage.clear(); // hoặc: sessionStorage.removeItem("token"); v.v...
+    localStorage.clear();
+
+    // Điều hướng về trang chủ
+    window.location.href = "/";
+  };
 });
 
 appAdmin.config(function ($routeProvider) {
@@ -74,6 +82,12 @@ appAdmin.config(function ($routeProvider) {
     .when("/type_accessory", {
       templateUrl: "admin/views/type_accessory.html",
       controller: "TypeAccessoryController",
+    })
+    .when("/index", {
+      redirectTo: "/statistics",
+    })
+    .otherwise({
+      redirectTo: "/index/statistics",
     });
   // .when("/", {
   //   redirectTo: "/statistics",
@@ -142,6 +156,7 @@ appAdmin.controller("EmployeeController", function ($scope, NhanVienService, Acc
     NhanVienService.getAllNhanVien().then(
       function (response) {
         $scope.employees = response.data;
+        console.log("danh sach nhan vien", $scope.employees);
         $scope.totalItems = $scope.employees.length;
       },
       function (error) {
@@ -1332,6 +1347,7 @@ appAdmin.controller("StatisticsController", [
     };
   },
 ]);
+
 appAdmin.filter("sumByKey", function () {
   return function (data, key) {
     if (!angular.isArray(data) || !key) {
@@ -1342,7 +1358,3 @@ appAdmin.filter("sumByKey", function () {
     }, 0);
   };
 });
-// appAdmin.controller("LogoutController", function ($scope, $location, AuthService) {
-//   AuthService.logout();
-//   $location.path("/");
-// });
