@@ -206,6 +206,7 @@ appAdmin.controller("EmployeeController", function ($scope, NhanVienService, Acc
           document.getElementById("profileImage").value = "";
           $scope.employeeForm.$setPristine();
           $scope.employeeForm.$setUntouched();
+          alert("Nhân viên đã được thêm thành công!");
         },
         function (err) {
           console.error("Lỗi khi thêm nhân viên:", err);
@@ -224,6 +225,7 @@ appAdmin.controller("EmployeeController", function ($scope, NhanVienService, Acc
             document.getElementById("profileImage").value = "";
             $scope.employeeForm.$setPristine();
             $scope.employeeForm.$setUntouched();
+            alert("Nhân viên đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật nhân viên:", err);
@@ -238,6 +240,7 @@ appAdmin.controller("EmployeeController", function ($scope, NhanVienService, Acc
             $scope.isEditMode = false;
             $scope.employeeForm.$setPristine();
             $scope.employeeForm.$setUntouched();
+            alert("Nhân viên đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật nhân viên:", err);
@@ -528,6 +531,7 @@ appAdmin.controller("AccountController", function ($scope, AccountService) {
             $scope.newAccountEmployee = {};
             $scope.employeeForm.$setPristine();
             $scope.employeeForm.$setUntouched();
+            alert("Tài khoản nhân viên đã được thêm thành công!");
           },
           function (err) {
             console.error("Lỗi khi thêm tài khoản nhân viên:", err);
@@ -541,6 +545,7 @@ appAdmin.controller("AccountController", function ($scope, AccountService) {
             $scope.isEditModeEmployee = false;
             $scope.employeeForm.$setPristine();
             $scope.employeeForm.$setUntouched();
+            alert("Tài khoản nhân viên đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật tài khoản nhân viên:", err);
@@ -599,7 +604,7 @@ appAdmin.controller("AccountController", function ($scope, AccountService) {
         },
         function (err) {
           console.error("Lỗi khi xóa tài khoản:", err);
-          alert("Lỗi khi xóa tài khoản, vui lòng thử lại.");
+          alert("Lỗi khi xóa tài khoản, vui lòng xóa nhân viên trước!.");
         }
       );
     }
@@ -729,6 +734,7 @@ appAdmin.controller("ServiceController", function ($scope, DichVuService) {
           document.getElementById("profileImage").value = "";
           $scope.serviceForm.$setPristine();
           $scope.serviceForm.$setUntouched();
+          alert("Dịch vụ đã được thêm thành công!");
         },
         function (err) {
           console.error("Lỗi khi thêm dịch vụ:", err);
@@ -747,6 +753,7 @@ appAdmin.controller("ServiceController", function ($scope, DichVuService) {
             document.getElementById("profileImage").value = "";
             $scope.serviceForm.$setPristine();
             $scope.serviceForm.$setUntouched();
+            alert("Dịch vụ đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật dịch vụ:", err);
@@ -761,6 +768,7 @@ appAdmin.controller("ServiceController", function ($scope, DichVuService) {
             $scope.isEditMode = false;
             $scope.serviceForm.$setPristine();
             $scope.serviceForm.$setUntouched();
+            alert("Dịch vụ đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật dịch vụ:", err);
@@ -876,6 +884,7 @@ appAdmin.controller("TypeAccessoryController", function ($scope, LoaiPhuTungServ
           $scope.newTypeAccessory = {};
           $scope.loaiPhuTungForm.$setPristine();
           $scope.loaiPhuTungForm.$setUntouched();
+          alert("Loại phụ tùng đã được thêm thành công!");
         },
         function (err) {
           console.error("Lỗi khi thêm loại phụ tùng:", err);
@@ -1037,6 +1046,7 @@ appAdmin.controller("AccessoryController", function ($scope, PhuTungService, Dic
           document.getElementById("profileImage").value = ""; //Reset lại biến chứa file hình ảnh hoặc tài liệu đính kèm
           $scope.accessoryForm.$setPristine();
           $scope.accessoryForm.$setUntouched();
+          alert("Phụ tùng đã được thêm thành công!");
         },
         function (err) {
           console.error("Lỗi khi thêm phụ tùng:", err);
@@ -1055,6 +1065,7 @@ appAdmin.controller("AccessoryController", function ($scope, PhuTungService, Dic
             document.getElementById("profileImage").value = "";
             $scope.accessoryForm.$setPristine();
             $scope.accessoryForm.$setUntouched();
+            alert("Phụ tùng đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật phụ tùng:", err);
@@ -1069,6 +1080,7 @@ appAdmin.controller("AccessoryController", function ($scope, PhuTungService, Dic
             $scope.isEditMode = false;
             $scope.accessoryForm.$setPristine();
             $scope.accessoryForm.$setUntouched();
+            alert("Phụ tùng đã được cập nhật thành công!");
           },
           function (err) {
             console.error("Lỗi khi cập nhật phụ tùng:", err);
