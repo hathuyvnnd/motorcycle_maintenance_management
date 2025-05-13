@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,15 +15,20 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.model.LoaiXe;
 import com.example.model.NhanVien;
+import com.example.service_impl.LoaiXeImpl;
 import com.example.service_impl.NhanVienServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/nhanvien/testupload")
 @RequiredArgsConstructor
 public class TestUploadController {
+    private LoaiXeImpl loaiXeImpl;
 
     private final NhanVienServiceImpl nhanVienService;
 
@@ -39,7 +45,7 @@ public class TestUploadController {
     // ✅ API: Upload avatar
     @PostMapping("/{id}/upload-avatar")
     public ResponseEntity<?> uploadAvatar(@PathVariable String id,
-                                               @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file) {
         try {
             NhanVien nhanVien = nhanVienService.findById(id);
             if (nhanVien == null) {
@@ -50,7 +56,7 @@ public class TestUploadController {
             String uploadDir = "src/main/resources/static/images/";
             Files.createDirectories(Paths.get(uploadDir));
 
-            // Đặt tên file random tránh trùng  UUID.randomUUID() + "_" +
+            // Đặt tên file random tránh trùng UUID.randomUUID() + "_" +
             String fileName = file.getOriginalFilename();
             Path path = Paths.get(uploadDir + fileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
@@ -59,14 +65,22 @@ public class TestUploadController {
             nhanVien.setHinhAnh(fileName);
             nhanVienService.update(nhanVien);
 
-
             return ResponseEntity.ok(Map.of(
-                "message", "Upload thành công",
-                "fileName", fileName
-        ));
-    } catch (IOException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Lỗi khi upload file"));
+                    "message", "Upload thành công",
+                    "fileName", fileName));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Lỗi khi upload file"));
+        }
     }
+
+    @GetMapping("/loaixe")
+    public List<LoaiXe> getAllLoaiXe() {
+        List<LoaiXe> loaiXeList = loaiXeImpl.findAll();
+        for (LoaiXe loaiXe : loaiXeList) {
+            System.out.println(loaiXe.getTenLoaiXe());
+        }
+        return loaiXeList;
     }
+
 }
